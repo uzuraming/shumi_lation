@@ -49,6 +49,9 @@ class UsersController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
+
+
+    // ユーザー詳細画面
     public function show($id)
     {
         // idでユーザーの情報を表示
@@ -66,6 +69,9 @@ class UsersController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
+
+
+    // ユーザー編集画面
     public function edit($id)
     {
         // 自分のユーザーか識別する。違えば、リダイレクトする
@@ -89,6 +95,9 @@ class UsersController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
+
+
+    // 編集を実行する関数
     public function update(Request $request, $id)
     {
         // 自分のユーザーか識別する。違えば、リダイレクトする
@@ -116,6 +125,9 @@ class UsersController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
+
+
+    // 削除する関数
     public function destroy($id)
     {
         // 自分のユーザーか識別する。違えば、リダイレクトする

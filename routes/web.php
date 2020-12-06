@@ -27,7 +27,12 @@ Route::get('logout', 'Auth\LoginController@logout')->name('logout.get');
 // 認証済みのユーザーのみが来れる場所
 Route::group(['middleware' => ['auth']], function () {
 
-    Route::resource('users', 'UsersController');
+    // ユーザーの各機能
+    Route::resource('users', 'UsersController',  ['only' => ['show', 'edit', 'update', 'destroy']]);
+
+    // タイムラインの各機能
+    Route::resource('timelines', 'timelinesController', ['only' => ['create', 'store', 'destroy']]);
+
 
 
 });

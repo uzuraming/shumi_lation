@@ -37,5 +37,11 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
+    // ユーザーに属するタイムライン
+
+    public function timelines()
+    {
+        return $this->hasMany(Timeline::class);
+    }
 
 }
