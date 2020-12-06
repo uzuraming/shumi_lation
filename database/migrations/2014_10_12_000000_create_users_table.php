@@ -19,9 +19,9 @@ class CreateUsersTable extends Migration
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
-            $table->string('profile'); // プロフィール
-            $table->string('interest'); // 興味のあること
-            $table->string('wanted'); // 求めている人
+            $table->string('profile')->nullable(); // プロフィール
+            $table->string('interest')->nullable(); // 興味のあること
+            $table->string('wanted')->nullable(); // 求めている人
             $table->rememberToken();
             $table->timestamps();
         });
