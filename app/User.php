@@ -45,5 +45,62 @@ class User extends Authenticatable
     }
 
 
+    // ユーザーがフォローしているユーザー
+    public function followings()
+    {
+        return $this->belongsToMany(User::class, 'user_follow', 'user_id', 'follow_id')->withTimestamps();
+    }
+
+    
+    
+    // ユーザーをフォローしているユーザー
+    public function followers()
+    {
+        return $this->belongsToMany(User::class, 'user_follow', 'follow_id', 'user_id')->withTimestamps();
+    }
+
+
+    public function is_following($userId)
+    {
+        // フォロー中ユーザの中に $userIdのものが存在するか
+        return $this->followings()->where('follow_id', $userId)->exists();
+    }
+
+    // フォローする関数
+    public function follow($userId){
+        // フォロー済かどうか確認し、その結果をこの変数に入れる
+        $exist = $this->is_following($userId);
+        // 対象とするユーザーが自分自身か否かを確認し、その結果をこの変数に入れる
+        $its_me = $this->id == $userId;
+
+        if($exist || $its_me){
+            // すでにフォローしているか、自分自身なら何もしない
+            return false;
+        }else{
+            // 未フォローかつ自分自身でないならフォロー
+
+            $this->followings()->attach($userId);
+            return true;
+        }
+    }
+
+    // アンフォローする関数
+    public function unfollow($userId){
+        // フォロー済かどうか確認し、その結果をこの変数に入れる
+        $exist = $this->is_following($userId);
+        // 対象とするユーザーが自分自身か否かを確認し、その結果をこの変数に入れる
+        $its_me = $this->id == $userId;
+
+        if($exist && !$its_me){
+            // すでにフォローしていて、自分自身でないならフォローを外す
+
+            $this->followings()->detach($userId);
+            return true;
+            
+        }else{
+            // 未フォローか,自分自身ならなにもしない
+            return false;
+        }
+    }
 
 }
