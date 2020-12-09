@@ -18,7 +18,12 @@
         
         </div>
     </div>
-
+    <div class="col-sm-8">
+        {{-- タブ --}}
+        @include('users.navtabs')
+    
+    </div>
+    @include('user_follow.follow_button')
     @include('timelines.timelines')
 
 

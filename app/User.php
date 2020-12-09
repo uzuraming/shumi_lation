@@ -103,4 +103,11 @@ class User extends Authenticatable
         }
     }
 
+    // タイムライン、フォロワー、フォローを計測する関数
+    public function loadRelationshipCounts()
+    {
+        // この関数により、リレーション名_countというインスタンスが追加される
+        $this->loadCount(['timelines', 'followings', 'followers']); 
+    }
+
 }

@@ -55,7 +55,9 @@ class UsersController extends Controller
     public function show($id)
     {
         // idでユーザーの情報を表示
-        $user = User::findOrfail($id);
+        $user = User::findOrFail($id);
+
+        $user->loadRelationshipCounts();
 
         // ユーザの投稿の一覧を作成日時の降順で取得
         $timelines = $user->timelines()->orderBy('created_at', 'desc')->paginate(10);
@@ -147,5 +149,41 @@ class UsersController extends Controller
         }
     }
 
+        // フォローしている人を取得する処理
+        public function followings($id){
+            $user = User::findOrFail($id);
+    
+            // フォローしている人の人数を計測
+            $user->loadRelationshipCounts();
+    
+            // ユーザーのフォローしているユーザーを取得
+            $followings = $user->followings()->paginate(10);
+    
+            // 表示
+            return view('users.followings', ([
+                'user' => $user,
+                'users' => $followings,
+            ]));
+            
+        }
+    
+        // フォロワーを取得する処理
+        public function followers($id){
+    
+            $user = User::findOrFail($id);
+    
+            // フォローされている人の人数を計測
+            $user->loadRelationshipCounts();
+    
+            // ユーザーのフォローされているユーザーを取得
+            $followers = $user->followers()->paginate(10);
+    
+            // 表示
+            return view('users.followers', ([
+                'user' => $user,
+                'users' => $followers,
+            ]));
+            
+        }
     
 }
