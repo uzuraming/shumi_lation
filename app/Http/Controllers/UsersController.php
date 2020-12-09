@@ -57,11 +57,16 @@ class UsersController extends Controller
         // idでユーザーの情報を表示
         $user = User::findOrfail($id);
 
+        // ユーザの投稿の一覧を作成日時の降順で取得
+        $timelines = $user->timelines()->orderBy('created_at', 'desc')->paginate(10);
+
         return view('users.show', [
             'user' => $user,
+            'timelines' => $timelines
         ]);
 
     }
+
 
     /**
      * Show the form for editing the specified resource.
@@ -141,4 +146,6 @@ class UsersController extends Controller
             return back();
         }
     }
+
+    
 }

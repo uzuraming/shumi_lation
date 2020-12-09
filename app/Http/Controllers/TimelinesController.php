@@ -4,22 +4,25 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
-// タイムラインモデルをしようする
+// タイムラインモデルの名前空間
 use App\Timeline;
+
+// Authをインポート
+use Auth;
 
 class TimelinesController extends Controller
 {   
-
-
 
     // timelineを作成フォーム
     public function create(){
         $timeline = new TImeline;
 
-        return view('timelines.store',[
+        return view('timelines.create',[
             'timeline' => $timeline
-        ])
+        ]);
     }
+
+
     // timelineを作成
     public function store(Request $request){
         // バリデーション
@@ -33,15 +36,15 @@ class TimelinesController extends Controller
 
 
         // ログイン状態に属するタイムラインを作成
-        $user->create([
+        $user->timelines()->create([
             'content' => $content
-        ])
+        ]);
 
         // 現在ログイン中のユーザーのid
         $id = $user->id;
 
         // ユーザー詳細画面へリダイレクト
-        return redirect('/users/'. $id)
+        return redirect('/users/'. $id);
 
 
 
@@ -62,12 +65,12 @@ class TimelinesController extends Controller
 
         // このタイムラインがユーザーのものか判別
         if($user->id == $timeline->user()->id){
-            timeline->delete();
+            $timeline->delete();
 
             // ユーザー詳細画面へリダイレクト
-            return redirect('/users/'. $id)
+            return redirect('/users/'. $id);
         }else{
-            return back():
+            return back();
         }
 
     }

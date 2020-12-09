@@ -28,10 +28,12 @@ Route::get('logout', 'Auth\LoginController@logout')->name('logout.get');
 Route::group(['middleware' => ['auth']], function () {
 
     // ユーザーの各機能
-    Route::resource('users', 'UsersController',  ['only' => ['show', 'edit', 'update', 'destroy']]);
+    Route::resource('users', 'UsersController',  ['only' => ['index', 'show', 'edit', 'update', 'destroy']]);
 
     // タイムラインの各機能
-    Route::resource('timelines', 'timelinesController', ['only' => ['create', 'store', 'destroy']]);
+    Route::resource('timeline', 'TimelinesController', ['only' => ['create', 'store', 'destroy']]);
+
+
 
 
 

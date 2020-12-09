@@ -10,7 +10,7 @@
                 プロフィール：{{ $user->profile }}
             </div>
             <div class="">
-                興味のある分野：{{ $user->interst }}
+                興味のある分野：{{ $user->interest }}
             </div>
             <div class="">
                 求める人材：{{ $user->wanted }}
@@ -18,16 +18,22 @@
         
         </div>
     </div>
-          
-    
+
+    @include('timelines.timelines')
+
+
     <div class="row">
-        @if (Auth::user()->id == $user->id)
-            {{-- 編集ボタン --}}
-            {!! link_to_route('users.edit', '編集',['user' => $user->id], ['class'=> 'btn btn-light' ] ) !!}
-            
-            {{-- 削除ボタン --}}
-            {!! link_to_route('users.destroy', '削除',['user' => $user->id], ['class'=> 'btn btn-danger' ] ) !!}
-            
-        @endif  
+        <div>
+            @if (Auth::user()->id == $user->id)
+                {{-- 編集ボタン --}}
+                {!! link_to_route('users.edit', '編集',['user' => $user->id], ['class'=> 'btn btn-light' ] ) !!}
+                
+                {{-- 削除ボタン --}}
+                {!! link_to_route('users.destroy', '削除',['user' => $user->id], ['class'=> 'btn btn-danger' ] ) !!}
+                
+            @endif 
+        </div>
+         
     </div>
 @endsection
+
