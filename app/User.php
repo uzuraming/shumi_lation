@@ -110,4 +110,15 @@ class User extends Authenticatable
         $this->loadCount(['timelines', 'followings', 'followers']); 
     }
 
+    // フォローしているユーザーのタイムラインを取得する関数
+    public function feed_timelines()
+    {
+        // このユーザがフォロー中のユーザのidを取得して配列にする
+        $userIds = $this->followings()->pluck('users.id')->toArray();
+        // このユーザのidもその配列に追加
+        $userIds[] = $this->id;
+        // それらのユーザが所有する投稿に絞り込む
+        return Timeline::whereIn('user_id', $userIds);
+    }
+
 }

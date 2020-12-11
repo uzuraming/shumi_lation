@@ -75,5 +75,28 @@ class TimelinesController extends Controller
 
     }
 
+    // フォローしているtimelineを表示
+    public function index()
+    {
+        $data = [];
+        if (\Auth::check()) {
+            // 認証済みユーザ（閲覧者）を取得
+            $user = \Auth::user();
+            // ユーザとフォロー中ユーザの投稿の一覧を作成日時の降順で取得
+            $timelines = $user->feed_timelines()->orderBy('created_at', 'desc')->paginate(5);
+
+            $data = [
+                'user' => $user,
+                'timelines' => $timelines,
+            ];
+        }
+
+        // Welcomeビューでそれらを表示
+        return view('welcome',[
+            'user' => $user,
+            'timelines' => $timelines,
+        ]);
+    }
+
 
 }
