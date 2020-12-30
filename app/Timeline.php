@@ -17,4 +17,9 @@ class Timeline extends Model
     {
         return $this->belongsTo(User::class);
     }
+
+    //このタイムラインがお気に入りしているタイムライン
+    public function favoriting_user(){
+        return $this->belongsToMany(User::class, 'favorites', 'favorite_id', 'user_id');
+    }
 }

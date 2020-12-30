@@ -44,6 +44,17 @@ class User extends Authenticatable
         return $this->hasMany(Timeline::class);
     }
 
+    // タイムライン、フォロワー、フォローを計測する関数
+    public function loadRelationshipCounts()
+    {
+        // この関数により、リレーション名_countというインスタンスが追加される
+        $this->loadCount(['timelines', 'followings', 'followers']); 
+    }
+
+
+    // --------------------------------------------
+    // 以下フォローに関する関数
+    // --------------------------------------------
 
     // ユーザーがフォローしているユーザー
     public function followings()
@@ -103,12 +114,7 @@ class User extends Authenticatable
         }
     }
 
-    // タイムライン、フォロワー、フォローを計測する関数
-    public function loadRelationshipCounts()
-    {
-        // この関数により、リレーション名_countというインスタンスが追加される
-        $this->loadCount(['timelines', 'followings', 'followers']); 
-    }
+    
 
     // フォローしているユーザーのタイムラインを取得する関数
     public function feed_timelines()
@@ -120,5 +126,61 @@ class User extends Authenticatable
         // それらのユーザが所有する投稿に絞り込む
         return Timeline::whereIn('user_id', $userIds);
     }
+
+
+    // --------------------------------------------
+    // 以下お気に入りに関する関数
+    // --------------------------------------------
+    
+    //このユーザーがお気に入りしているタイムライン
+    public function favorites(){
+        return $this->belongsToMany(Timiline::class, 'favorites', 'user_id', 'favorite_id');
+    }
+
+    // お気に入りしているか否かを判断する関数
+    public function is_favoriting($timelineId){
+        // フォロー中ユーザの中に $userIdのものが存在するか判断する関数
+        return $this->favorites()->where('favorite_id', $timelineId)->exists();      
+    }
+
+
+    // お気に入りする関数
+    public function favorite($timelineId){
+        // お気に入り済かどうか確認し、その結果をこの変数に入れる
+        $exist = $this->is_favoriting($timelineId);
+
+        if($exist){
+            // すでにお気に入り済みなら何もしない
+            return false;
+        }else{
+            // お気に入りしていなかったらお気に入りする
+            $this->favorites()->attach($timelineId);
+            return true;
+        }
+    }
+
+    // お気に入りを外す関数
+    public function unfavorite($timelineId){
+        // お気に入り済かどうか確認し、その結果をこの変数に入れる
+        $exist = $this->is_favoriting($timelineId);
+
+        if($exist){
+            // すでにお気に入りしている場合は外す
+
+            $this->favorites()->detach($timelineId);
+            return true;
+            
+        }else{
+            // お気に入りしていないならなにもしない
+            return false;
+        }
+    }
+
+
+
+
+
+
+
 
 }

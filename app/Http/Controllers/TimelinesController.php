@@ -15,7 +15,7 @@ class TimelinesController extends Controller
 
     // timelineを作成フォーム
     public function create(){
-        $timeline = new TImeline;
+        $timeline = new Timeline;
 
         return view('timelines.create',[
             'timeline' => $timeline
@@ -89,13 +89,14 @@ class TimelinesController extends Controller
                 'user' => $user,
                 'timelines' => $timelines,
             ];
+            // Welcomeビューでそれらを表示
+            return view('welcome',[
+                'user' => $user,
+                'timelines' => $timelines,
+            ]);
         }
 
-        // Welcomeビューでそれらを表示
-        return view('welcome',[
-            'user' => $user,
-            'timelines' => $timelines,
-        ]);
+        
     }
 
 
