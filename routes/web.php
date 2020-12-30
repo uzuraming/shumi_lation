@@ -34,11 +34,13 @@ Route::group(['middleware' => ['auth']], function () {
     });
     // ユーザーの各機能
     Route::resource('users', 'UsersController',  ['only' => ['show', 'edit', 'update', 'destroy']]);
-
-    
-
     // タイムラインの各機能
     Route::resource('timeline', 'TimelinesController', ['only' => ['create', 'store', 'destroy']]);
+
+    // お気に入りするルーティング
+    Route::post('follow/{id}', 'FavoriteController@store')->name('favorite.store');;
+    Route::delete('unfollow/{id}', 'FavoriteController@destroy')->name('favorite.delete');;
+
 
 
 

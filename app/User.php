@@ -134,7 +134,7 @@ class User extends Authenticatable
     
     //このユーザーがお気に入りしているタイムライン
     public function favorites(){
-        return $this->belongsToMany(Timiline::class, 'favorites', 'user_id', 'favorite_id');
+        return $this->belongsToMany(Timeline::class, 'favorites', 'user_id', 'favorite_id');
     }
 
     // お気に入りしているか否かを判断する関数
