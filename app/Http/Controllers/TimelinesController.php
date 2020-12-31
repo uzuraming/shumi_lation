@@ -89,12 +89,10 @@ class TimelinesController extends Controller
                 'user' => $user,
                 'timelines' => $timelines,
             ];
-            // Welcomeビューでそれらを表示
-            return view('welcome',[
-                'user' => $user,
-                'timelines' => $timelines,
-            ]);
+            
         }
+        // Welcomeビューでそれらを表示
+        return view('welcome',$data);
 
         
     }

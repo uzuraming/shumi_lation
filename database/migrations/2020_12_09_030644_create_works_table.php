@@ -15,7 +15,14 @@ class CreateWorksTable extends Migration
     {
         Schema::create('works', function (Blueprint $table) {
             $table->bigIncrements('id');
+            $table->unsignedBigInteger('user_id'); // ユーザーID
+            $table->string('title'); // タイトル
+            $table->string('content', 10000); // コンテンツ
+            $table->string('img_path', 1024)->nullable(); // 画像
             $table->timestamps();
+
+            // 外部キー制約
+            $table->foreign('user_id')->references('id')->on('users'); // ユーザーIDと紐づけ
         });
     }
 

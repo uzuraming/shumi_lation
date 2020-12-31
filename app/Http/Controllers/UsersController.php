@@ -185,5 +185,10 @@ class UsersController extends Controller
             ]));
             
         }
+
+        // 
+        public function works($id){
+
+        }
     
 }

@@ -37,6 +37,13 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
+
+    // ユーザーに属する作品
+    public function work()
+    {
+        return $this->hasMany(Work::class);
+    }
+
     // ユーザーに属するタイムライン
 
     public function timelines()
