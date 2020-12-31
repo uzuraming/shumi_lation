@@ -189,6 +189,15 @@ class UsersController extends Controller
         // 
         public function works($id){
 
+            $user = User::findOrFail($id);
+            $works = $user->works()->paginate();
+
+            // 表示
+            return view('users.works',([
+                'user' => $user,
+                'works' => $works,
+            ]))
+            
         }
     
 }

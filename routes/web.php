@@ -31,6 +31,7 @@ Route::group(['middleware' => ['auth']], function () {
         Route::delete('unfollow', 'UserFollowController@destroy')->name('user.unfollow');
         Route::get('followings', 'UsersController@followings')->name('users.followings');
         Route::get('followers', 'UsersController@followers')->name('users.followers');
+        Route::get('works', 'UsersController@works')->name('users.works');
     });
     // ユーザーの各機能
     Route::resource('users', 'UsersController',  ['only' => ['show', 'edit', 'update', 'destroy']]);
