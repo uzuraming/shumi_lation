@@ -20,4 +20,11 @@
             <span class="badge badge-secondary">{{ $user->followers_count }}</span>
         </a>
     </li>
+
+    {{-- 作品一覧タブ --}}
+    <li class="nav-item">
+        <a href="{{ route('users.works', ['id' => $user->id]) }}" class="nav-link {{ Request::routeIs('users.works') ? 'active' : '' }}">
+            works
+        </a>
+    </li>
 </ul>

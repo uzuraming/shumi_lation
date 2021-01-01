@@ -39,7 +39,7 @@ class User extends Authenticatable
 
 
     // ユーザーに属する作品
-    public function work()
+    public function works()
     {
         return $this->hasMany(Work::class);
     }

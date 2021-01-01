@@ -186,17 +186,31 @@ class UsersController extends Controller
             
         }
 
-        // 
+        // 作品一覧
         public function works($id){
 
             $user = User::findOrFail($id);
-            $works = $user->works()->paginate();
+            $works = $user->works()->paginate(10);
 
             // 表示
             return view('users.works',([
                 'user' => $user,
                 'works' => $works,
-            ]))
+            ]));
+            
+        }
+
+        // 作品一覧
+        public function worksShow($id, $workId){
+
+            $user = User::findOrFail($id);
+            $work = $user->works()->findOrFail($workId);
+
+            // 表示
+            return view('users.works_show',([
+                'user' => $user,
+                'work' => $work,
+            ]));
             
         }
     

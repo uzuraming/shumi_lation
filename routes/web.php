@@ -32,11 +32,15 @@ Route::group(['middleware' => ['auth']], function () {
         Route::get('followings', 'UsersController@followings')->name('users.followings');
         Route::get('followers', 'UsersController@followers')->name('users.followers');
         Route::get('works', 'UsersController@works')->name('users.works');
+        Route::get('works/{workId}', 'UsersController@worksShow')->name('users.works_show');
     });
     // ユーザーの各機能
     Route::resource('users', 'UsersController',  ['only' => ['show', 'edit', 'update', 'destroy']]);
     // タイムラインの各機能
     Route::resource('timeline', 'TimelinesController', ['only' => ['create', 'store', 'destroy']]);
+
+    // 作品の各機能
+    Route::resource('works', 'WorksController', ['only' => ['create', 'store', 'edit','update','destroy']]);
 
     // お気に入りするルーティング
     Route::post('follow/{id}', 'FavoriteController@store')->name('favorite.store');;
