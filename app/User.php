@@ -191,12 +191,12 @@ class User extends Authenticatable
 
     // チャットリクエストを送ってきている人
     public function chat_requester(){
-        return $this->belongsToMany(User::class, 'reaction', 'to_user_id', 'from_user_id')->withPivot('message')->withTimestamps();
+        return $this->belongsToMany(User::class, 'reaction', 'to_user_id', 'from_user_id')->withPivot('message', 'approval')->withTimestamps();
     }
 
     // チャットリクエストを送った人
     public function chat_requesting(){
-        return $this->belongsToMany(User::class, 'reaction', 'from_user_id','to_user_id')->withPivot('message')->withTimestamps();
+        return $this->belongsToMany(User::class, 'reaction', 'from_user_id','to_user_id')->withPivot('message', 'approval')->withTimestamps();
     }
 
     // リクエストを送ったか否かを判断する関数
