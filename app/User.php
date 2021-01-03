@@ -44,6 +44,11 @@ class User extends Authenticatable
         return $this->hasMany(Work::class);
     }
 
+    // このユーザーが書いたコメント
+    public function comments(){
+        return $this->hasMany(Comment::class);
+    }
+
     // ユーザーに属するタイムライン
 
     public function timelines()
@@ -182,6 +187,12 @@ class User extends Authenticatable
             return false;
         }
     }
+
+
+    // --------------------------------------------
+    // 以下作品に関する関数
+    // --------------------------------------------
+
 
 
 

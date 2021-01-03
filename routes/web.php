@@ -33,6 +33,8 @@ Route::group(['middleware' => ['auth']], function () {
         Route::get('followers', 'UsersController@followers')->name('users.followers');
         Route::get('works', 'UsersController@works')->name('users.works');
         Route::get('works/{workId}', 'UsersController@worksShow')->name('users.works_show');
+        Route::post('works/{workId}/comments', 'UsersController@commentStore')->name('users.comment_store');
+        Route::delete('works/{workId}/comments/{commentId}', 'UsersController@commentDestroy')->name('users.comment_destroy');
     });
     // ユーザーの各機能
     Route::resource('users', 'UsersController',  ['only' => ['show', 'edit', 'update', 'destroy']]);

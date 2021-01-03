@@ -14,12 +14,12 @@
 
 
                         @if (\Auth::user()->is_favoriting($timeline->id))
-                            {{-- お気に入りボタン --}}
+                            {{-- お気に入り解除ボタン --}}
                             {!! Form::open(['route' => ['favorite.delete', $timeline->id], 'method' => 'delete']) !!}
                                 {!! Form::submit('★', ['class' => "btn btn-link"]) !!}
                             {!! Form::close() !!}
                         @else
-                            {{-- お気に入り解除ボタン --}}
+                            {{-- お気に入りボタン --}}
                             {!! Form::open(['route' => ['favorite.store', $timeline->id]]) !!}
                                 {!! Form::submit('☆', ['class' => "btn btn-link"]) !!}
                             {!! Form::close() !!}

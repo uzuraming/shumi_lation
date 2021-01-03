@@ -17,13 +17,18 @@ class Work extends Model
         return $this->belongsTo(User::class);
     }
 
+    // この作品につくコメント
+    public function comments(){
+        return $this->hasMany(Comment::class);
+    }
+
     // ログイン中のユーザーがこの作品を所有するユーザーであるか判別する関数
     public function isMyWork(){
 
         // ログイン中のユーザーID
         $loginUser = \Auth::user()->id;
         // 作品を所有するユーザーID
-        $workOwner = $this->user()->id;
+        $workOwner = $this->user->id;
 
         if( $loginUser == $workOwner ){
             return true;
