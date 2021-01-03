@@ -189,11 +189,45 @@ class User extends Authenticatable
     }
 
 
-    // --------------------------------------------
-    // 以下作品に関する関数
-    // --------------------------------------------
+    // チャットリクエストを送ってきている人
+    public function chat_requester(){
+        return $this->belongsToMany(User::class, 'reaction', 'to_user_id', 'from_user_id')->withPivot('message')->withTimestamps();
+    }
 
+    // チャットリクエストを送った人
+    public function chat_requesting(){
+        return $this->belongsToMany(User::class, 'reaction', 'from_user_id','to_user_id')->withPivot('message')->withTimestamps();
+    }
 
+    // リクエストを送ったか否かを判断する関数
+    public function is_requesting($userId){
+        return $this->chat_requesting()->where('to_user_id', $userId)->exists();      
+    }
+
+    // リクエストを拒否する関数
+    public function refuse_request($userId){
+        $this->chat_requester()->detach($userId);
+        return true;
+           
+    }
+
+    // リクエストを作成する関数
+    public function send_request($userId, $message){
+
+        $exist = $this->is_requesting($userId);
+
+        if($exist){
+            // なにもしない
+            return false; 
+        }else{
+            $this->chat_requesting()->attach($userId,[
+                'message' => $message,
+            ]);
+            return true;
+        }
+        
+           
+    }
 
 
 

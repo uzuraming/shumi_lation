@@ -18,7 +18,7 @@ class CreateReactionTable extends Migration
             $table->unsignedBigInteger('from_user_id');
             $table->unsignedBigInteger('to_user_id'); 
             $table->string('message'); // コンタクトメッセージ
-            $table->boolean('approval'); // 承認されているか否か
+            $table->boolean('approval')->default(false); // 承認されているか否か
 
             $table->timestamps();
 
