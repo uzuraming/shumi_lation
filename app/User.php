@@ -211,6 +211,13 @@ class User extends Authenticatable
            
     }
 
+    // リクエストを許可する関数
+    public function accept_request($userId){
+        $this->chat_requester()->updateExistingPivot($userId, ['approval' => true]);
+
+    }
+
+
     // リクエストを作成する関数
     public function send_request($userId, $message){
 
@@ -224,15 +231,7 @@ class User extends Authenticatable
                 'message' => $message,
             ]);
             return true;
-        }
-        
-           
+        }     
     }
-
-
-
-
-
-
 
 }
