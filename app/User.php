@@ -234,4 +234,13 @@ class User extends Authenticatable
         }     
     }
 
+    // TODO:リクエスト承認済みか判断する関数
+
+
+    // TODO:チャットを送信する関数
+
+    // TODO:画像を送信する関数
+
+    
+
 }
