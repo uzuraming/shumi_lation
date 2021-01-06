@@ -234,10 +234,35 @@ class User extends Authenticatable
         }     
     }
 
-    // TODO:リクエスト承認済みか判断する関数
 
+    
+
+    // チャットリクエストを送ってきている人
+    public function chat_requester(){
+        return $this->belongsToMany(User::class, 'reaction', 'to_user_id', 'from_user_id')->withPivot('message', 'approval')->withTimestamps();
+    }
+
+    // チャットリクエストを送った人
+    public function chat_requesting(){
+        return $this->belongsToMany(User::class, 'reaction', 'from_user_id','to_user_id')->withPivot('message', 'approval')->withTimestamps();
+    }
+
+
+    
 
     // TODO:チャットを送信する関数
+    public function send_message($userId) {
+        $is_accecpt = $this->chat_requester()
+                            ->where('from_user_id', $userId)
+                            ->firstOrFail()
+                            ->approval
+        if($is_accecpt){
+
+        }
+
+        
+        
+    }
 
     // TODO:画像を送信する関数
 
