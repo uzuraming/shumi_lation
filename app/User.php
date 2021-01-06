@@ -236,12 +236,58 @@ class User extends Authenticatable
 
     // messagesテーブルとの関係を定義
     public function messages(){
-        return $this->belongsToMany(Timeline::class, 'messages', 'user_id','chat_room_id')->withPivot('message')->withTimestamps();
+        return $this->belongsToMany(ChatRoom::class, 'messages', 'user_id','chat_room_id')->withPivot('message')->withTimestamps();
     }
 
     // chatテーブルとの関係を定義
     public function chat_room_mate(){
-        return $this->belongsToMany(Timeline::class, 'chat_user', 'user_id','chat_room_id')->withTimestamps();
+        return $this->belongsToMany(ChatRoom::class, 'chat_user', 'user_id','chat_room_id')->withTimestamps();
+    }
+
+
+    public function is_join_chat_room($chatRoomId)
+    {
+        // ユーザが参加中のチャットに、引数のチャットルームIDがあるか
+        return $this->chat_room_mate()->where('chat_room_id', $chatRoomId)->exists();
+    }
+
+    // チャットルームに自分と指定のユーザーを招待する関数
+    public function join_chat_room($chatRoomId){
+        $exist = $this->is_join_chat_room($chatRoomId);
+
+        if($exist){
+            // なにもしない
+            return false; 
+        }else{
+            $this->chat_room_mate()->attach($chatRoomId);
+            return true;
+        };
+
+    }
+
+
+    // リクエストを承認すみか判定する関数
+
+    // リクエストを許可する関数
+    public function is_accept_request($userId){
+        return $this->chat_requester()->where('from_user_id', $userId)->firstOrFail()->pivot->approval == true;
+    }
+
+    // チャットを送信する関数
+
+    public function send_message($chatRoomId, $message){
+
+        $is_join_room = $this->is_join_chat_room($chatRoomId);
+        if($is_join_room){
+            $this->messages()->attach($chatRoomId,[
+                'message' => $message,
+            ]);
+            return true;
+
+        }else{
+            return false;
+        }
+        
     }
 
 
