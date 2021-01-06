@@ -231,38 +231,36 @@ class User extends Authenticatable
                 'message' => $message,
             ]);
             return true;
-        }     
+        };
     }
 
-
-    
-
-    // チャットリクエストを送ってきている人
-    public function chat_requester(){
-        return $this->belongsToMany(User::class, 'reaction', 'to_user_id', 'from_user_id')->withPivot('message', 'approval')->withTimestamps();
+    // messagesテーブルとの関係を定義
+    public function messages(){
+        return $this->belongsToMany(Timeline::class, 'messages', 'user_id','chat_room_id')->withPivot('message')->withTimestamps();
     }
 
-    // チャットリクエストを送った人
-    public function chat_requesting(){
-        return $this->belongsToMany(User::class, 'reaction', 'from_user_id','to_user_id')->withPivot('message', 'approval')->withTimestamps();
+    // chatテーブルとの関係を定義
+    public function chat_room_mate(){
+        return $this->belongsToMany(Timeline::class, 'chat_user', 'user_id','chat_room_id')->withTimestamps();
     }
+
 
 
     
 
     // TODO:チャットを送信する関数
-    public function send_message($userId) {
-        $is_accecpt = $this->chat_requester()
-                            ->where('from_user_id', $userId)
-                            ->firstOrFail()
-                            ->approval
-        if($is_accecpt){
+    // public function send_message($userId) {
+    //     $is_accecpt = $this->chat_requester()
+    //                         ->where('from_user_id', $userId)
+    //                         ->firstOrFail()
+    //                         ->approval
+    //     if($is_accecpt){
 
-        }
+    //     }
 
         
         
-    }
+    // }
 
     // TODO:画像を送信する関数
 

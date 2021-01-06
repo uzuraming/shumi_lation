@@ -16,6 +16,19 @@ class CreateChatUserTable extends Migration
         Schema::create('chat_user', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->timestamps();
+            $table->unsignedBigInteger('user_id'); // ユーザーのId
+            $table->unsignedBigInteger('chat_room_id');  // チャットルームのId
+
+
+            // 外部キー制約
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->foreign('chat_room_id')->references('id')->on('chat_rooms')->onDelete('cascade');
+
+            // の組み合わせの重複を許さない
+            $table->unique(['user_id', 'chat_room_id']);
+
+
+
         });
     }
 
