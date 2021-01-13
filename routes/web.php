@@ -35,6 +35,8 @@ Route::group(['middleware' => ['auth']], function () {
         Route::get('works/{workId}', 'UsersController@worksShow')->name('users.works_show');
         Route::post('works/{workId}/comments', 'UsersController@commentStore')->name('users.comment_store');
         Route::delete('works/{workId}/comments/{commentId}', 'UsersController@commentDestroy')->name('users.comment_destroy');
+
+        Route::post('send_request', 'ChatRequestController@store')->name('users.send_request');
     });
     // ユーザーの各機能
     Route::resource('users', 'UsersController',  ['only' => ['show', 'edit', 'update', 'destroy']]);
@@ -46,7 +48,14 @@ Route::group(['middleware' => ['auth']], function () {
 
     // お気に入りするルーティング
     Route::post('follow/{id}', 'FavoriteController@store')->name('favorite.store');;
-    Route::delete('unfollow/{id}', 'FavoriteController@destroy')->name('favorite.delete');;
+    Route::delete('unfollow/{id}', 'FavoriteController@destroy')->name('favorite.delete');
+
+
+    // chat requestにかんするルーティング
+    Route::get('chat_requests', 'ChatRequestController@index')->name('chat_requests.index');
+    Route::get('chat_requests/{id}', 'ChatRequestController@show')->name('chat_requests.show');
+    Route::put('chat_requests/{id}', 'ChatRequestController@accept_request')->name('chat_requests.accept_request');
+    Route::delete('chat_requests/{id}', 'ChatRequestController@destroy')->name('chat_requests.destroy');
 
 
 

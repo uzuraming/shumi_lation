@@ -40,5 +40,22 @@
         </div>
          
     </div>
+
+    @if (Auth::user()->id != $user->id)
+    <div class="row">
+        <div class="col-6">
+            {!! Form::open(['route' => ['users.send_request', $user->id, 'method' => 'put']]) !!}
+
+                <div class="form-group">
+                    {!! Form::label('message', 'message') !!}
+                    {!! Form::text('message', null,['class' => 'form-control']) !!}
+                </div>
+
+                {!! Form::submit('送信', ['class' => 'btn btn-primary']) !!}
+
+            {!! Form::close() !!}
+        </div>
+    </div>
+    @endif 
 @endsection
 
