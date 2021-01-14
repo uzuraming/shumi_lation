@@ -17,9 +17,7 @@ class ChatRequestController extends Controller
         $message = $request->message;
 
         $user->send_request($id, $message);
-
         return back();
-
 
     }
 
@@ -59,11 +57,14 @@ class ChatRequestController extends Controller
 
         // chatRoomを作成して、参加する
         $chat_room = new ChatRoom;
+        $chat_room->save();
         $auth->join_chat_room($chat_room->id);
         $requester->join_chat_room($chat_room->id);
         
         return back();
     }
+
+
     public function destroy($id){
         $auth = \Auth::user();
         $requester = $auth->chat_requester()->findOrFail($id);

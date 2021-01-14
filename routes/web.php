@@ -57,6 +57,12 @@ Route::group(['middleware' => ['auth']], function () {
     Route::put('chat_requests/{id}', 'ChatRequestController@accept_request')->name('chat_requests.accept_request');
     Route::delete('chat_requests/{id}', 'ChatRequestController@destroy')->name('chat_requests.destroy');
 
+    // chat requestにかんするルーティング
+    Route::get('chat_rooms', 'ChatController@index')->name('chat_rooms.index');
+    Route::get('chat_rooms/{id}', 'ChatController@show')->name('chat_rooms.show');
+    Route::post('chat_rooms/{id}', 'ChatController@send_message')->name('chat_rooms.send_message');
+
+
 
 
 

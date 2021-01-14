@@ -240,7 +240,7 @@ class User extends Authenticatable
     }
 
     // chatテーブルとの関係を定義
-    public function chat_room_mate(){
+    public function chat_rooms(){
         return $this->belongsToMany(ChatRoom::class, 'chat_user', 'user_id','chat_room_id')->withTimestamps();
     }
 
@@ -248,18 +248,17 @@ class User extends Authenticatable
     public function is_join_chat_room($chatRoomId)
     {
         // ユーザが参加中のチャットに、引数のチャットルームIDがあるか
-        return $this->chat_room_mate()->where('chat_room_id', $chatRoomId)->exists();
+        return $this->chat_rooms()->where('chat_room_id', $chatRoomId)->exists();
     }
 
     // チャットルームに自分と指定のユーザーを招待する関数
     public function join_chat_room($chatRoomId){
         $exist = $this->is_join_chat_room($chatRoomId);
-
         if($exist){
             // なにもしない
             return false; 
         }else{
-            $this->chat_room_mate()->attach($chatRoomId);
+            $this->chat_rooms()->attach($chatRoomId);
             return true;
         };
 
