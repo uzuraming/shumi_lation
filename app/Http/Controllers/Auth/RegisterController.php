@@ -70,4 +70,10 @@ class RegisterController extends Controller
             'password' => Hash::make($data['password']),
         ]);
     }
+
+    // ★ メソッド追加
+    protected function registered(Request $request, $user)
+    {
+        return $user;
+    }
 }
