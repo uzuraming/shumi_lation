@@ -13,9 +13,7 @@ use Illuminate\Http\Request;
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
-});
+
 
 // 会員登録
 Route::post('/signup', 'Auth\RegisterController@register')->name('register');
@@ -24,3 +22,20 @@ Route::post('/login', 'Auth\LoginController@login')->name('login');
 
 // ログアウト
 Route::post('/logout', 'Auth\LoginController@logout')->name('logout');
+
+// ログインユーザー
+Route::get('/user', 
+    function(){
+        return Auth::user();
+    }
+)->name('user');
+
+
+Route::get('/timelines', 'TimelinesController@index');
+// タイムラインの各機能
+Route::post('/timelines', 'TimelinesController@store');
+
+Route::get('/works', 'WorksController@index');
+Route::get('/works/{id}', 'WorksController@show');
+
+Route::resource('/users', 'UsersController',  ['only' => ['show']]);

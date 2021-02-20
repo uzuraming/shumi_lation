@@ -1,3 +1,13 @@
 <template>
-  <h1>Home</h1>
+  <mdb-btn>MDB Button</mdb-btn>
 </template>
+<script>
+  import {
+    mdbBtn
+  } from 'mdbvue';
+  export default {
+    components: {
+      mdbBtn
+    }
+  }
+</script>

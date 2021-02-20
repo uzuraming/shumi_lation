@@ -9,7 +9,21 @@ use App\Work;
 class WorksController extends Controller
 {
 
-    
+     // フォローしているtimelineを表示
+     public function index()
+     {    
+        $works = Work::with(['user'])->orderBy('created_at', 'desc')->paginate(5);
+ 
+         // Welcomeビューでそれらを表示
+        return $works;
+    }
+
+    // workの詳細
+    public function show($id){
+        $work = Work::with(['user'])->findOrFail($id);
+        return $work;
+    }
+
     // 作品作成画面
     public function create(){
         $work = new Work;

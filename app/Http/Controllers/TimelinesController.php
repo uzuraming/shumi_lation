@@ -40,12 +40,6 @@ class TimelinesController extends Controller
             'content' => $content
         ]);
 
-        // 現在ログイン中のユーザーのid
-        $id = $user->id;
-
-        // ユーザー詳細画面へリダイレクト
-        return redirect('/users/'. $id);
-
 
 
     }
@@ -78,21 +72,19 @@ class TimelinesController extends Controller
     // フォローしているtimelineを表示
     public function index()
     {
-        $data = [];
+      
         if (\Auth::check()) {
             // 認証済みユーザ（閲覧者）を取得
             $user = \Auth::user();
             // ユーザとフォロー中ユーザの投稿の一覧を作成日時の降順で取得
-            $timelines = $user->feed_timelines()->orderBy('created_at', 'desc')->paginate(5);
+            $timelines = $user->feed_timelines()->with(['user'])->orderBy('created_at', 'desc')->paginate(5);
 
-            $data = [
-                'user' => $user,
-                'timelines' => $timelines,
-            ];
             
+        }else{
+            $timelines = Timeline::with(['user'])->orderBy('created_at', 'desc')->paginate(5);
         }
         // Welcomeビューでそれらを表示
-        return view('welcome',$data);
+        return $timelines;
 
         
     }

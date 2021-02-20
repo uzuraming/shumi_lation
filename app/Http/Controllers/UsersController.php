@@ -53,7 +53,7 @@ class UsersController extends Controller
 
 
     // ユーザー詳細画面
-    public function show($id)
+    public function show(Request $request, $id)
     {
         // idでユーザーの情報を表示
         $user = User::findOrFail($id);
@@ -61,12 +61,10 @@ class UsersController extends Controller
         $user->loadRelationshipCounts();
 
         // ユーザの投稿の一覧を作成日時の降順で取得
-        $timelines = $user->timelines()->orderBy('created_at', 'desc')->paginate(10);
+        $timelines = $user->timelines()->orderBy('created_at', 'desc')->paginate(5, ["*"], 'timelinepage')->appends(["workpage" => $request->input('workpage')]);
+        $works = $user->works()->orderBy('created_at', 'desc')->paginate(5, ["*"], 'workpage')->appends(["timelinepage" => $request->input('timelinepage')]);;
 
-        return view('users.show', [
-            'user' => $user,
-            'timelines' => $timelines
-        ]);
+        return (['user' => $user,'timelines' => $timelines, 'works' => $works]);
 
     }
 
