@@ -56,7 +56,7 @@ class WorksController extends Controller
         ]);
 
         // トップページにリダイレクト
-        return redirect('/');
+        // return redirect('/');
         
     }
 

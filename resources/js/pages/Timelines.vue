@@ -30,7 +30,7 @@
             <mdb-modal-footer>
                 
                 <mdb-btn class="shadow-none" color="danger" @click.native="clearTimelineModal()">Close</mdb-btn>
-                <mdb-btn class="shadow-none" :disabled="timelinesForm.length>255" color="mdb-color" @click.native="postTimeline()">send</mdb-btn>
+                <mdb-btn class="shadow-none" :disabled="timelinesForm.length>255 || timelinesForm.length<=0" color="mdb-color" @click.native="postTimeline()">send</mdb-btn>
             </mdb-modal-footer>
         </mdb-modal>
         <div v-if="isLogin" @click="timelinesModal=true" class="btn-circle-flat shadow"><span class="h2">+</span></div>
@@ -53,7 +53,7 @@
         mdbModalBody, 
         mdbModalFooter,
         mdbIcon  } from 'mdbvue';
-    import { OK } from '../util'
+    import { CREATED, OK } from '../util'
     export default {
         components: {
             mdbBtn,
@@ -110,6 +110,10 @@
             },
             async postTimeline(){  
                 const response = await axios.post('/api/timelines', {'content': this.timelinesForm});
+                if (response.status !== CREATED) {
+                    this.$store.commit('error/setCode', response.status)
+                    return false
+                };
                 this.clearTimelineModal();
                 this.fetchTimelines();
        
@@ -135,7 +139,7 @@
 
 </script>
 
-<style scoped>
+<style>
     .btn-circle-flat {
         display: inline-block;
         text-decoration: none;

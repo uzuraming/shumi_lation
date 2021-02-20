@@ -60,6 +60,15 @@
     .wrapper{
         font-family: 'Noto Serif JP', serif;
     }
+    .ql-align-center{
+        text-align: center;
+    }
+    .ql-align-right{
+        text-align: right;
+    }
+    .ql-align-justify{
+        text-align: justify;
+    }
 
 </style>
 

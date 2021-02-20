@@ -7,7 +7,7 @@
             <mdb-input label="Your email" v-model="loginForm.email" type="email" id="defaultFormLoginEmailEx" />
             <mdb-input label="Password" v-model="loginForm.password" type="password" id="defaultFormLoginPasswordEx"/>
             <div class="text-center mt-4">
-            <button class="btn btn-dark shadow-none rounded-0" type="submit">Login</button>
+                <button class="btn btn-dark shadow-none rounded-0" type="submit">Login</button>
             </div>
         </form>
         <!-- Default form login -->

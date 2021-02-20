@@ -10,6 +10,7 @@ import Work from './pages/Works.vue'
 import UserDetail from './pages/users/UserDetail.vue'
 
 import WorkDetail from './pages/WorksDetail.vue'
+import WorkCreate from './pages/WorksCreate.vue'
 
 import store from './store'
 
@@ -42,12 +43,24 @@ const routes = [
         }
     },
     {
+      path: '/works/create',
+      component: WorkCreate,
+      beforeEnter (to, from, next) {
+        if (!store.getters['auth/check']) {
+          next('/')
+        } else {
+          next()
+        }
+      }
+    },
+    {
         name:'workDetail',
 
         path: '/works/:work_id',
         component: WorkDetail,
         props: true
     },
+
     {
         name:'userDetail',
         path: '/users/:user_id',

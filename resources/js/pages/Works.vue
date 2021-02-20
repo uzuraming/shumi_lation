@@ -16,6 +16,9 @@
                 </div>
             </mdb-list-group-item>
         </mdb-list-group>
+
+        <div v-if="isLogin" @click="$router.push('works/create')" class="btn-circle-flat shadow"><span class="h2">+</span></div>
+    
         <div class="d-flex justify-content-center" >
             <Pagination :component="'works'" :current-page="currentPage" :last-page="lastPage" />
         </div>
