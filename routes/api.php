@@ -40,3 +40,9 @@ Route::get('/works/{id}', 'WorksController@show');
 Route::post('/works', 'WorksController@store');
 
 Route::resource('/users', 'UsersController',  ['only' => ['show']]);
+
+
+Route::post('/users/{id}/follow', 'TimelinesController@index');
+
+Route::post('/users/{id}/follow', 'UserFollowController@store');
+Route::delete('/users/{id}/unfollow', 'UserFollowController@destroy');

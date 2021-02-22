@@ -15904,6 +15904,11 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
+//
+//
+//
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -15912,7 +15917,9 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       userInfo: {
         user: [],
         timelines: [],
-        works: []
+        works: [],
+        is_following: '',
+        its_me: false
       },
       tab: 'timeline',
       pagination: {
@@ -15985,11 +15992,13 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
                 if (_this.buttonMore.work) {
                   _this.userInfo.works.push(response.data.works.data);
-                } // this.currentPage = response.data.current_page
+                }
+
+                _this.userInfo.is_following = response.data.is_following;
+                _this.userInfo.its_me = response.data.its_me; // this.currentPage = response.data.current_page
                 // this.lastPage = response.data.last_page
 
-
-                console.log(response.data.works);
+                console.log(response.data);
                 _this.buttonMore.work = false;
                 _this.buttonMore.timeline = false;
                 _this.moreButtonStat.work.isActive = true;
@@ -16005,12 +16014,82 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                   _this.moreButtonStat.timeline.isActive = false;
                 }
 
-              case 21:
+              case 23:
               case "end":
                 return _context.stop();
             }
           }
         }, _callee);
+      }))();
+    },
+    follow: function follow() {
+      var _this2 = this;
+
+      return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee2() {
+        var response;
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee2$(_context2) {
+          while (1) {
+            switch (_context2.prev = _context2.next) {
+              case 0:
+                _context2.next = 2;
+                return axios.post("/api/users/".concat(_this2.user_id, "/follow"));
+
+              case 2:
+                response = _context2.sent;
+
+                if (!(response.status !== _util__WEBPACK_IMPORTED_MODULE_1__["OK"])) {
+                  _context2.next = 8;
+                  break;
+                }
+
+                _this2.$store.commit('error/setCode', response.status);
+
+                return _context2.abrupt("return", false);
+
+              case 8:
+                _this2.userInfo.is_following = true;
+
+              case 9:
+              case "end":
+                return _context2.stop();
+            }
+          }
+        }, _callee2);
+      }))();
+    },
+    unFollow: function unFollow() {
+      var _this3 = this;
+
+      return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee3() {
+        var response;
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee3$(_context3) {
+          while (1) {
+            switch (_context3.prev = _context3.next) {
+              case 0:
+                _context3.next = 2;
+                return axios["delete"]("/api/users/".concat(_this3.user_id, "/unfollow"));
+
+              case 2:
+                response = _context3.sent;
+
+                if (!(response.status !== _util__WEBPACK_IMPORTED_MODULE_1__["OK"])) {
+                  _context3.next = 8;
+                  break;
+                }
+
+                _this3.$store.commit('error/setCode', response.status);
+
+                return _context3.abrupt("return", false);
+
+              case 8:
+                _this3.userInfo.is_following = false;
+
+              case 9:
+              case "end":
+                return _context3.stop();
+            }
+          }
+        }, _callee3);
       }))();
     },
     moreWork: function moreWork() {
@@ -16024,25 +16103,33 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       this.fetchUserDetail();
     }
   },
+  computed: {
+    isLogin: function isLogin() {
+      return this.$store.getters['auth/check'];
+    },
+    username: function username() {
+      return this.$store.getters['auth/username'];
+    }
+  },
   watch: {
     $route: {
       handler: function handler() {
-        var _this2 = this;
+        var _this4 = this;
 
-        return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee2() {
-          return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee2$(_context2) {
+        return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee4() {
+          return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee4$(_context4) {
             while (1) {
-              switch (_context2.prev = _context2.next) {
+              switch (_context4.prev = _context4.next) {
                 case 0:
-                  _context2.next = 2;
-                  return _this2.fetchUserDetail();
+                  _context4.next = 2;
+                  return _this4.fetchUserDetail();
 
                 case 2:
                 case "end":
-                  return _context2.stop();
+                  return _context4.stop();
               }
             }
-          }, _callee2);
+          }, _callee4);
         }))();
       },
       immediate: true
@@ -21714,9 +21801,43 @@ var render = function() {
                       _vm._v(" " + _vm._s(_vm.userInfo.user.profile))
                     ]),
                     _vm._v(" "),
-                    _c("mdb-btn", { attrs: { color: "primary" } }, [
-                      _vm._v("Follow")
-                    ])
+                    this.isLogin && !_vm.userInfo.its_me
+                      ? _c("div", [
+                          !_vm.userInfo.is_following
+                            ? _c(
+                                "div",
+                                [
+                                  _c(
+                                    "mdb-btn",
+                                    {
+                                      attrs: { color: "primary" },
+                                      on: { click: _vm.follow }
+                                    },
+                                    [_vm._v("Follow")]
+                                  )
+                                ],
+                                1
+                              )
+                            : _vm._e(),
+                          _vm._v(" "),
+                          _vm.userInfo.is_following
+                            ? _c(
+                                "div",
+                                [
+                                  _c(
+                                    "mdb-btn",
+                                    {
+                                      attrs: { color: "danger" },
+                                      on: { click: _vm.unFollow }
+                                    },
+                                    [_vm._v("unFollow")]
+                                  )
+                                ],
+                                1
+                              )
+                            : _vm._e()
+                        ])
+                      : _vm._e()
                   ],
                   1
                 )

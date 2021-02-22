@@ -10,9 +10,6 @@ class UserFollowController extends Controller
     public function store($id){
         // フォローする
         \Auth::user()->follow($id);
-
-        // 前のページへリダイレクト
-        return back();
     }
 
     // アンフォローする処理
@@ -20,8 +17,6 @@ class UserFollowController extends Controller
         // アンフォローする
         \Auth::user()->unfollow($id);
 
-        // 前のページへリダイレクト
-        return back();
         
     }
 

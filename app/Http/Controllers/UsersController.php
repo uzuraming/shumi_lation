@@ -60,11 +60,19 @@ class UsersController extends Controller
 
         $user->loadRelationshipCounts();
 
+        if(Auth::check()){
+            $is_following = Auth::user()->is_following($id);
+        }else{
+            $is_following = null;
+        }
+
+        $its_me = Auth::user()->id == $id;
+
         // ユーザの投稿の一覧を作成日時の降順で取得
         $timelines = $user->timelines()->orderBy('created_at', 'desc')->paginate(5, ["*"], 'timelinepage')->appends(["workpage" => $request->input('workpage')]);
         $works = $user->works()->orderBy('created_at', 'desc')->paginate(5, ["*"], 'workpage')->appends(["timelinepage" => $request->input('timelinepage')]);;
 
-        return (['user' => $user,'timelines' => $timelines, 'works' => $works]);
+        return (['user' => $user,'timelines' => $timelines, 'works' => $works, 'is_following' => $is_following, 'its_me' => $its_me]);
 
     }
 

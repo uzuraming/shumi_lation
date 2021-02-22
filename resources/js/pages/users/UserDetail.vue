@@ -8,7 +8,12 @@
                         <mdb-card-body>
                             <mdb-card-title>{{userInfo.user.name}}</mdb-card-title>
                             <mdb-card-text> {{userInfo.user.profile}}</mdb-card-text>
-                        <mdb-btn color="primary">Follow</mdb-btn>
+                        <div v-if="this.isLogin && !userInfo.its_me" >
+                            <div v-if='!userInfo.is_following'><mdb-btn @click="follow"  color="primary">Follow</mdb-btn></div>
+                            <div v-if='userInfo.is_following'><mdb-btn @click="unFollow" color="danger">unFollow</mdb-btn></div>
+                        </div>
+                        
+                        
                         </mdb-card-body>
                     </mdb-card>
                 </div>
@@ -94,7 +99,9 @@ export default {
             userInfo:{
                 user:[],
                 timelines:[],
-                works:[]
+                works:[],
+                is_following:'',
+                its_me:false,
             },
             tab:'timeline',
             pagination:{
@@ -154,13 +161,14 @@ export default {
                 if(this.buttonMore.work){
                     this.userInfo.works.push(response.data.works.data);
                 }
-
+                this.userInfo.is_following = response.data.is_following;
+                this.userInfo.its_me = response.data.its_me;
                 // this.currentPage = response.data.current_page
                 // this.lastPage = response.data.last_page
                 
 
          
-                console.log(response.data.works)
+                console.log(response.data)
 
 
                 this.buttonMore.work =false;
@@ -183,6 +191,27 @@ export default {
                 
 
         },
+        async follow(){
+            const response = await axios.post(`/api/users/${this.user_id}/follow`);
+            if (response.status !== OK) {
+                this.$store.commit('error/setCode', response.status);
+                return false;
+            }else{
+                this.userInfo.is_following = true;
+            }
+
+        
+        },
+        async unFollow(){
+            const response = await axios.delete(`/api/users/${this.user_id}/unfollow`);
+            if (response.status !== OK) {
+                this.$store.commit('error/setCode', response.status);
+                return false;
+            }else{
+                this.userInfo.is_following = false;
+            }
+
+        },
         moreWork(){
             
             this.pagination.work += 1;
@@ -199,6 +228,14 @@ export default {
 
         }
 
+    },
+    computed: {
+        isLogin () {
+            return this.$store.getters['auth/check']
+        },
+        username () {
+            return this.$store.getters['auth/username']
+        }
     },
     watch: {
             $route: {
