@@ -15909,6 +15909,8 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -15995,7 +15997,8 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                 }
 
                 _this.userInfo.is_following = response.data.is_following;
-                _this.userInfo.its_me = response.data.its_me; // this.currentPage = response.data.current_page
+                _this.userInfo.its_me = response.data.its_me;
+                _this.userInfo.user = response.data.user; // this.currentPage = response.data.current_page
                 // this.lastPage = response.data.last_page
 
                 console.log(response.data);
@@ -16014,7 +16017,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                   _this.moreButtonStat.timeline.isActive = false;
                 }
 
-              case 23:
+              case 24:
               case "end":
                 return _context.stop();
             }
@@ -21799,6 +21802,22 @@ var render = function() {
                     _vm._v(" "),
                     _c("mdb-card-text", [
                       _vm._v(" " + _vm._s(_vm.userInfo.user.profile))
+                    ]),
+                    _vm._v(" "),
+                    _c("mdb-card-text", [
+                      _vm._v(
+                        " " +
+                          _vm._s(_vm.userInfo.user.followers_count) +
+                          "Follower"
+                      )
+                    ]),
+                    _vm._v(" "),
+                    _c("mdb-card-text", [
+                      _vm._v(
+                        " " +
+                          _vm._s(_vm.userInfo.user.followings_count) +
+                          "Followings"
+                      )
                     ]),
                     _vm._v(" "),
                     this.isLogin && !_vm.userInfo.its_me

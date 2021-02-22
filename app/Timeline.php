@@ -22,4 +22,5 @@ class Timeline extends Model
     public function favoriting_user(){
         return $this->belongsToMany(User::class, 'favorites', 'favorite_id', 'user_id');
     }
+ 
 }

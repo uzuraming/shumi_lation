@@ -6,18 +6,21 @@ use Illuminate\Http\Request;
 
 class FavoriteController extends Controller
 {
-    // フォローする関数
+    // お気に入りする関数
     public function store($id){
         \Auth::user()->favorite($id);
 
-        return back();
     }
 
-    // アンフォローする関数
+    // お気に入り解除する関数
     public function destroy($id){
         \Auth::user()->unfavorite($id);
 
-        return back();
+    }
+
+    // お気に入り一覧関数
+    public function index($id){
+        \Auth::user()->favorites();
     }
 
 

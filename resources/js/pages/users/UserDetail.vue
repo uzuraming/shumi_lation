@@ -8,6 +8,8 @@
                         <mdb-card-body>
                             <mdb-card-title>{{userInfo.user.name}}</mdb-card-title>
                             <mdb-card-text> {{userInfo.user.profile}}</mdb-card-text>
+                            <mdb-card-text> {{userInfo.user.followers_count}}Follower</mdb-card-text>
+                            <mdb-card-text> {{userInfo.user.followings_count}}Followings</mdb-card-text>
                         <div v-if="this.isLogin && !userInfo.its_me" >
                             <div v-if='!userInfo.is_following'><mdb-btn @click="follow"  color="primary">Follow</mdb-btn></div>
                             <div v-if='userInfo.is_following'><mdb-btn @click="unFollow" color="danger">unFollow</mdb-btn></div>
@@ -163,6 +165,7 @@ export default {
                 }
                 this.userInfo.is_following = response.data.is_following;
                 this.userInfo.its_me = response.data.its_me;
+                this.userInfo.user = response.data.user;
                 // this.currentPage = response.data.current_page
                 // this.lastPage = response.data.last_page
                 
