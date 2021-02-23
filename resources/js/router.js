@@ -6,6 +6,7 @@ import Home from './pages/home.vue'
 import Login from './pages/Login.vue'
 import Signup from './pages/Signup.vue'
 import Timeline from './pages/Timelines.vue'
+import Favorite from './pages/Favorites.vue'
 import Work from './pages/Works.vue'
 import UserDetail from './pages/users/UserDetail.vue'
 
@@ -28,11 +29,19 @@ const routes = [
     },
     {
         path: '/timelines',
-        component: Timeline,
+        component: Favorite,
         props: route => {
             const page = route.query.page
-            return { page: /^[1-9][0-9]*$/.test(page) ? page * 1 : 1 }
+            return { page: /^[1-9][0-9]*$/.test(page) ? page * 1 : 1, pageName:'timelines' }
         }
+    },
+    {
+      path: '/favorites',
+      component: Favorite,
+      props: route => {
+        const page = route.query.page
+        return { page: /^[1-9][0-9]*$/.test(page) ? page * 1 : 1, pageName:'favorites' }
+    }
     },
     {
         path: '/works',

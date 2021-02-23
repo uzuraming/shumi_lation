@@ -171,10 +171,7 @@
             },
             async postTimeline(){  
                 const response = await axios.post('/api/timelines', {'content': this.timelinesForm});
-                if (response.status !== CREATED) {
-                    this.$store.commit('error/setCode', response.status);
-                    return false
-                };
+           
                 this.clearTimelineModal();
                 this.fetchTimelines();
        

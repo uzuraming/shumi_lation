@@ -50,3 +50,5 @@ Route::delete('/users/{id}/unfollow', 'UserFollowController@destroy');
 
 Route::post('/favorites/{id}', 'FavoriteController@store');
 Route::delete('/favorites/{id}', 'FavoriteController@destroy');
+
+Route::get('/favorites', 'FavoriteController@index');

@@ -19,8 +19,10 @@ class FavoriteController extends Controller
     }
 
     // お気に入り一覧関数
-    public function index($id){
-        \Auth::user()->favorites();
+    public function index(){
+        $timelines = \Auth::user()->favorites()->with(['user'])->orderBy('created_at', 'desc')->paginate(5);
+
+        return $timelines;
     }
 
 
