@@ -12,7 +12,7 @@
         </form>
         <!-- Default form login -->
 
-        <mdb-modal removeBackdrop :show="loginErrors !=null" @close="loginErrors == null">
+        <mdb-modal :show="loginErrors !=null" @close="loginErrors == null">
             <mdb-modal-header :close="false" >
                 <mdb-modal-title>警告</mdb-modal-title>
             </mdb-modal-header>

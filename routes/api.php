@@ -46,3 +46,7 @@ Route::post('/users/{id}/follow', 'TimelinesController@index');
 
 Route::post('/users/{id}/follow', 'UserFollowController@store');
 Route::delete('/users/{id}/unfollow', 'UserFollowController@destroy');
+
+
+Route::post('/favorites/{id}', 'FavoriteController@store');
+Route::delete('/favorites/{id}', 'FavoriteController@destroy');

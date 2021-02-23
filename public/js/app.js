@@ -15224,6 +15224,23 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
  // ★ 追加
 
 
@@ -15250,7 +15267,9 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       timelinesModal: false,
       timelinesForm: "",
       currentPage: 0,
-      lastPage: 0
+      lastPage: 0,
+      warnModal: false,
+      is_favoriting: false
     };
   },
   props: {
@@ -15299,12 +15318,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         }, _callee);
       }))();
     },
-    // モーダルを初期化する関数
-    clearTimelineModal: function clearTimelineModal() {
-      this.timelinesModal = false;
-      this.timelinesForm = "";
-    },
-    postTimeline: function postTimeline() {
+    favorite: function favorite(id, index) {
       var _this2 = this;
 
       return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee2() {
@@ -15313,16 +15327,21 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
           while (1) {
             switch (_context2.prev = _context2.next) {
               case 0:
-                _context2.next = 2;
-                return axios.post('/api/timelines', {
-                  'content': _this2.timelinesForm
-                });
+                _this2.is_favoriting = true;
 
-              case 2:
+                if (!_this2.isLogin) {
+                  _context2.next = 12;
+                  break;
+                }
+
+                _context2.next = 4;
+                return axios.post("/api/favorites/".concat(id));
+
+              case 4:
                 response = _context2.sent;
 
-                if (!(response.status !== _util__WEBPACK_IMPORTED_MODULE_3__["CREATED"])) {
-                  _context2.next = 6;
+                if (!(response.status !== _util__WEBPACK_IMPORTED_MODULE_3__["OK"])) {
+                  _context2.next = 8;
                   break;
                 }
 
@@ -15330,41 +15349,145 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
                 return _context2.abrupt("return", false);
 
-              case 6:
-                ;
+              case 8:
+                _this2.timelines[index].favorited_by_user = true;
+                _this2.timelines[index].favorite_count += 1;
+                _context2.next = 13;
+                break;
 
-                _this2.clearTimelineModal();
+              case 12:
+                _this2.warnModal = true;
 
-                _this2.fetchTimelines();
+              case 13:
+                _this2.is_favoriting = false;
 
-              case 9:
+              case 14:
               case "end":
                 return _context2.stop();
             }
           }
         }, _callee2);
       }))();
+    },
+    unFavorite: function unFavorite(id, index) {
+      var _this3 = this;
+
+      return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee3() {
+        var response;
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee3$(_context3) {
+          while (1) {
+            switch (_context3.prev = _context3.next) {
+              case 0:
+                _this3.is_favoriting = true;
+
+                if (!_this3.isLogin) {
+                  _context3.next = 13;
+                  break;
+                }
+
+                _context3.next = 4;
+                return axios["delete"]("/api/favorites/".concat(id));
+
+              case 4:
+                response = _context3.sent;
+
+                if (!(response.status !== _util__WEBPACK_IMPORTED_MODULE_3__["OK"])) {
+                  _context3.next = 8;
+                  break;
+                }
+
+                _this3.$store.commit('error/setCode', response.status);
+
+                return _context3.abrupt("return", false);
+
+              case 8:
+                ;
+                _this3.timelines[index].favorited_by_user = false;
+                _this3.timelines[index].favorite_count -= 1;
+                _context3.next = 14;
+                break;
+
+              case 13:
+                _this3.warnModal = true;
+
+              case 14:
+                ;
+                _this3.is_favoriting = false;
+
+              case 16:
+              case "end":
+                return _context3.stop();
+            }
+          }
+        }, _callee3);
+      }))();
+    },
+    // モーダルを初期化する関数
+    clearTimelineModal: function clearTimelineModal() {
+      this.timelinesModal = false;
+      this.timelinesForm = "";
+    },
+    postTimeline: function postTimeline() {
+      var _this4 = this;
+
+      return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee4() {
+        var response;
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee4$(_context4) {
+          while (1) {
+            switch (_context4.prev = _context4.next) {
+              case 0:
+                _context4.next = 2;
+                return axios.post('/api/timelines', {
+                  'content': _this4.timelinesForm
+                });
+
+              case 2:
+                response = _context4.sent;
+
+                if (!(response.status !== _util__WEBPACK_IMPORTED_MODULE_3__["CREATED"])) {
+                  _context4.next = 6;
+                  break;
+                }
+
+                _this4.$store.commit('error/setCode', response.status);
+
+                return _context4.abrupt("return", false);
+
+              case 6:
+                ;
+
+                _this4.clearTimelineModal();
+
+                _this4.fetchTimelines();
+
+              case 9:
+              case "end":
+                return _context4.stop();
+            }
+          }
+        }, _callee4);
+      }))();
     }
   },
   watch: {
     $route: {
       handler: function handler() {
-        var _this3 = this;
+        var _this5 = this;
 
-        return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee3() {
-          return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee3$(_context3) {
+        return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee5() {
+          return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee5$(_context5) {
             while (1) {
-              switch (_context3.prev = _context3.next) {
+              switch (_context5.prev = _context5.next) {
                 case 0:
-                  _context3.next = 2;
-                  return _this3.fetchTimelines();
+                  _context5.next = 2;
+                  return _this5.fetchTimelines();
 
                 case 2:
                 case "end":
-                  return _context3.stop();
+                  return _context5.stop();
               }
             }
-          }, _callee3);
+          }, _callee5);
         }))();
       },
       immediate: true
@@ -15941,7 +16064,8 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
           isActive: true,
           sentence: 'More'
         }
-      }
+      },
+      is_processing: false
     };
   },
   components: {
@@ -16034,14 +16158,15 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
           while (1) {
             switch (_context2.prev = _context2.next) {
               case 0:
-                _context2.next = 2;
+                _this2.is_processing = true;
+                _context2.next = 3;
                 return axios.post("/api/users/".concat(_this2.user_id, "/follow"));
 
-              case 2:
+              case 3:
                 response = _context2.sent;
 
                 if (!(response.status !== _util__WEBPACK_IMPORTED_MODULE_1__["OK"])) {
-                  _context2.next = 8;
+                  _context2.next = 9;
                   break;
                 }
 
@@ -16049,10 +16174,14 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
                 return _context2.abrupt("return", false);
 
-              case 8:
-                _this2.userInfo.is_following = true;
-
               case 9:
+                _this2.userInfo.is_following = true;
+                _this2.userInfo.user.followers_count += 1;
+
+              case 11:
+                _this2.is_processing = false;
+
+              case 12:
               case "end":
                 return _context2.stop();
             }
@@ -16069,14 +16198,15 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
           while (1) {
             switch (_context3.prev = _context3.next) {
               case 0:
-                _context3.next = 2;
+                _this3.is_processing = true;
+                _context3.next = 3;
                 return axios["delete"]("/api/users/".concat(_this3.user_id, "/unfollow"));
 
-              case 2:
+              case 3:
                 response = _context3.sent;
 
                 if (!(response.status !== _util__WEBPACK_IMPORTED_MODULE_1__["OK"])) {
-                  _context3.next = 8;
+                  _context3.next = 9;
                   break;
                 }
 
@@ -16084,10 +16214,14 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
                 return _context3.abrupt("return", false);
 
-              case 8:
-                _this3.userInfo.is_following = false;
-
               case 9:
+                _this3.userInfo.is_following = false;
+                _this3.userInfo.user.followers_count -= 1;
+
+              case 11:
+                _this3.is_processing = false;
+
+              case 12:
               case "end":
                 return _context3.stop();
             }
@@ -18265,7 +18399,7 @@ exports = module.exports = __webpack_require__(/*! ../../../node_modules/css-loa
 
 
 // module
-exports.push([module.i, "\n.btn-circle-flat {\n       display: inline-block;\n       text-decoration: none;\n       background: #2E2E2E;\n       color: #FFF;\n       width: 120px;\n       height: 120px;\n       line-height: 120px;\n       border-radius: 50%;\n       text-align: center;\n       overflow: hidden;\n       transition: .4s;\n       position: fixed;\n       bottom: 15px; \n       right: 10px;\n       display: -webkit-flex;\ndisplay: flex;\n-webkit-align-items: center; /* 縦方向中央揃え（Safari用） */\nalign-items: center; /* 縦方向中央揃え */\n-webkit-justify-content: center; /* 横方向中央揃え（Safari用） */\njustify-content: center; /* 横方向中央揃え */\n}\n.btn-circle-flat:hover {\n       background: #4B515D;\n}\n  \n", ""]);
+exports.push([module.i, "\n.mousepointer-hand {\n    cursor: pointer;\n}\n.btn-circle-flat {\n    display: inline-block;\n    text-decoration: none;\n    background: #2E2E2E;\n    color: #FFF;\n    width: 120px;\n    height: 120px;\n    line-height: 120px;\n    border-radius: 50%;\n    text-align: center;\n    overflow: hidden;\n    transition: .4s;\n    position: fixed;\n    bottom: 15px; \n    right: 10px;\n    display: -webkit-flex;\n    display: flex;\n    -webkit-align-items: center; /* 縦方向中央揃え（Safari用） */\n    align-items: center; /* 縦方向中央揃え */\n    -webkit-justify-content: center; /* 横方向中央揃え（Safari用） */\n    justify-content: center; /* 横方向中央揃え */\n}\n.btn-circle-flat:hover {\n    background: #4B515D;\n}\n.active_fav {\n    pointer-events: none;\n}\n\n", ""]);
 
 // exports
 
@@ -20946,7 +21080,7 @@ var render = function() {
       _c(
         "mdb-modal",
         {
-          attrs: { removeBackdrop: "", show: _vm.loginErrors != null },
+          attrs: { show: _vm.loginErrors != null },
           on: {
             close: function($event) {
               _vm.loginErrors == null
@@ -21306,8 +21440,8 @@ var render = function() {
       _c(
         "mdb-list-group",
         { attrs: { flush: "" } },
-        _vm._l(_vm.timelines, function(timeline) {
-          return _c("mdb-list-group-item", { key: timeline.id }, [
+        _vm._l(_vm.timelines, function(timeline, index) {
+          return _c("mdb-list-group-item", { key: index }, [
             _c("div", [
               _c(
                 "div",
@@ -21340,7 +21474,55 @@ var render = function() {
                 domProps: { innerHTML: _vm._s(timeline.content) }
               }),
               _vm._v(" "),
-              _c("small", [_vm._v(_vm._s(timeline.created_at))])
+              _c("small", [
+                _vm._v(_vm._s(timeline.created_at) + "\n                ")
+              ]),
+              _vm._v(" "),
+              !timeline.favorited_by_user
+                ? _c(
+                    "span",
+                    {
+                      staticClass: "ml-1 mousepointer-hand",
+                      class: { active_fav: _vm.is_favoriting },
+                      on: {
+                        click: function($event) {
+                          return _vm.favorite(timeline.id, index)
+                        }
+                      }
+                    },
+                    [
+                      _c("mdb-icon", {
+                        staticClass: "mr-1",
+                        attrs: { color: "pink", far: "", icon: "heart" }
+                      }),
+                      _vm._v(_vm._s(timeline.favorite_count))
+                    ],
+                    1
+                  )
+                : _vm._e(),
+              _vm._v(" "),
+              timeline.favorited_by_user
+                ? _c(
+                    "span",
+                    {
+                      staticClass: "ml-1 mousepointer-hand",
+                      class: { active_fav: _vm.is_favoriting },
+                      on: {
+                        click: function($event) {
+                          return _vm.unFavorite(timeline.id, index)
+                        }
+                      }
+                    },
+                    [
+                      _c("mdb-icon", {
+                        staticClass: "mr-1",
+                        attrs: { color: "pink", icon: "heart" }
+                      }),
+                      _vm._v(_vm._s(timeline.favorite_count))
+                    ],
+                    1
+                  )
+                : _vm._e()
             ])
           ])
         }),
@@ -21365,7 +21547,7 @@ var render = function() {
       _c(
         "mdb-modal",
         {
-          attrs: { removeBackdrop: "", show: _vm.timelinesModal },
+          attrs: { show: _vm.timelinesModal },
           on: {
             close: function($event) {
               _vm.timelinesForm = ""
@@ -21439,6 +21621,39 @@ var render = function() {
         1
       ),
       _vm._v(" "),
+      _c(
+        "mdb-modal",
+        { attrs: { show: _vm.warnModal } },
+        [
+          _c("mdb-modal-header", [_c("mdb-modal-title", [_vm._v("警告")])], 1),
+          _vm._v(" "),
+          _c("mdb-modal-body", [
+            _vm._v("\n            いいねにはログインが必要です。\n        ")
+          ]),
+          _vm._v(" "),
+          _c(
+            "mdb-modal-footer",
+            [
+              _c(
+                "mdb-btn",
+                {
+                  staticClass: "shadow-none",
+                  attrs: { color: "elegant" },
+                  nativeOn: {
+                    click: function($event) {
+                      _vm.warnModal = false
+                    }
+                  }
+                },
+                [_vm._v("Close")]
+              )
+            ],
+            1
+          )
+        ],
+        1
+      ),
+      _vm._v(" "),
       _vm.isLogin
         ? _c(
             "div",
@@ -21450,7 +21665,7 @@ var render = function() {
                 }
               }
             },
-            [_c("span", { staticClass: "h2" }, [_vm._v("+")])]
+            [_c("span", { staticClass: "h2 mousepointer-hand" }, [_vm._v("+")])]
           )
         : _vm._e()
     ],
@@ -21542,7 +21757,7 @@ var render = function() {
         ? _c(
             "div",
             {
-              staticClass: "btn-circle-flat shadow",
+              staticClass: "btn-circle-flat shadow mousepointer-hand",
               on: {
                 click: function($event) {
                   return _vm.$router.push("works/create")
@@ -21829,7 +22044,10 @@ var render = function() {
                                   _c(
                                     "mdb-btn",
                                     {
-                                      attrs: { color: "primary" },
+                                      attrs: {
+                                        disabled: _vm.is_processing,
+                                        color: "primary"
+                                      },
                                       on: { click: _vm.follow }
                                     },
                                     [_vm._v("Follow")]
@@ -21846,7 +22064,10 @@ var render = function() {
                                   _c(
                                     "mdb-btn",
                                     {
-                                      attrs: { color: "danger" },
+                                      attrs: {
+                                        disabled: _vm.is_processing,
+                                        color: "danger"
+                                      },
                                       on: { click: _vm.unFollow }
                                     },
                                     [_vm._v("unFollow")]

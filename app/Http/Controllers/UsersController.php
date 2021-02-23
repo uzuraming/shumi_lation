@@ -62,11 +62,13 @@ class UsersController extends Controller
 
         if(Auth::check()){
             $is_following = Auth::user()->is_following($id);
+            $its_me = Auth::user()->id == $id;
         }else{
             $is_following = null;
+            $its_me = false;
         }
 
-        $its_me = Auth::user()->id == $id;
+        
 
         // ユーザの投稿の一覧を作成日時の降順で取得
         $timelines = $user->timelines()->orderBy('created_at', 'desc')->paginate(5, ["*"], 'timelinepage')->appends(["workpage" => $request->input('workpage')]);

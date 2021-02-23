@@ -11,8 +11,8 @@
                             <mdb-card-text> {{userInfo.user.followers_count}}Follower</mdb-card-text>
                             <mdb-card-text> {{userInfo.user.followings_count}}Followings</mdb-card-text>
                         <div v-if="this.isLogin && !userInfo.its_me" >
-                            <div v-if='!userInfo.is_following'><mdb-btn @click="follow"  color="primary">Follow</mdb-btn></div>
-                            <div v-if='userInfo.is_following'><mdb-btn @click="unFollow" color="danger">unFollow</mdb-btn></div>
+                            <div v-if='!userInfo.is_following'><mdb-btn :disabled="is_processing" @click="follow"  color="primary">Follow</mdb-btn></div>
+                            <div v-if='userInfo.is_following'><mdb-btn :disabled="is_processing" @click="unFollow" color="danger">unFollow</mdb-btn></div>
                         </div>
                         
                         
@@ -124,7 +124,8 @@ export default {
                     sentence:'More'
                 },
 
-            }
+            },
+            is_processing:false,
         }
     },
     components:{
@@ -195,24 +196,30 @@ export default {
 
         },
         async follow(){
+            this.is_processing = true;
             const response = await axios.post(`/api/users/${this.user_id}/follow`);
             if (response.status !== OK) {
                 this.$store.commit('error/setCode', response.status);
                 return false;
             }else{
                 this.userInfo.is_following = true;
+                this.userInfo.user.followers_count += 1;
             }
+            this.is_processing = false;
 
         
         },
         async unFollow(){
+            this.is_processing = true;
             const response = await axios.delete(`/api/users/${this.user_id}/unfollow`);
             if (response.status !== OK) {
                 this.$store.commit('error/setCode', response.status);
                 return false;
             }else{
                 this.userInfo.is_following = false;
+                this.userInfo.user.followers_count -= 1;
             }
+            this.is_processing = false;
 
         },
         moreWork(){
