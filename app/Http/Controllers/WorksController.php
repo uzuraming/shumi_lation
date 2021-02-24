@@ -21,6 +21,14 @@ class WorksController extends Controller
     // workの詳細
     public function show($id){
         $work = Work::with(['user'])->findOrFail($id);
+        if(\Auth::check()){
+            $its_mine = \Auth::user()->id == $work->user->id;
+        }else{
+            $its_mine = false;
+        };
+
+        $work->its_mine = $its_mine;
+
         return $work;
     }
 
@@ -80,20 +88,19 @@ class WorksController extends Controller
         ]);
 
         $work = Work::findOrFail($id);
+        if($work->user->id == \Auth::user()->id){
+            $title = $request->title;
+            $content = $request->content;
+
+            // 作品を作成
+            $work->update([
+                'title' => $title,
+                'content' => $content
+            ]);
+        }
         
-        $title = $request->title;
-        $content = $request->content;
 
-
-
-        // 作品を作成
-        $work->update([
-            'title' => $title,
-            'content' => $content
-        ]);
-
-        // トップページにリダイレクト
-        return redirect('/');
+    
 
 
         
@@ -107,11 +114,6 @@ class WorksController extends Controller
         if($its_my_work){
             $work->delete();
         }
-
-        
-
-        // トップページにリダイレクト
-        return redirect('/');
 
         
     }

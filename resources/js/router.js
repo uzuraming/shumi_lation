@@ -69,6 +69,15 @@ const routes = [
         component: WorkDetail,
         props: true
     },
+    {
+        name:'editWork',
+
+        path: '/works/:work_id/edit',
+        component: WorkCreate,
+        props: {
+          pageName:'editWork'
+        }
+    },
 
     {
         name:'userDetail',

@@ -16050,6 +16050,23 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
 
 
 
@@ -16057,15 +16074,26 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
   components: {
     VueEditor: vue2_editor__WEBPACK_IMPORTED_MODULE_2__["VueEditor"],
     mdbInput: mdbvue__WEBPACK_IMPORTED_MODULE_3__["mdbInput"],
-    mdbBtn: mdbvue__WEBPACK_IMPORTED_MODULE_3__["mdbBtn"]
+    mdbBtn: mdbvue__WEBPACK_IMPORTED_MODULE_3__["mdbBtn"],
+    mdbModal: mdbvue__WEBPACK_IMPORTED_MODULE_3__["mdbModal"],
+    mdbModalHeader: mdbvue__WEBPACK_IMPORTED_MODULE_3__["mdbModalHeader"],
+    mdbModalTitle: mdbvue__WEBPACK_IMPORTED_MODULE_3__["mdbModalTitle"],
+    mdbModalBody: mdbvue__WEBPACK_IMPORTED_MODULE_3__["mdbModalBody"],
+    mdbModalFooter: mdbvue__WEBPACK_IMPORTED_MODULE_3__["mdbModalFooter"]
   },
   data: function data() {
     return {
       content: "",
       title: "",
       isFormBtnActive: true,
-      formBtnMsg: 'SEND'
+      formBtnMsg: 'SEND',
+      confirmation_modal: false,
+      isDeleteBtnActive: true,
+      deleteBtnMsg: 'delete'
     };
+  },
+  props: {
+    pageName: String
   },
   methods: {
     postWork: function postWork() {
@@ -16098,6 +16126,150 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
           }
         }, _callee);
       }))();
+    },
+    editWork: function editWork() {
+      var _this2 = this;
+
+      return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee2() {
+        var response;
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee2$(_context2) {
+          while (1) {
+            switch (_context2.prev = _context2.next) {
+              case 0:
+                _this2.isFormBtnActive = false;
+                _this2.formBtnMsg = 'Sending...';
+                _context2.next = 4;
+                return axios.put("/api/works/".concat(_this2.$route.params.work_id), {
+                  'content': _this2.content,
+                  'title': _this2.title
+                });
+
+              case 4:
+                response = _context2.sent;
+
+                // 戻る
+                _this2.$router.back();
+
+              case 6:
+              case "end":
+                return _context2.stop();
+            }
+          }
+        }, _callee2);
+      }))();
+    },
+    deleteWork: function deleteWork() {
+      var _this3 = this;
+
+      return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee3() {
+        var response;
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee3$(_context3) {
+          while (1) {
+            switch (_context3.prev = _context3.next) {
+              case 0:
+                _this3.isDeleteBtnActive = false;
+                _this3.deleteBtnMsg = 'deleting...';
+                _context3.next = 4;
+                return axios["delete"]("/api/works/".concat(_this3.$route.params.work_id));
+
+              case 4:
+                response = _context3.sent;
+
+                if (!(response.status !== _util__WEBPACK_IMPORTED_MODULE_1__["OK"])) {
+                  _context3.next = 8;
+                  break;
+                }
+
+                _this3.$store.commit('error/setCode', response.status);
+
+                return _context3.abrupt("return", false);
+
+              case 8:
+                ; // 戻る
+
+                _this3.$router.push('/works');
+
+              case 10:
+              case "end":
+                return _context3.stop();
+            }
+          }
+        }, _callee3);
+      }))();
+    },
+    fetchWork: function fetchWork() {
+      var _this4 = this;
+
+      return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee4() {
+        var response;
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee4$(_context4) {
+          while (1) {
+            switch (_context4.prev = _context4.next) {
+              case 0:
+                _context4.next = 2;
+                return axios.get("/api/works/".concat(_this4.$route.params.work_id));
+
+              case 2:
+                response = _context4.sent;
+
+                if (!(response.status !== _util__WEBPACK_IMPORTED_MODULE_1__["OK"])) {
+                  _context4.next = 6;
+                  break;
+                }
+
+                _this4.$store.commit('error/setCode', response.status);
+
+                return _context4.abrupt("return", false);
+
+              case 6:
+                ;
+
+                if (!response.data.its_mine) {
+                  _this4.$router.back();
+                } else {
+                  console.log(response);
+                  _this4.title = response.data.title;
+                  _this4.content = response.data.content;
+                }
+
+                ;
+
+              case 9:
+              case "end":
+                return _context4.stop();
+            }
+          }
+        }, _callee4);
+      }))();
+    }
+  },
+  watch: {
+    $route: {
+      handler: function handler() {
+        var _this5 = this;
+
+        return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee5() {
+          return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee5$(_context5) {
+            while (1) {
+              switch (_context5.prev = _context5.next) {
+                case 0:
+                  if (!(_this5.pageName == 'editWork')) {
+                    _context5.next = 3;
+                    break;
+                  }
+
+                  _context5.next = 3;
+                  return _this5.fetchWork();
+
+                case 3:
+                case "end":
+                  return _context5.stop();
+              }
+            }
+          }, _callee5);
+        }))();
+      },
+      immediate: true
     }
   }
 });
@@ -16122,6 +16294,8 @@ function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try
 
 function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
 
+//
+//
 //
 //
 //
@@ -22437,62 +22611,134 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", [
-    _c("h2", { staticClass: "text-center" }, [_vm._v("新規作成")]),
-    _vm._v(" "),
-    _c(
-      "form",
-      {
-        staticClass: "mt-5",
-        on: {
-          submit: function($event) {
-            $event.preventDefault()
-            return _vm.postWork($event)
+  return _c(
+    "div",
+    [
+      _c("h2", { staticClass: "text-center" }, [_vm._v("新規作成")]),
+      _vm._v(" "),
+      _c(
+        "form",
+        {
+          staticClass: "mt-5",
+          on: {
+            submit: function($event) {
+              $event.preventDefault()
+              _vm.pageName == "editWork" ? _vm.editWork() : _vm.postWork()
+            }
           }
-        }
-      },
-      [
-        _c("mdb-input", {
-          attrs: { label: "title", type: "text" },
-          model: {
-            value: _vm.title,
-            callback: function($$v) {
-              _vm.title = $$v
-            },
-            expression: "title"
+        },
+        [
+          _c("mdb-input", {
+            attrs: { label: "title", type: "text" },
+            model: {
+              value: _vm.title,
+              callback: function($$v) {
+                _vm.title = $$v
+              },
+              expression: "title"
+            }
+          }),
+          _vm._v(" "),
+          _c("vue-editor", {
+            model: {
+              value: _vm.content,
+              callback: function($$v) {
+                _vm.content = $$v
+              },
+              expression: "content"
+            }
+          }),
+          _vm._v(" "),
+          _c("div", { staticClass: "text-center mt-4" }, [
+            _c(
+              "button",
+              {
+                staticClass: "btn btn-dark shadow-none rounded-0",
+                attrs: {
+                  disabled:
+                    _vm.content.length <= 0 ||
+                    _vm.title.length <= 0 ||
+                    !_vm.isFormBtnActive,
+                  type: "submit"
+                }
+              },
+              [_vm._v(_vm._s(_vm.formBtnMsg))]
+            )
+          ])
+        ],
+        1
+      ),
+      _vm._v(" "),
+      _c(
+        "button",
+        {
+          staticClass: "btn btn-danger shadow-none rounded-0",
+          on: {
+            click: function($event) {
+              _vm.confirmation_modal = true
+            }
           }
-        }),
-        _vm._v(" "),
-        _c("vue-editor", {
-          model: {
-            value: _vm.content,
-            callback: function($$v) {
-              _vm.content = $$v
-            },
-            expression: "content"
-          }
-        }),
-        _vm._v(" "),
-        _c("div", { staticClass: "text-center mt-4" }, [
+        },
+        [_vm._v("delete")]
+      ),
+      _vm._v(" "),
+      _c(
+        "mdb-modal",
+        { attrs: { show: _vm.confirmation_modal } },
+        [
           _c(
-            "button",
-            {
-              staticClass: "btn btn-dark shadow-none rounded-0",
-              attrs: {
-                disabled:
-                  _vm.content.length <= 0 ||
-                  _vm.title.length <= 0 ||
-                  !_vm.isFormBtnActive,
-                type: "submit"
-              }
-            },
-            [_vm._v(_vm._s(_vm.formBtnMsg))]
+            "mdb-modal-header",
+            { attrs: { close: false } },
+            [_c("mdb-modal-title", [_vm._v("Confirmation")])],
+            1
+          ),
+          _vm._v(" "),
+          _c("mdb-modal-body", [
+            _vm._v("\n          本当に削除しますか？\n      ")
+          ]),
+          _vm._v(" "),
+          _c(
+            "mdb-modal-footer",
+            [
+              _c(
+                "mdb-btn",
+                {
+                  staticClass: "shadow-none",
+                  attrs: { disabled: !_vm.isDeleteBtnActive, color: "danger" },
+                  nativeOn: {
+                    click: function($event) {
+                      _vm.confirmation_modal = false
+                    }
+                  }
+                },
+                [_vm._v("Cancel")]
+              ),
+              _vm._v(" "),
+              _c(
+                "mdb-btn",
+                {
+                  staticClass: "shadow-none",
+                  attrs: {
+                    disabled: !_vm.isDeleteBtnActive,
+                    color: "mdb-color"
+                  },
+                  nativeOn: {
+                    click: function($event) {
+                      return _vm.deleteWork()
+                    }
+                  }
+                },
+                [_vm._v(_vm._s(_vm.deleteBtnMsg))]
+              )
+            ],
+            1
           )
-        ])
-      ],
-      1
-    )
-  ])
+        ],
+        1
+      )
+    ],
+    1
+  )
 }
 var staticRenderFns = []
 render._withStripped = true
@@ -22545,7 +22791,25 @@ var render = function() {
       )
     ]),
     _vm._v(" "),
-    _c("div", { domProps: { innerHTML: _vm._s(_vm.work.content) } })
+    _c("div", { domProps: { innerHTML: _vm._s(_vm.work.content) } }),
+    _vm._v(" "),
+    _vm.work.its_mine
+      ? _c(
+          "div",
+          {
+            staticClass: "btn-circle-flat shadow mousepointer-hand",
+            on: {
+              click: function($event) {
+                return _vm.$router.push({
+                  name: "editWork",
+                  params: _vm.work_id
+                })
+              }
+            }
+          },
+          [_c("span", { staticClass: "h2" }, [_vm._v("+")])]
+        )
+      : _vm._e()
   ])
 }
 var staticRenderFns = []
@@ -40688,6 +40952,13 @@ var routes = [{
   path: '/works/:work_id',
   component: _pages_WorksDetail_vue__WEBPACK_IMPORTED_MODULE_9__["default"],
   props: true
+}, {
+  name: 'editWork',
+  path: '/works/:work_id/edit',
+  component: _pages_WorksCreate_vue__WEBPACK_IMPORTED_MODULE_10__["default"],
+  props: {
+    pageName: 'editWork'
+  }
 }, {
   name: 'userDetail',
   path: '/users/:user_id',

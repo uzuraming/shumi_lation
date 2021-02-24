@@ -10,6 +10,8 @@
       </div>
       
       <div v-html="work.content "></div>
+      <div v-if="work.its_mine" @click="$router.push({name:'editWork', params:work_id})" class="btn-circle-flat shadow mousepointer-hand"><span class="h2">+</span></div>
+
   </div>
 </template>
 
@@ -21,7 +23,8 @@ export default {
             work:{
                 title:[],
                 content:[],
-                user:[]
+                user:[],
+
             }
 
         }

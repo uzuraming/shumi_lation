@@ -37,7 +37,9 @@ Route::post('/timelines', 'TimelinesController@store');
 
 Route::get('/works', 'WorksController@index');
 Route::get('/works/{id}', 'WorksController@show');
+Route::put('/works/{id}', 'WorksController@update');
 Route::post('/works', 'WorksController@store');
+Route::delete('/works/{id}', 'WorksController@destroy');
 
 Route::resource('/users', 'UsersController',  ['only' => ['show']]);
 
