@@ -9,6 +9,7 @@ import Timeline from './pages/Timelines.vue'
 import Favorite from './pages/Favorites.vue'
 import Work from './pages/Works.vue'
 import UserDetail from './pages/users/UserDetail.vue'
+import EditUser from './pages/users/EditUser.vue'
 
 import WorkDetail from './pages/WorksDetail.vue'
 import WorkCreate from './pages/WorksCreate.vue'
@@ -83,6 +84,12 @@ const routes = [
         name:'userDetail',
         path: '/users/:user_id',
         component: UserDetail,
+        props: true
+    },
+    {
+        name:'editUser',
+        path: '/users/:user_id/edit',
+        component: EditUser,
         props: true
     },
     

@@ -127,8 +127,6 @@ class UsersController extends Controller
             $user->wanted = $request->wanted;
             $user->save();
 
-            // リダイレクト
-            return redirect('/users/'.$id);
         }else{
             // そうじゃなければ戻る
             return back();
