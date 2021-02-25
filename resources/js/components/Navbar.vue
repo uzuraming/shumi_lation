@@ -1,5 +1,5 @@
 <template>
-  <mdb-navbar class="shadow-none" expand="large" color="transprant" light>
+  <mdb-navbar class="nav-style py-2" expand="large" color="transprant" light>
     <mdb-navbar-brand href="#">
       Navbar
     </mdb-navbar-brand>
@@ -48,3 +48,9 @@
     }
   }
 </script>
+<style >
+  .nav-style{
+    font-family: 'Oswald', sans-serif;
+  }
+  
+</style>

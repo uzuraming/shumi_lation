@@ -4,7 +4,7 @@
      <header>
          <Navbar/>
      </header>
-     <main class="mt-0">
+     <main class="mt-5">
       <div class="container">
         <RouterView />
       </div>
@@ -57,6 +57,8 @@
 
     @import url('https://fonts.googleapis.com/css2?family=Julius+Sans+One&display=swap');
     @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@200&display=swap');
+
+    @import url('https://fonts.googleapis.com/css2?family=Oswald:wght@600&display=swap');
     .wrapper{
         font-family: 'Noto Serif JP', serif;
     }

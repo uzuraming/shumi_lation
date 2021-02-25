@@ -42,7 +42,7 @@ Route::post('/works', 'WorksController@store');
 Route::delete('/works/{id}', 'WorksController@destroy');
 
 Route::resource('/users', 'UsersController',  ['only' => ['show']]);
-Route::post('/users/{id}/', 'TimelinesController@update');
+Route::put('/users/{id}/', 'UsersController@update');
 
 
 Route::post('/users/{id}/follow', 'TimelinesController@index');

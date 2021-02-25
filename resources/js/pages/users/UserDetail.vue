@@ -2,23 +2,45 @@
     <div>
         <div class="container mt-3">
             <div class="row">
-                <div class="col-sm-6">
+                <div class="col-sm-6 ">
+                    <div class="text-center">
+                        <mdb-card-image class="circle_img " src="" alt=""></mdb-card-image>
+    
+
+                    </div>
+                    
                     <mdb-card class="shadow-none">
-                        <mdb-card-image src="https://mdbootstrap.com/img/Photos/Horizontal/Nature/4-col/img%20%286%29.jpg" alt="Card image cap"></mdb-card-image>
                         <mdb-card-body>
-                            <mdb-card-title>{{userInfo.user.name}}</mdb-card-title>
-                            <mdb-card-text> {{userInfo.user.profile}}</mdb-card-text>
-                            <mdb-card-text> {{userInfo.user.followers_count}}Follower</mdb-card-text>
-                            <mdb-card-text> {{userInfo.user.followings_count}}Followings</mdb-card-text>
-                        <div v-if="this.isLogin && !userInfo.its_me" >
-                            <div v-if='!userInfo.is_following'><mdb-btn :disabled="is_processing" @click="follow"  color="primary">Follow</mdb-btn></div>
-                            <div v-if='userInfo.is_following'><mdb-btn :disabled="is_processing" @click="unFollow" color="danger">unFollow</mdb-btn></div>
-                        </div>
+                            <mdb-card-title class="mb-3 text-center nav-style">{{userInfo.user.name}}</mdb-card-title>
+                            <div v-if="this.isLogin && !userInfo.its_me" class="text-center ">
+                                <div v-if='!userInfo.is_following'><mdb-btn class="shadow-none" :disabled="is_processing" @click="follow"  color="primary">Follow</mdb-btn></div>
+                                <div v-if='userInfo.is_following'><mdb-btn class="shadow-none" :disabled="is_processing" @click="unFollow" color="danger">unFollow</mdb-btn></div>
+                            </div>
+                            
+                            
+                            
+                                <div class="row mt-3 text-center">
+                                    <div class="col-6">
+                                        <div class="h4 brown-text"> {{userInfo.user.followers_count}}</div>
+                                        <mdb-card-text>Follower</mdb-card-text>
+                                    </div>
+                                    <div class="col-6">
+                                        <div class="h4 brown-text"> {{userInfo.user.followings_count}}</div>
+                                        <mdb-card-text>Following</mdb-card-text>
+                                    </div>
+                                </div>
+                                <mdb-card-text v-html="userInfo.user.profile" class="text-center mt-3" style="white-space: pre-wrap;"></mdb-card-text>
+ 
+                            
                         
                         
                         </mdb-card-body>
                     </mdb-card>
+                    
+                        
+                    
                 </div>
+                
 
 
 
@@ -30,28 +52,28 @@
 
                 
 
-                    <div v-if="tab=='work'">
-                    <mdb-list-group flush v-for="work in userInfo.works" :key="work.id">
-                        <mdb-list-group-item v-for="d in work" :key="d.id">
-                            <div>
-                                <div class="d-flex w-100 justify-content-between">
+                    <div class="col-12" v-if="tab=='work'">
+                        <mdb-list-group flush v-for="work in userInfo.works" :key="work.id">
+                            <mdb-list-group-item v-for="d in work" :key="d.id">
+                                <div>
+                                    <div class="d-flex w-100 justify-content-between">
+                                    </div>
+                                    <p class="mb-2">
+                                        <router-link class="mb-2" :to="{ name: 'workDetail', params: { work_id: d.id }}" >{{d.title}}</router-link >
+                                    </p>
+                                    <small>{{d.created_at}}</small>
+                                    
                                 </div>
-                                <p class="mb-2">
-                                    <router-link class="mb-2" :to="{ name: 'workDetail', params: { work_id: d.id }}" >{{d.title}}</router-link >
-                                </p>
-                                <small>{{d.created_at}}</small>
-                                
-                            </div>
-                        </mdb-list-group-item>
-                        
+                            </mdb-list-group-item>
+                            
 
-                    </mdb-list-group>
-                    <div class="d-flex w-100 justify-content-between">
-                        <button :disabled="!this.moreButtonStat.work.isActive" v-if="tab=='work'" @click="moreWork" class="btn btn-elegant w-100">{{this.moreButtonStat.work.sentence}}</button>
-                    </div>
+                        </mdb-list-group>
+                        <div class=" d-flex w-100 justify-content-between">
+                            <button :disabled="!this.moreButtonStat.work.isActive" v-if="tab=='work'" @click="moreWork" class="btn btn-elegant w-100">{{this.moreButtonStat.work.sentence}}</button>
+                        </div>
                     </div>
                     
-                    <div v-if="tab=='timeline'" >
+                    <div class="col-12" v-if="tab=='timeline'" >
                         <mdb-list-group flush  v-for="timeline in userInfo.timelines" :key="timeline.id">
                         
                                 <mdb-list-group-item v-for="d in timeline" :key="d.id">
@@ -72,6 +94,8 @@
                             <button :disabled="!this.moreButtonStat.timeline.isActive" v-if="tab=='timeline'" @click="moreTimeline" class="btn btn-elegant w-100">{{this.moreButtonStat.timeline.sentence}}</button>
                         </div>
                     </div>
+                    
+                    
 
 
                 </div>
@@ -83,10 +107,12 @@
                     <!-- <div class="d-flex justify-content-center" >
                         <Pagination :component="'timelines'" :current-page="currentPage" :last-page="lastPage" />
                     </div> -->
-                </div>
+           
             </div>
+            
         </div>
-
+         <div v-if="userInfo.its_me" @click="$router.push({name:'editUser', params:user_id})" class="btn-circle-flat shadow"><span class="h2 mousepointer-hand"><mdb-icon icon="pen" /></span></div>
+    
     </div>
     
 </template>
@@ -94,7 +120,7 @@
 <script>
 import { OK } from '../../util'
 import { mdbCard, mdbCardImage, mdbCardBody, mdbCardTitle, mdbCardText, mdbBtn,mdbListGroup, 
-        mdbListGroupItem, mdbTabs} from 'mdbvue'
+        mdbListGroupItem, mdbTabs, mdbIcon} from 'mdbvue'
 export default {
     data(){
         return{
@@ -137,7 +163,8 @@ export default {
             mdbBtn,
             mdbListGroup, 
         mdbListGroupItem,
-        mdbTabs
+        mdbTabs,
+        mdbIcon
     },
     props:{
         user_id:String,
@@ -260,5 +287,15 @@ export default {
 </script>
 
 <style scoped>
+.circle_img {
+    background-image: url("https://mdbootstrap.com/img/Photos/Horizontal/Nature/4-col/img%20%286%29.jpg");  /* 表示する画像 */
+    width:  180px;       /* ※縦横を同値に */
+    height: 180px;       /* ※縦横を同値に */
+    border-radius: 50%;  /* 角丸半径を50%にする(=円形にする) */
+    background-position: center center;  /* 横長画像の左上を基準に表示 */
+    display: inline-block;          /* 複数の画像を横に並べたい場合 */
+    border: 9px solid #a1887f ; /* 枠線を付加 */
+}
+
 
 </style>

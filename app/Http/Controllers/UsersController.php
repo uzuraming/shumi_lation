@@ -115,22 +115,28 @@ class UsersController extends Controller
 
     // 編集を実行する関数
     public function update(Request $request, $id)
-    {
-        // 自分のユーザーか識別する。違えば、リダイレクトする
-        if(Auth::user()->id == $id){
-            // ユーザーを取得
-            $user = User::findOrFail($id);
-            // ユーザー情報を上書き
-            $user->name = $request->name;
-            $user->profile = $request->profile;
-            $user->interest = $request->interest;
-            $user->wanted = $request->wanted;
-            $user->save();
+    {   
+        if(Auth::check()){
+            // 自分のユーザーか識別する。違えば、リダイレクトする
+            if(Auth::user()->id == $id){
+                // ユーザーを取得
+                $user = User::findOrFail($id);
+                // ユーザー情報を上書き
+                $user->name = $request->name;
+                $user->profile = $request->profile;
+                $user->interest = $request->interest;
+                $user->wanted = $request->wanted;
+                $user->save();
+
+            }else{
+                // そうじゃなければ戻る
+                return false;
+            }
 
         }else{
-            // そうじゃなければ戻る
-            return back();
+            return false;
         }
+        
     }
 
     /**
