@@ -204,18 +204,7 @@ class User extends Authenticatable
         return $this->chat_requesting()->where('to_user_id', $userId)->exists();      
     }
 
-    // リクエストを拒否する関数
-    public function refuse_request($userId){
-        $this->chat_requester()->detach($userId);
-        return true;
-           
-    }
-
-    // リクエストを許可する関数
-    public function accept_request($userId){
-        $this->chat_requester()->updateExistingPivot($userId, ['approval' => true]);
-
-    }
+    
 
 
     // リクエストを作成する関数
@@ -267,9 +256,34 @@ class User extends Authenticatable
 
     // リクエストを承認すみか判定する関数
 
-    // リクエストを許可する関数
     public function is_accept_request($userId){
+        
         return $this->chat_requester()->where('from_user_id', $userId)->firstOrFail()->pivot->approval == true;
+    }
+
+    // リクエストを拒否する関数
+    public function refuse_request($userId){
+        if(!is_accept_request($userId)){
+            $this->chat_requester()->detach($userId);
+            return true;
+
+        }else{
+            return false;
+        };
+        
+           
+    }
+
+    // リクエストを許可する関数
+    public function accept_request($userId){
+        if(!is_accept_request($userId)){
+            $this->chat_requester()->updateExistingPivot($userId, ['approval' => true]);
+            return true;
+        }else{
+            return false;
+        };
+        
+
     }
 
     // チャットを送信する関数
