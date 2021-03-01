@@ -17065,6 +17065,12 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
+//
+//
+//
+//
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -17075,7 +17081,9 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         timelines: [],
         works: [],
         is_following: '',
-        its_me: false
+        its_me: false,
+        is_send_request: false,
+        is_accepted_request: false
       },
       tab: 'timeline',
       pagination: {
@@ -17154,7 +17162,9 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
                 _this.userInfo.is_following = response.data.is_following;
                 _this.userInfo.its_me = response.data.its_me;
-                _this.userInfo.user = response.data.user; // this.currentPage = response.data.current_page
+                _this.userInfo.user = response.data.user;
+                _this.userInfo.is_send_request = response.data.is_send_request;
+                _this.userInfo.is_accepted_request = response.data.is_accepted_request; // this.currentPage = response.data.current_page
                 // this.lastPage = response.data.last_page
 
                 console.log(response.data);
@@ -17173,7 +17183,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                   _this.moreButtonStat.timeline.isActive = false;
                 }
 
-              case 24:
+              case 26:
               case "end":
                 return _context.stop();
             }
@@ -24084,6 +24094,50 @@ var render = function() {
                                       on: { click: _vm.unFollow }
                                     },
                                     [_vm._v("unFollow")]
+                                  )
+                                ],
+                                1
+                              )
+                            : _vm._e(),
+                          _vm._v(" "),
+                          !_vm.userInfo.is_accepted_request &&
+                          !_vm.userInfo.is_send_request
+                            ? _c(
+                                "div",
+                                [
+                                  _c(
+                                    "mdb-btn",
+                                    {
+                                      staticClass: "shadow-none",
+                                      attrs: {
+                                        disabled: _vm.is_processing,
+                                        color: "success"
+                                      },
+                                      on: { click: _vm.follow }
+                                    },
+                                    [_vm._v("Send chat request")]
+                                  )
+                                ],
+                                1
+                              )
+                            : _vm._e(),
+                          _vm._v(" "),
+                          !_vm.userInfo.is_accepted_request &&
+                          _vm.userInfo.is_send_request
+                            ? _c(
+                                "div",
+                                [
+                                  _c(
+                                    "mdb-btn",
+                                    {
+                                      staticClass: "shadow-none",
+                                      attrs: {
+                                        disabled: _vm.is_processing,
+                                        color: "MDB-color"
+                                      },
+                                      on: { click: _vm.follow }
+                                    },
+                                    [_vm._v("requesting")]
                                   )
                                 ],
                                 1

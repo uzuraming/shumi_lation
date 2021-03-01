@@ -15,6 +15,12 @@
                             <div v-if="this.isLogin && !userInfo.its_me" class="text-center ">
                                 <div v-if='!userInfo.is_following'><mdb-btn class="shadow-none" :disabled="is_processing" @click="follow"  color="primary">Follow</mdb-btn></div>
                                 <div v-if='userInfo.is_following'><mdb-btn class="shadow-none" :disabled="is_processing" @click="unFollow" color="danger">unFollow</mdb-btn></div>
+                                <div v-if="!userInfo.is_accepted_request && !userInfo.is_send_request">
+                                    <mdb-btn class="shadow-none" :disabled="is_processing" @click="follow"  color="success">Send chat request</mdb-btn>
+                                </div>
+                                <div v-if="!userInfo.is_accepted_request && userInfo.is_send_request">
+                                    <mdb-btn class="shadow-none" :disabled="is_processing" @click="follow"  color="MDB-color">requesting</mdb-btn>
+                                </div>
                             </div>
                             
                             
@@ -130,6 +136,8 @@ export default {
                 works:[],
                 is_following:'',
                 its_me:false,
+                is_send_request:false,
+                is_accepted_request:false,
             },
             tab:'timeline',
             pagination:{
@@ -194,6 +202,8 @@ export default {
                 this.userInfo.is_following = response.data.is_following;
                 this.userInfo.its_me = response.data.its_me;
                 this.userInfo.user = response.data.user;
+                this.userInfo.is_send_request = response.data.is_send_request;
+                this.userInfo.is_accepted_request = response.data.is_accepted_request;
                 // this.currentPage = response.data.current_page
                 // this.lastPage = response.data.last_page
                 

@@ -257,8 +257,12 @@ class User extends Authenticatable
     // リクエストを承認すみか判定する関数
 
     public function is_accept_request($userId){
+        if($this->chat_requester()->where('from_user_id', $userId)->exists()){
+            return $this->chat_requester()->where('from_user_id', $userId)->first()->pivot->approval == true;
+        }else{
+            return false;
+        }
         
-        return $this->chat_requester()->where('from_user_id', $userId)->firstOrFail()->pivot->approval == true;
     }
 
     // リクエストを拒否する関数

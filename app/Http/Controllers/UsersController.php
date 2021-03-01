@@ -60,12 +60,17 @@ class UsersController extends Controller
 
         $user->loadRelationshipCounts();
 
+
         if(Auth::check()){
             $is_following = Auth::user()->is_following($id);
+            $is_accepted_request = $user->is_accept_request(Auth::user()->id);
+            $is_send_request =  Auth::user()->is_requesting($id);
+
             $its_me = Auth::user()->id == $id;
         }else{
             $is_following = null;
             $its_me = false;
+      
         }
 
         
@@ -74,7 +79,15 @@ class UsersController extends Controller
         $timelines = $user->timelines()->orderBy('created_at', 'desc')->paginate(5, ["*"], 'timelinepage')->appends(["workpage" => $request->input('workpage')]);
         $works = $user->works()->orderBy('created_at', 'desc')->paginate(5, ["*"], 'workpage')->appends(["timelinepage" => $request->input('timelinepage')]);;
 
-        return (['user' => $user,'timelines' => $timelines, 'works' => $works, 'is_following' => $is_following, 'its_me' => $its_me]);
+        return (['user' => $user,
+            'timelines' => $timelines, 
+            'works' => $works, 
+            'is_following' => $is_following, 
+            'its_me' => $its_me,
+            'is_accepted_request' => $is_accepted_request,
+            'is_send_request' => $is_send_request,
+
+        ]);
 
     }
 
