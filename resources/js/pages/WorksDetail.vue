@@ -10,6 +10,12 @@
       </div>
       
       <div v-html="work.content "></div>
+
+      <div class="">
+            <router-link class="mb-2" :to="{ name: 'comments', params: { work_id: work.id  }}" >
+                {{work.comments_count }}件のコメント</router-link >
+        </div>
+
       <div v-if="work.its_mine" @click="$router.push({name:'editWork', params:work_id})" class="btn-circle-flat shadow mousepointer-hand"><span class="h2">+</span></div>
 
   </div>

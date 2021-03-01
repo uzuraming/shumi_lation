@@ -11,6 +11,7 @@ class Work extends Model
         'title',
         'content',
     ];
+    
 
     // この作品を所有するユーザー
     public function user(){
@@ -20,6 +21,13 @@ class Work extends Model
     // この作品につくコメント
     public function comments(){
         return $this->hasMany(Comment::class);
+    }
+
+    // コメント数を計測する関数
+    public function loadRelationshipCounts()
+    {
+        // この関数により、リレーション名_countというインスタンスが追加される
+        $this->loadCount(['comments']); 
     }
 
     // ログイン中のユーザーがこの作品を所有するユーザーであるか判別する関数

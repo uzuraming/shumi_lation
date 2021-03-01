@@ -12,6 +12,24 @@ class Comment extends Model
         'user_id',
         'comment',
     ];
+    /** JSONに含めるアクセサ */
+    protected $appends = [
+        'is_your_comment'
+    ];
+
+    public function getIsYourCommentAttribute()
+    {
+        if (\Auth::guest()) {
+            return false;
+        }else if(\Auth::user()->id == $this->user->id){
+            return true;
+        }else{
+            return false;
+        }
+        
+    }
+
+
 
 
     // このコメントが属する作品

@@ -41,8 +41,15 @@ Route::put('/works/{id}', 'WorksController@update');
 Route::post('/works', 'WorksController@store');
 Route::delete('/works/{id}', 'WorksController@destroy');
 
+Route::get('/works/{id}/comments', 'WorksController@comments');
+Route::post('/works/{id}/comments', 'WorksController@comment_store');
+Route::delete('/works/{id}/comments/{commentId}/', 'WorksController@comment_destroy');
+
+
 Route::resource('/users', 'UsersController',  ['only' => ['show']]);
 Route::put('/users/{id}/', 'UsersController@update');
+
+
 
 
 Route::post('/users/{id}/follow', 'TimelinesController@index');

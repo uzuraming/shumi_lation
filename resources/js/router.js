@@ -8,6 +8,7 @@ import Signup from './pages/Signup.vue'
 import Timeline from './pages/Timelines.vue'
 import Favorite from './pages/Favorites.vue'
 import Work from './pages/Works.vue'
+import Comment from './pages/Comments.vue'
 import UserDetail from './pages/users/UserDetail.vue'
 import EditUser from './pages/users/EditUser.vue'
 
@@ -78,6 +79,15 @@ const routes = [
         props: {
           pageName:'editWork'
         }
+    },
+    {
+      name:'comments',
+      path: '/works/:work_id/comments',
+      component: Comment,
+      props: route => {
+          const page = route.query.page
+          return { page: /^[1-9][0-9]*$/.test(page) ? page * 1 : 1, pageName:'comments' }
+      }
     },
 
     {

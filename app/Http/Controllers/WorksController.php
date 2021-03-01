@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 
 use App\Work;
+use App\Comment;
 
 class WorksController extends Controller
 {
@@ -27,10 +28,62 @@ class WorksController extends Controller
             $its_mine = false;
         };
 
+        $comments = $work->comments();
         $work->its_mine = $its_mine;
+        $work->loadRelationshipCounts();
 
         return $work;
     }
+
+    // コメント一覧API
+    public function comments($id){
+        $work = Work::findOrFail($id);
+        $comments = $work->comments()->with(['user'])->paginate(5);
+        if(\Auth::check()){
+            $its_mine = \Auth::user()->id == $work->user->id;
+        }else{
+            $its_mine = false;
+        };
+
+        $comments->its_mine = $its_mine;
+        return (['comments' => $comments, 'its_mine' => $its_mine]);
+    }
+
+    // コメント削除API
+    public function comment_store(Request $request, $id){
+        $work = Work::findOrFail($id);
+    
+        if(\Auth::check()){
+            $comments = new Comment;
+            $comments->comment = $request->comment;
+            $comments->user()->associate(\Auth::user());
+            $comments->work()->associate($work);
+            $comments->save();
+        }else{
+            return false;
+        };
+
+        
+    }
+    public function comment_destroy($id,$commentId){
+        // ユーザー、作品、コメントの変数
+        $user = \Auth::user();
+        $work = Work::findOrFail($id);
+        $comment = $work->comments()->findOrFail($commentId);
+
+        // ログイン中のユーザーがコメントの持ち主、あるいはコメントがついてる作品の持ち主か判断する
+        $its_my_work = $work->isMywork();
+        $its_my_comment = $comment->isMyComment($commentId);
+
+        if($its_my_work || $its_my_comment ){
+            $comment->delete();
+        }else{
+            return false;
+        };
+
+    }
+
+    
 
     // 作品作成画面
     public function create(){
