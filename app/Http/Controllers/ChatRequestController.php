@@ -11,13 +11,21 @@ class ChatRequestController extends Controller
 {
     // リクエストを送る関数
     public function store(Request $request, $id){
+        
+        
         // ログイン中のユーザー
-        $user = \Auth::user();
-        // メッセージの内容
-        $message = $request->message;
+        $auth = \Auth::user();
 
-        $user->send_request($id, $message);
-        return back();
+        if(User::findOrFail($id)->is_requesting($auth->id)){
+            return false;
+        }else{
+            // メッセージの内容
+            $message = $request->message;
+            $auth->send_request($id, $message);
+
+        }
+        
+
 
     }
 
@@ -61,17 +69,13 @@ class ChatRequestController extends Controller
         $auth->join_chat_room($chat_room->id);
         $requester->join_chat_room($chat_room->id);
         
-        return back();
+       
     }
 
 
-    public function destroy($id){
+    public function remove_request($id){
         $auth = \Auth::user();
-        $requester = $auth->chat_requester()->findOrFail($id);
-        $auth->refuse_request($id);
-        
-        return back();
-        
+        $requesting = $auth->remove_request($id);      
     }
 
     

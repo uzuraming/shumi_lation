@@ -49,6 +49,11 @@ Route::delete('/works/{id}/comments/{commentId}/', 'WorksController@comment_dest
 Route::resource('/users', 'UsersController',  ['only' => ['show']]);
 Route::put('/users/{id}/', 'UsersController@update');
 
+Route::post('/users/{id}/send_request', 'ChatRequestController@store');
+Route::delete('/users/{id}/send_request', 'ChatRequestController@remove_request');
+
+
+
 
 
 

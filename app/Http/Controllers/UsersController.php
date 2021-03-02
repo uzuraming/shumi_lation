@@ -63,13 +63,18 @@ class UsersController extends Controller
 
         if(Auth::check()){
             $is_following = Auth::user()->is_following($id);
-            $is_accepted_request = $user->is_accept_request(Auth::user()->id);
+            $is_accepted_request_by_you = $user->is_accept_request(Auth::user()->id);
+            $is_accepted_request = Auth::user()->is_accept_request($user->id);
             $is_send_request =  Auth::user()->is_requesting($id);
-
+            $is_sent_request_by_you = $user->is_requesting(Auth::user()->id);
             $its_me = Auth::user()->id == $id;
         }else{
             $is_following = null;
             $its_me = false;
+            $is_accepted_request_by_you = false;
+            $is_accepted_request = false;
+            $is_send_request = false;
+            $is_sent_request_by_you =false;
       
         }
 
@@ -84,8 +89,10 @@ class UsersController extends Controller
             'works' => $works, 
             'is_following' => $is_following, 
             'its_me' => $its_me,
-            'is_accepted_request' => $is_accepted_request,
+            'is_accepted_request_by_you' => $is_accepted_request_by_you,
             'is_send_request' => $is_send_request,
+            'is_sent_request_by_you' => $is_sent_request_by_you,
+            'is_accepted_request' => $is_accepted_request,
 
         ]);
 

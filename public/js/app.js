@@ -14720,14 +14720,19 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-  name: 'Footer',
+  name: 'NavbarPage',
   components: {
-    mdbFooter: mdbvue__WEBPACK_IMPORTED_MODULE_0__["mdbFooter"],
-    mdbContainer: mdbvue__WEBPACK_IMPORTED_MODULE_0__["mdbContainer"],
-    mdbRow: mdbvue__WEBPACK_IMPORTED_MODULE_0__["mdbRow"],
-    mdbCol: mdbvue__WEBPACK_IMPORTED_MODULE_0__["mdbCol"]
+    mdbNavbar: mdbvue__WEBPACK_IMPORTED_MODULE_0__["mdbNavbar"],
+    mdbNavbarBrand: mdbvue__WEBPACK_IMPORTED_MODULE_0__["mdbNavbarBrand"],
+    mdbNavbarToggler: mdbvue__WEBPACK_IMPORTED_MODULE_0__["mdbNavbarToggler"],
+    mdbNavbarNav: mdbvue__WEBPACK_IMPORTED_MODULE_0__["mdbNavbarNav"],
+    mdbNavItem: mdbvue__WEBPACK_IMPORTED_MODULE_0__["mdbNavItem"],
+    mdbInput: mdbvue__WEBPACK_IMPORTED_MODULE_0__["mdbInput"]
   }
 });
 
@@ -17071,6 +17076,23 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -17083,6 +17105,8 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         is_following: '',
         its_me: false,
         is_send_request: false,
+        is_sent_request_by_you: false,
+        is_accepted_request_by_you: false,
         is_accepted_request: false
       },
       tab: 'timeline',
@@ -17104,7 +17128,9 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
           sentence: 'More'
         }
       },
-      is_processing: false
+      is_processing: false,
+      requestForm: '',
+      requestModal: false
     };
   },
   components: {
@@ -17117,7 +17143,13 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     mdbListGroup: mdbvue__WEBPACK_IMPORTED_MODULE_2__["mdbListGroup"],
     mdbListGroupItem: mdbvue__WEBPACK_IMPORTED_MODULE_2__["mdbListGroupItem"],
     mdbTabs: mdbvue__WEBPACK_IMPORTED_MODULE_2__["mdbTabs"],
-    mdbIcon: mdbvue__WEBPACK_IMPORTED_MODULE_2__["mdbIcon"]
+    mdbIcon: mdbvue__WEBPACK_IMPORTED_MODULE_2__["mdbIcon"],
+    mdbModal: mdbvue__WEBPACK_IMPORTED_MODULE_2__["mdbModal"],
+    mdbModalHeader: mdbvue__WEBPACK_IMPORTED_MODULE_2__["mdbModalHeader"],
+    mdbModalTitle: mdbvue__WEBPACK_IMPORTED_MODULE_2__["mdbModalTitle"],
+    mdbModalBody: mdbvue__WEBPACK_IMPORTED_MODULE_2__["mdbModalBody"],
+    mdbModalFooter: mdbvue__WEBPACK_IMPORTED_MODULE_2__["mdbModalFooter"],
+    mdbTextarea: mdbvue__WEBPACK_IMPORTED_MODULE_2__["mdbTextarea"]
   },
   props: {
     user_id: String
@@ -17164,7 +17196,9 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                 _this.userInfo.its_me = response.data.its_me;
                 _this.userInfo.user = response.data.user;
                 _this.userInfo.is_send_request = response.data.is_send_request;
-                _this.userInfo.is_accepted_request = response.data.is_accepted_request; // this.currentPage = response.data.current_page
+                _this.userInfo.is_accepted_request_by_you = response.data.is_accepted_request_by_you;
+                _this.userInfo.is_accepted_request = response.data.is_accepted_request;
+                _this.userInfo.is_sent_request_by_you = response.data.is_sent_request_by_you; // this.currentPage = response.data.current_page
                 // this.lastPage = response.data.last_page
 
                 console.log(response.data);
@@ -17183,7 +17217,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                   _this.moreButtonStat.timeline.isActive = false;
                 }
 
-              case 26:
+              case 28:
               case "end":
                 return _context.stop();
             }
@@ -17271,6 +17305,91 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         }, _callee3);
       }))();
     },
+    sendRequest: function sendRequest() {
+      var _this4 = this;
+
+      return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee4() {
+        var response;
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee4$(_context4) {
+          while (1) {
+            switch (_context4.prev = _context4.next) {
+              case 0:
+                _this4.is_processing = true;
+                _context4.next = 3;
+                return axios.post("/api/users/".concat(_this4.user_id, "/send_request"), {
+                  'message': _this4.requestForm
+                });
+
+              case 3:
+                response = _context4.sent;
+
+                if (!(response.status !== _util__WEBPACK_IMPORTED_MODULE_1__["OK"])) {
+                  _context4.next = 9;
+                  break;
+                }
+
+                _this4.$store.commit('error/setCode', response.status);
+
+                return _context4.abrupt("return", false);
+
+              case 9:
+                _this4.userInfo.is_send_request = true;
+
+              case 10:
+                _this4.requestModal = false;
+                _this4.is_processing = false;
+
+              case 12:
+              case "end":
+                return _context4.stop();
+            }
+          }
+        }, _callee4);
+      }))();
+    },
+    removeRequest: function removeRequest() {
+      var _this5 = this;
+
+      return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee5() {
+        var response;
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee5$(_context5) {
+          while (1) {
+            switch (_context5.prev = _context5.next) {
+              case 0:
+                _this5.is_processing = true;
+                _context5.next = 3;
+                return axios["delete"]("/api/users/".concat(_this5.user_id, "/send_request"));
+
+              case 3:
+                response = _context5.sent;
+
+                if (!(response.status !== _util__WEBPACK_IMPORTED_MODULE_1__["OK"])) {
+                  _context5.next = 9;
+                  break;
+                }
+
+                _this5.$store.commit('error/setCode', response.status);
+
+                return _context5.abrupt("return", false);
+
+              case 9:
+                _this5.userInfo.is_send_request = false;
+
+              case 10:
+                _this5.is_processing = false;
+
+              case 11:
+              case "end":
+                return _context5.stop();
+            }
+          }
+        }, _callee5);
+      }))();
+    },
+    clearRequestModal: function clearRequestModal() {
+      this.requestModal = false;
+      this.requestForm = "";
+    },
     moreWork: function moreWork() {
       this.pagination.work += 1;
       this.buttonMore.work = true;
@@ -17293,22 +17412,22 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
   watch: {
     $route: {
       handler: function handler() {
-        var _this4 = this;
+        var _this6 = this;
 
-        return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee4() {
-          return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee4$(_context4) {
+        return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee6() {
+          return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee6$(_context6) {
             while (1) {
-              switch (_context4.prev = _context4.next) {
+              switch (_context6.prev = _context6.next) {
                 case 0:
-                  _context4.next = 2;
-                  return _this4.fetchUserDetail();
+                  _context6.next = 2;
+                  return _this6.fetchUserDetail();
 
                 case 2:
                 case "end":
-                  return _context4.stop();
+                  return _context6.stop();
               }
             }
-          }, _callee4);
+          }, _callee6);
         }))();
       },
       immediate: true
@@ -22005,7 +22124,7 @@ var render = function() {
       _c("div", { staticClass: "container" }, [_c("RouterView")], 1)
     ]),
     _vm._v(" "),
-    _c("footer", [_c("Footer")], 1)
+    _c("footer")
   ])
 }
 var staticRenderFns = []
@@ -22031,35 +22150,51 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c(
-    "mdb-footer",
-    {
-      staticClass: "font-small pt-4 mt-4 text-dark",
-      attrs: { color: "grey lighten-2" }
-    },
+    "mdb-navbar",
+    { attrs: { color: "default", position: "bottom", dark: "" } },
     [
       _c(
-        "div",
-        { staticClass: "footer-copyright text-center py-3 text-dark" },
+        "mdb-navbar-toggler",
         [
           _c(
-            "mdb-container",
-            { staticClass: "text-dark", attrs: { fluid: "" } },
+            "mdb-navbar-nav",
             [
-              _vm._v("\n      © 2020 Copyright: "),
-              _c(
-                "a",
-                {
-                  staticClass: "text-dark",
-                  attrs: { href: "https://www.MDBootstrap.com" }
-                },
-                [_vm._v(" MDBootstrap.com ")]
-              )
-            ]
+              _c("mdb-nav-item", { attrs: { href: "#", active: "" } }, [
+                _vm._v("Home")
+              ]),
+              _vm._v(" "),
+              _c("mdb-nav-item", { attrs: { href: "#" } }, [
+                _vm._v("Features")
+              ]),
+              _vm._v(" "),
+              _c("mdb-nav-item", { attrs: { href: "#" } }, [_vm._v("Pricing")])
+            ],
+            1
+          ),
+          _vm._v(" "),
+          _c(
+            "form",
+            [
+              _c("mdb-input", {
+                staticClass: "text-white",
+                attrs: {
+                  type: "text",
+                  placeholder: "Search",
+                  "aria-label": "Search",
+                  label: "",
+                  navInput: "",
+                  waves: "",
+                  "waves-fixed": ""
+                }
+              })
+            ],
+            1
           )
         ],
         1
       )
-    ]
+    ],
+    1
   )
 }
 var staticRenderFns = []
@@ -24024,372 +24159,487 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", [
-    _c("div", { staticClass: "container mt-3" }, [
-      _c("div", { staticClass: "row" }, [
-        _c(
-          "div",
-          { staticClass: "col-sm-6 " },
-          [
-            _c(
-              "div",
-              { staticClass: "text-center" },
-              [
-                _c("mdb-card-image", {
-                  staticClass: "circle_img ",
-                  attrs: { src: "", alt: "" }
-                })
-              ],
-              1
-            ),
-            _vm._v(" "),
-            _c(
-              "mdb-card",
-              { staticClass: "shadow-none" },
-              [
-                _c(
-                  "mdb-card-body",
-                  [
-                    _c(
-                      "mdb-card-title",
-                      { staticClass: "mb-3 text-center nav-style" },
-                      [_vm._v(_vm._s(_vm.userInfo.user.name))]
-                    ),
-                    _vm._v(" "),
-                    this.isLogin && !_vm.userInfo.its_me
-                      ? _c("div", { staticClass: "text-center " }, [
-                          !_vm.userInfo.is_following
-                            ? _c(
-                                "div",
-                                [
-                                  _c(
-                                    "mdb-btn",
-                                    {
-                                      staticClass: "shadow-none",
-                                      attrs: {
-                                        disabled: _vm.is_processing,
-                                        color: "primary"
-                                      },
-                                      on: { click: _vm.follow }
-                                    },
-                                    [_vm._v("Follow")]
-                                  )
-                                ],
-                                1
-                              )
-                            : _vm._e(),
-                          _vm._v(" "),
-                          _vm.userInfo.is_following
-                            ? _c(
-                                "div",
-                                [
-                                  _c(
-                                    "mdb-btn",
-                                    {
-                                      staticClass: "shadow-none",
-                                      attrs: {
-                                        disabled: _vm.is_processing,
-                                        color: "danger"
-                                      },
-                                      on: { click: _vm.unFollow }
-                                    },
-                                    [_vm._v("unFollow")]
-                                  )
-                                ],
-                                1
-                              )
-                            : _vm._e(),
-                          _vm._v(" "),
-                          !_vm.userInfo.is_accepted_request &&
-                          !_vm.userInfo.is_send_request
-                            ? _c(
-                                "div",
-                                [
-                                  _c(
-                                    "mdb-btn",
-                                    {
-                                      staticClass: "shadow-none",
-                                      attrs: {
-                                        disabled: _vm.is_processing,
-                                        color: "success"
-                                      },
-                                      on: { click: _vm.follow }
-                                    },
-                                    [_vm._v("Send chat request")]
-                                  )
-                                ],
-                                1
-                              )
-                            : _vm._e(),
-                          _vm._v(" "),
-                          !_vm.userInfo.is_accepted_request &&
-                          _vm.userInfo.is_send_request
-                            ? _c(
-                                "div",
-                                [
-                                  _c(
-                                    "mdb-btn",
-                                    {
-                                      staticClass: "shadow-none",
-                                      attrs: {
-                                        disabled: _vm.is_processing,
-                                        color: "MDB-color"
-                                      },
-                                      on: { click: _vm.follow }
-                                    },
-                                    [_vm._v("requesting")]
-                                  )
-                                ],
-                                1
-                              )
-                            : _vm._e()
-                        ])
-                      : _vm._e(),
-                    _vm._v(" "),
-                    _c("div", { staticClass: "row mt-3 text-center" }, [
-                      _c(
-                        "div",
-                        { staticClass: "col-6" },
-                        [
-                          _c("div", { staticClass: "h4 brown-text" }, [
-                            _vm._v(
-                              " " + _vm._s(_vm.userInfo.user.followers_count)
-                            )
-                          ]),
-                          _vm._v(" "),
-                          _c("mdb-card-text", [_vm._v("Follower")])
-                        ],
-                        1
-                      ),
-                      _vm._v(" "),
-                      _c(
-                        "div",
-                        { staticClass: "col-6" },
-                        [
-                          _c("div", { staticClass: "h4 brown-text" }, [
-                            _vm._v(
-                              " " + _vm._s(_vm.userInfo.user.followings_count)
-                            )
-                          ]),
-                          _vm._v(" "),
-                          _c("mdb-card-text", [_vm._v("Following")])
-                        ],
-                        1
-                      )
-                    ]),
-                    _vm._v(" "),
-                    _c("mdb-card-text", {
-                      staticClass: "text-center mt-3",
-                      staticStyle: { "white-space": "pre-wrap" },
-                      domProps: { innerHTML: _vm._s(_vm.userInfo.user.profile) }
-                    })
-                  ],
-                  1
-                )
-              ],
-              1
-            )
-          ],
-          1
-        ),
-        _vm._v(" "),
-        _c("div", { staticClass: "col-sm-6" }, [
+  return _c(
+    "div",
+    [
+      _c("div", { staticClass: "container mt-3" }, [
+        _c("div", { staticClass: "row" }, [
           _c(
             "div",
-            {
-              staticClass: "d-flex w-100 justify-content-between",
-              attrs: { "d-flex": "" }
-            },
+            { staticClass: "col-sm-6 " },
             [
               _c(
-                "button",
-                {
-                  staticClass: " w-100 btn btn-elegant",
-                  attrs: { disabled: _vm.tab == "timeline" },
-                  on: {
-                    click: function($event) {
-                      _vm.tab = "timeline"
-                    }
-                  }
-                },
-                [_vm._v("TimeLine")]
+                "div",
+                { staticClass: "text-center" },
+                [
+                  _c("mdb-card-image", {
+                    staticClass: "circle_img ",
+                    attrs: { src: "", alt: "" }
+                  })
+                ],
+                1
               ),
               _vm._v(" "),
               _c(
-                "button",
-                {
-                  staticClass: "w-100 btn btn-elegant",
-                  attrs: { disabled: _vm.tab == "work" },
-                  on: {
-                    click: function($event) {
-                      _vm.tab = "work"
-                    }
-                  }
-                },
-                [_vm._v("Works")]
-              )
-            ]
-          ),
-          _vm._v(" "),
-          _vm.tab == "work"
-            ? _c(
-                "div",
-                { staticClass: "col-12" },
+                "mdb-card",
+                { staticClass: "shadow-none" },
                 [
-                  _vm._l(_vm.userInfo.works, function(work) {
-                    return _c(
-                      "mdb-list-group",
-                      { key: work.id, attrs: { flush: "" } },
-                      _vm._l(work, function(d) {
-                        return _c("mdb-list-group-item", { key: d.id }, [
-                          _c("div", [
-                            _c("div", {
-                              staticClass:
-                                "d-flex w-100 justify-content-between"
-                            }),
-                            _vm._v(" "),
-                            _c(
-                              "p",
-                              { staticClass: "mb-2" },
-                              [
-                                _c(
-                                  "router-link",
-                                  {
-                                    staticClass: "mb-2",
-                                    attrs: {
-                                      to: {
-                                        name: "workDetail",
-                                        params: { work_id: d.id }
-                                      }
-                                    }
-                                  },
-                                  [_vm._v(_vm._s(d.title))]
-                                )
-                              ],
-                              1
-                            ),
-                            _vm._v(" "),
-                            _c("small", [_vm._v(_vm._s(d.created_at))])
-                          ])
-                        ])
-                      }),
-                      1
-                    )
-                  }),
-                  _vm._v(" "),
                   _c(
-                    "div",
-                    { staticClass: " d-flex w-100 justify-content-between" },
+                    "mdb-card-body",
                     [
-                      _vm.tab == "work"
-                        ? _c(
-                            "button",
-                            {
-                              staticClass: "btn btn-elegant w-100",
-                              attrs: {
-                                disabled: !this.moreButtonStat.work.isActive
-                              },
-                              on: { click: _vm.moreWork }
-                            },
-                            [_vm._v(_vm._s(this.moreButtonStat.work.sentence))]
-                          )
-                        : _vm._e()
-                    ]
-                  )
-                ],
-                2
-              )
-            : _vm._e(),
-          _vm._v(" "),
-          _vm.tab == "timeline"
-            ? _c(
-                "div",
-                { staticClass: "col-12" },
-                [
-                  _vm._l(_vm.userInfo.timelines, function(timeline) {
-                    return _c(
-                      "mdb-list-group",
-                      { key: timeline.id, attrs: { flush: "" } },
-                      _vm._l(timeline, function(d) {
-                        return _c("mdb-list-group-item", { key: d.id }, [
-                          _c("div", [
-                            _c("div", {
-                              staticClass:
-                                "d-flex w-100 justify-content-between"
-                            }),
+                      _c(
+                        "mdb-card-title",
+                        { staticClass: "mb-3 text-center nav-style" },
+                        [_vm._v(_vm._s(_vm.userInfo.user.name))]
+                      ),
+                      _vm._v(" "),
+                      this.isLogin && !_vm.userInfo.its_me
+                        ? _c("div", { staticClass: "text-center " }, [
+                            !_vm.userInfo.is_following
+                              ? _c(
+                                  "div",
+                                  [
+                                    _c(
+                                      "mdb-btn",
+                                      {
+                                        staticClass: "shadow-none",
+                                        attrs: {
+                                          disabled: _vm.is_processing,
+                                          color: "primary"
+                                        },
+                                        on: { click: _vm.follow }
+                                      },
+                                      [_vm._v("Follow")]
+                                    )
+                                  ],
+                                  1
+                                )
+                              : _vm._e(),
                             _vm._v(" "),
-                            _c("p", { staticClass: "mb-2" }, [
+                            _vm.userInfo.is_following
+                              ? _c(
+                                  "div",
+                                  [
+                                    _c(
+                                      "mdb-btn",
+                                      {
+                                        staticClass: "shadow-none",
+                                        attrs: {
+                                          disabled: _vm.is_processing,
+                                          color: "danger"
+                                        },
+                                        on: { click: _vm.unFollow }
+                                      },
+                                      [_vm._v("unFollow")]
+                                    )
+                                  ],
+                                  1
+                                )
+                              : _vm._e(),
+                            _vm._v(" "),
+                            !_vm.userInfo.is_accepted_request &&
+                            !_vm.userInfo.is_accepted_request_by_you &&
+                            !_vm.userInfo.is_send_request &&
+                            !_vm.userInfo.is_sent_request_by_you
+                              ? _c(
+                                  "div",
+                                  [
+                                    _c(
+                                      "mdb-btn",
+                                      {
+                                        staticClass: "shadow-none",
+                                        attrs: {
+                                          disabled: _vm.is_processing,
+                                          color: "success"
+                                        },
+                                        on: {
+                                          click: function($event) {
+                                            _vm.requestModal = true
+                                          }
+                                        }
+                                      },
+                                      [_vm._v("Send chat request")]
+                                    )
+                                  ],
+                                  1
+                                )
+                              : _vm._e(),
+                            _vm._v(" "),
+                            !_vm.userInfo.is_accepted_request &&
+                            !_vm.userInfo.is_accepted_request_by_you &&
+                            _vm.userInfo.is_send_request &&
+                            !_vm.userInfo.is_sent_request_by_you
+                              ? _c(
+                                  "div",
+                                  [
+                                    _c(
+                                      "mdb-btn",
+                                      {
+                                        staticClass: "shadow-none",
+                                        attrs: {
+                                          disabled: _vm.is_processing,
+                                          color: "mdb-color"
+                                        },
+                                        on: { click: _vm.removeRequest }
+                                      },
+                                      [_vm._v("requesting")]
+                                    )
+                                  ],
+                                  1
+                                )
+                              : _vm._e(),
+                            _vm._v(" "),
+                            !_vm.userInfo.is_accepted_request &&
+                            !_vm.userInfo.is_accepted_request_by_you &&
+                            _vm.userInfo.is_sent_request_by_you
+                              ? _c(
+                                  "div",
+                                  [
+                                    _c(
+                                      "mdb-btn",
+                                      {
+                                        staticClass: "shadow-none",
+                                        attrs: {
+                                          disabled: _vm.is_processing,
+                                          color: "warning"
+                                        },
+                                        on: { click: _vm.removeRequest }
+                                      },
+                                      [_vm._v("accept")]
+                                    )
+                                  ],
+                                  1
+                                )
+                              : _vm._e()
+                          ])
+                        : _vm._e(),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "row mt-3 text-center" }, [
+                        _c(
+                          "div",
+                          { staticClass: "col-6" },
+                          [
+                            _c("div", { staticClass: "h4 brown-text" }, [
                               _vm._v(
-                                "\n                                        " +
-                                  _vm._s(d.content) +
-                                  "\n                                    "
+                                " " + _vm._s(_vm.userInfo.user.followers_count)
                               )
                             ]),
                             _vm._v(" "),
-                            _c("small", [_vm._v(_vm._s(d.created_at))])
-                          ])
-                        ])
-                      }),
-                      1
-                    )
-                  }),
-                  _vm._v(" "),
-                  _c(
-                    "div",
-                    { staticClass: "d-flex w-100 justify-content-between" },
-                    [
-                      _vm.tab == "timeline"
-                        ? _c(
-                            "button",
-                            {
-                              staticClass: "btn btn-elegant w-100",
-                              attrs: {
-                                disabled: !this.moreButtonStat.timeline.isActive
-                              },
-                              on: { click: _vm.moreTimeline }
-                            },
-                            [
+                            _c("mdb-card-text", [_vm._v("Follower")])
+                          ],
+                          1
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "div",
+                          { staticClass: "col-6" },
+                          [
+                            _c("div", { staticClass: "h4 brown-text" }, [
                               _vm._v(
-                                _vm._s(this.moreButtonStat.timeline.sentence)
+                                " " + _vm._s(_vm.userInfo.user.followings_count)
                               )
-                            ]
-                          )
-                        : _vm._e()
-                    ]
+                            ]),
+                            _vm._v(" "),
+                            _c("mdb-card-text", [_vm._v("Following")])
+                          ],
+                          1
+                        )
+                      ]),
+                      _vm._v(" "),
+                      _c("mdb-card-text", {
+                        staticClass: "text-center mt-3",
+                        staticStyle: { "white-space": "pre-wrap" },
+                        domProps: {
+                          innerHTML: _vm._s(_vm.userInfo.user.profile)
+                        }
+                      })
+                    ],
+                    1
                   )
                 ],
-                2
+                1
               )
-            : _vm._e()
-        ])
-      ])
-    ]),
-    _vm._v(" "),
-    _vm.userInfo.its_me
-      ? _c(
-          "div",
-          {
-            staticClass: "btn-circle-flat shadow",
-            on: {
-              click: function($event) {
-                return _vm.$router.push({
-                  name: "editUser",
-                  params: _vm.user_id
-                })
-              }
-            }
-          },
-          [
+            ],
+            1
+          ),
+          _vm._v(" "),
+          _c("div", { staticClass: "col-sm-6" }, [
             _c(
-              "span",
-              { staticClass: "h2 mousepointer-hand" },
-              [_c("mdb-icon", { attrs: { icon: "pen" } })],
-              1
-            )
-          ]
-        )
-      : _vm._e()
-  ])
+              "div",
+              {
+                staticClass: "d-flex w-100 justify-content-between",
+                attrs: { "d-flex": "" }
+              },
+              [
+                _c(
+                  "button",
+                  {
+                    staticClass: " w-100 btn btn-elegant",
+                    attrs: { disabled: _vm.tab == "timeline" },
+                    on: {
+                      click: function($event) {
+                        _vm.tab = "timeline"
+                      }
+                    }
+                  },
+                  [_vm._v("TimeLine")]
+                ),
+                _vm._v(" "),
+                _c(
+                  "button",
+                  {
+                    staticClass: "w-100 btn btn-elegant",
+                    attrs: { disabled: _vm.tab == "work" },
+                    on: {
+                      click: function($event) {
+                        _vm.tab = "work"
+                      }
+                    }
+                  },
+                  [_vm._v("Works")]
+                )
+              ]
+            ),
+            _vm._v(" "),
+            _vm.tab == "work"
+              ? _c(
+                  "div",
+                  { staticClass: "col-12" },
+                  [
+                    _vm._l(_vm.userInfo.works, function(work) {
+                      return _c(
+                        "mdb-list-group",
+                        { key: work.id, attrs: { flush: "" } },
+                        _vm._l(work, function(d) {
+                          return _c("mdb-list-group-item", { key: d.id }, [
+                            _c("div", [
+                              _c("div", {
+                                staticClass:
+                                  "d-flex w-100 justify-content-between"
+                              }),
+                              _vm._v(" "),
+                              _c(
+                                "p",
+                                { staticClass: "mb-2" },
+                                [
+                                  _c(
+                                    "router-link",
+                                    {
+                                      staticClass: "mb-2",
+                                      attrs: {
+                                        to: {
+                                          name: "workDetail",
+                                          params: { work_id: d.id }
+                                        }
+                                      }
+                                    },
+                                    [_vm._v(_vm._s(d.title))]
+                                  )
+                                ],
+                                1
+                              ),
+                              _vm._v(" "),
+                              _c("small", [_vm._v(_vm._s(d.created_at))])
+                            ])
+                          ])
+                        }),
+                        1
+                      )
+                    }),
+                    _vm._v(" "),
+                    _c(
+                      "div",
+                      { staticClass: " d-flex w-100 justify-content-between" },
+                      [
+                        _vm.tab == "work"
+                          ? _c(
+                              "button",
+                              {
+                                staticClass: "btn btn-elegant w-100",
+                                attrs: {
+                                  disabled: !this.moreButtonStat.work.isActive
+                                },
+                                on: { click: _vm.moreWork }
+                              },
+                              [
+                                _vm._v(
+                                  _vm._s(this.moreButtonStat.work.sentence)
+                                )
+                              ]
+                            )
+                          : _vm._e()
+                      ]
+                    )
+                  ],
+                  2
+                )
+              : _vm._e(),
+            _vm._v(" "),
+            _vm.tab == "timeline"
+              ? _c(
+                  "div",
+                  { staticClass: "col-12" },
+                  [
+                    _vm._l(_vm.userInfo.timelines, function(timeline) {
+                      return _c(
+                        "mdb-list-group",
+                        { key: timeline.id, attrs: { flush: "" } },
+                        _vm._l(timeline, function(d) {
+                          return _c("mdb-list-group-item", { key: d.id }, [
+                            _c("div", [
+                              _c("div", {
+                                staticClass:
+                                  "d-flex w-100 justify-content-between"
+                              }),
+                              _vm._v(" "),
+                              _c("p", { staticClass: "mb-2" }, [
+                                _vm._v(
+                                  "\n                                        " +
+                                    _vm._s(d.content) +
+                                    "\n                                    "
+                                )
+                              ]),
+                              _vm._v(" "),
+                              _c("small", [_vm._v(_vm._s(d.created_at))])
+                            ])
+                          ])
+                        }),
+                        1
+                      )
+                    }),
+                    _vm._v(" "),
+                    _c(
+                      "div",
+                      { staticClass: "d-flex w-100 justify-content-between" },
+                      [
+                        _vm.tab == "timeline"
+                          ? _c(
+                              "button",
+                              {
+                                staticClass: "btn btn-elegant w-100",
+                                attrs: {
+                                  disabled: !this.moreButtonStat.timeline
+                                    .isActive
+                                },
+                                on: { click: _vm.moreTimeline }
+                              },
+                              [
+                                _vm._v(
+                                  _vm._s(this.moreButtonStat.timeline.sentence)
+                                )
+                              ]
+                            )
+                          : _vm._e()
+                      ]
+                    )
+                  ],
+                  2
+                )
+              : _vm._e()
+          ])
+        ])
+      ]),
+      _vm._v(" "),
+      _vm.userInfo.its_me
+        ? _c(
+            "div",
+            {
+              staticClass: "btn-circle-flat shadow",
+              on: {
+                click: function($event) {
+                  return _vm.$router.push({
+                    name: "editUser",
+                    params: _vm.user_id
+                  })
+                }
+              }
+            },
+            [
+              _c(
+                "span",
+                { staticClass: "h2 mousepointer-hand" },
+                [_c("mdb-icon", { attrs: { icon: "pen" } })],
+                1
+              )
+            ]
+          )
+        : _vm._e(),
+      _vm._v(" "),
+      _c(
+        "mdb-modal",
+        {
+          attrs: { show: _vm.requestModal },
+          on: {
+            close: function($event) {
+              _vm.requestForm = ""
+            }
+          }
+        },
+        [
+          _c(
+            "mdb-modal-header",
+            { attrs: { close: false } },
+            [_c("mdb-modal-title", [_vm._v("New Post")])],
+            1
+          ),
+          _vm._v(" "),
+          _c(
+            "mdb-modal-body",
+            [
+              _c("mdb-textarea", {
+                attrs: { rows: "3" },
+                model: {
+                  value: _vm.requestForm,
+                  callback: function($$v) {
+                    _vm.requestForm = $$v
+                  },
+                  expression: "requestForm"
+                }
+              })
+            ],
+            1
+          ),
+          _vm._v(" "),
+          _c(
+            "mdb-modal-footer",
+            [
+              _c(
+                "mdb-btn",
+                {
+                  staticClass: "shadow-none",
+                  attrs: { color: "danger" },
+                  nativeOn: {
+                    click: function($event) {
+                      return _vm.clearRequestModal()
+                    }
+                  }
+                },
+                [_vm._v("Close")]
+              ),
+              _vm._v(" "),
+              _c(
+                "mdb-btn",
+                {
+                  staticClass: "shadow-none",
+                  attrs: {
+                    disabled:
+                      _vm.requestForm.length > 255 ||
+                      _vm.requestForm.length <= 0,
+                    color: "mdb-color"
+                  },
+                  on: { click: _vm.sendRequest }
+                },
+                [_vm._v("send")]
+              )
+            ],
+            1
+          )
+        ],
+        1
+      )
+    ],
+    1
+  )
 }
 var staticRenderFns = []
 render._withStripped = true

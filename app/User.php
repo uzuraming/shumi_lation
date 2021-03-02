@@ -223,6 +223,24 @@ class User extends Authenticatable
         };
     }
 
+    // リクエストを作成する関数
+    public function remove_request($userId){
+
+        $exist = $this->is_requesting($userId);
+
+        if($exist){
+            $this->chat_requesting()->detach($userId);
+            return true;
+            
+        }else{
+            // なにもしない
+            return false; 
+        };
+    }
+    
+
+
+
     // messagesテーブルとの関係を定義
     public function messages(){
         return $this->belongsToMany(ChatRoom::class, 'messages', 'user_id','chat_room_id')->withPivot('message')->withTimestamps();

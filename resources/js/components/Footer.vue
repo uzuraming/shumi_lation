@@ -1,25 +1,30 @@
 <template>
-  <!-- Footer -->
-  <mdb-footer color="grey lighten-2" class="font-small pt-4 mt-4 text-dark">
-    
-    <div class="footer-copyright text-center py-3 text-dark">
-      <mdb-container fluid class="text-dark">
-        &copy; 2020 Copyright: <a class="text-dark" href="https://www.MDBootstrap.com"> MDBootstrap.com </a>
-      </mdb-container>
-    </div>
-  </mdb-footer>
-  <!-- Footer -->
+  <mdb-navbar color="default" position="bottom" dark>
+
+    <mdb-navbar-toggler>
+      <mdb-navbar-nav>
+        <mdb-nav-item href="#" active>Home</mdb-nav-item>
+        <mdb-nav-item href="#">Features</mdb-nav-item>
+        <mdb-nav-item href="#">Pricing</mdb-nav-item>
+      </mdb-navbar-nav>
+      <form>
+        <mdb-input type="text" class="text-white" placeholder="Search" aria-label="Search" label navInput waves waves-fixed/>
+      </form>
+    </mdb-navbar-toggler>
+  </mdb-navbar>
 </template>
 
 <script>
-  import { mdbFooter, mdbContainer, mdbRow, mdbCol } from 'mdbvue';
+  import { mdbNavbar, mdbNavbarBrand, mdbNavbarToggler, mdbNavbarNav, mdbNavItem, mdbInput } from 'mdbvue';
   export default {
-    name: 'Footer',
+    name: 'NavbarPage',
     components: {
-      mdbFooter,
-      mdbContainer,
-      mdbRow,
-      mdbCol
+      mdbNavbar,
+      mdbNavbarBrand,
+      mdbNavbarToggler,
+      mdbNavbarNav,
+      mdbNavItem,
+      mdbInput
     }
   }
 </script>

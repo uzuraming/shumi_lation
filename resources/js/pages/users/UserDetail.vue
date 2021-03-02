@@ -15,11 +15,14 @@
                             <div v-if="this.isLogin && !userInfo.its_me" class="text-center ">
                                 <div v-if='!userInfo.is_following'><mdb-btn class="shadow-none" :disabled="is_processing" @click="follow"  color="primary">Follow</mdb-btn></div>
                                 <div v-if='userInfo.is_following'><mdb-btn class="shadow-none" :disabled="is_processing" @click="unFollow" color="danger">unFollow</mdb-btn></div>
-                                <div v-if="!userInfo.is_accepted_request && !userInfo.is_send_request">
-                                    <mdb-btn class="shadow-none" :disabled="is_processing" @click="follow"  color="success">Send chat request</mdb-btn>
+                                <div v-if="!userInfo.is_accepted_request && !userInfo.is_accepted_request_by_you && !userInfo.is_send_request && !userInfo.is_sent_request_by_you">
+                                    <mdb-btn class="shadow-none" @click="requestModal = true" :disabled="is_processing" color="success">Send chat request</mdb-btn>
                                 </div>
-                                <div v-if="!userInfo.is_accepted_request && userInfo.is_send_request">
-                                    <mdb-btn class="shadow-none" :disabled="is_processing" @click="follow"  color="MDB-color">requesting</mdb-btn>
+                                <div v-if="!userInfo.is_accepted_request && !userInfo.is_accepted_request_by_you && userInfo.is_send_request && !userInfo.is_sent_request_by_you">
+                                    <mdb-btn class="shadow-none" :disabled="is_processing" @click="removeRequest"  color="mdb-color">requesting</mdb-btn>
+                                </div>
+                                <div v-if="!userInfo.is_accepted_request && !userInfo.is_accepted_request_by_you && userInfo.is_sent_request_by_you">
+                                    <mdb-btn class="shadow-none" :disabled="is_processing" @click="removeRequest"  color="warning">accept</mdb-btn>
                                 </div>
                             </div>
                             
@@ -118,6 +121,20 @@
             
         </div>
          <div v-if="userInfo.its_me" @click="$router.push({name:'editUser', params:user_id})" class="btn-circle-flat shadow"><span class="h2 mousepointer-hand"><mdb-icon icon="pen" /></span></div>
+
+         <mdb-modal :show="requestModal" @close="requestForm = ''">
+            <mdb-modal-header :close="false" >
+                <mdb-modal-title>New Post</mdb-modal-title>
+            </mdb-modal-header>
+            <mdb-modal-body>
+                <mdb-textarea rows="3" v-model="requestForm" />
+            </mdb-modal-body>
+            <mdb-modal-footer>
+                
+                <mdb-btn class="shadow-none" color="danger" @click.native="clearRequestModal()">Close</mdb-btn>
+                <mdb-btn class="shadow-none" @click="sendRequest" :disabled="requestForm.length>255 || requestForm.length<=0" color="mdb-color">send</mdb-btn>
+            </mdb-modal-footer>
+        </mdb-modal>
     
     </div>
     
@@ -126,7 +143,14 @@
 <script>
 import { OK } from '../../util'
 import { mdbCard, mdbCardImage, mdbCardBody, mdbCardTitle, mdbCardText, mdbBtn,mdbListGroup, 
-        mdbListGroupItem, mdbTabs, mdbIcon} from 'mdbvue'
+        mdbListGroupItem, mdbTabs, mdbIcon, mdbModal, 
+            mdbModalHeader, 
+            mdbModalTitle, 
+            mdbModalBody, 
+            mdbModalFooter,
+            mdbTextarea,}
+            
+         from 'mdbvue'
 export default {
     data(){
         return{
@@ -137,7 +161,10 @@ export default {
                 is_following:'',
                 its_me:false,
                 is_send_request:false,
+                is_sent_request_by_you:false,
+                is_accepted_request_by_you:false,
                 is_accepted_request:false,
+
             },
             tab:'timeline',
             pagination:{
@@ -160,6 +187,8 @@ export default {
 
             },
             is_processing:false,
+            requestForm:'',
+            requestModal:false,
         }
     },
     components:{
@@ -170,9 +199,15 @@ export default {
 			mdbCardText,
             mdbBtn,
             mdbListGroup, 
-        mdbListGroupItem,
-        mdbTabs,
-        mdbIcon
+            mdbListGroupItem,
+            mdbTabs,
+            mdbIcon,
+            mdbModal, 
+            mdbModalHeader, 
+            mdbModalTitle, 
+            mdbModalBody, 
+            mdbModalFooter,
+            mdbTextarea,
     },
     props:{
         user_id:String,
@@ -203,7 +238,11 @@ export default {
                 this.userInfo.its_me = response.data.its_me;
                 this.userInfo.user = response.data.user;
                 this.userInfo.is_send_request = response.data.is_send_request;
+                this.userInfo.is_accepted_request_by_you = response.data.is_accepted_request_by_you;
+
                 this.userInfo.is_accepted_request = response.data.is_accepted_request;
+
+                this.userInfo.is_sent_request_by_you = response.data.is_sent_request_by_you;
                 // this.currentPage = response.data.current_page
                 // this.lastPage = response.data.last_page
                 
@@ -258,6 +297,35 @@ export default {
             }
             this.is_processing = false;
 
+        },
+        async sendRequest(){
+            this.is_processing = true;
+            const response = await axios.post(`/api/users/${this.user_id}/send_request` ,{'message': this.requestForm});
+            if (response.status !== OK) {
+                this.$store.commit('error/setCode', response.status);
+                return false;
+            }else{
+                this.userInfo.is_send_request = true;
+            }
+            this.requestModal = false;
+            this.is_processing = false;
+
+        },
+        async removeRequest(){
+            this.is_processing = true;
+            const response = await axios.delete(`/api/users/${this.user_id}/send_request`);
+            if (response.status !== OK) {
+                this.$store.commit('error/setCode', response.status);
+                return false;
+            }else{
+                this.userInfo.is_send_request = false;
+            }
+            this.is_processing = false;
+
+        },
+        clearRequestModal(){
+                this.requestModal = false;
+                this.requestForm = "";
         },
         moreWork(){
             
