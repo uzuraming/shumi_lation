@@ -31,15 +31,15 @@ class ChatRequestController extends Controller
 
     // リクエスト一覧
     public function index(){
-        // ログイン中のユーザー
-        $auth = \Auth::user();
+        if(\Auth::check()){
+            // ログイン中のユーザー
+            $auth = \Auth::user();
+            $requesters = $auth->chat_requester()->wherePivot('approval', false)->orderBy('created_at', 'desc')->paginate(5);
+        }else{
+            $requesters = [];
+        }
         
-        $requesters = $auth->chat_requester()->orderBy('created_at', 'desc')->paginate(5);
-        
-        return view('chat_requests.index', [
-            'auth' => $auth,
-            'requesters' => $requesters
-        ]);
+        return $requesters;
 
 
     }
@@ -72,10 +72,20 @@ class ChatRequestController extends Controller
        
     }
 
+    public function refuse_request($id){
+  
+        $auth = \Auth::user();
+        
+        $auth->refuse_request($id);        
+       
+    }
+
+    
+
 
     public function remove_request($id){
         $auth = \Auth::user();
-        $requesting = $auth->remove_request($id);      
+        $requesting = $auth->remove_request($id);     
     }
 
     

@@ -52,6 +52,10 @@ Route::put('/users/{id}/', 'UsersController@update');
 Route::post('/users/{id}/send_request', 'ChatRequestController@store');
 Route::delete('/users/{id}/send_request', 'ChatRequestController@remove_request');
 
+Route::get('/requests', 'ChatRequestController@index');
+Route::delete('/requests/{id}', 'ChatRequestController@refuse_request');
+Route::put('/requests/{id}', 'ChatRequestController@accept_request');
+
 
 
 

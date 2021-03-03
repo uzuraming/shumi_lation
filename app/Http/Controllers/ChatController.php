@@ -8,12 +8,9 @@ class ChatController extends Controller
 {
     public function index(){
         $auth = \Auth::user();
-        $chat_rooms = $auth->chat_rooms;
-
-        return view('chat_rooms.index', [
-            'auth' => $auth,
-            'chat_rooms' => $chat_rooms
-        ]);
+        $chat_rooms = $auth->chat_rooms()->with(['chat_room_mate' => function ($query) {
+            $query->whereNotIn('user_id', [$auth->id]);
+        }])->get();
 
     }
 

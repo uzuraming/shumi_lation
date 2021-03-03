@@ -6,6 +6,7 @@ import Home from './pages/home.vue'
 import Login from './pages/Login.vue'
 import Signup from './pages/Signup.vue'
 import Timeline from './pages/Timelines.vue'
+import Request from './pages/Requests.vue'
 import Favorite from './pages/Favorites.vue'
 import Work from './pages/Works.vue'
 import Comment from './pages/Comments.vue'
@@ -43,7 +44,22 @@ const routes = [
       props: route => {
         const page = route.query.page
         return { page: /^[1-9][0-9]*$/.test(page) ? page * 1 : 1, pageName:'favorites' }
-    }
+      }
+    },
+    {
+      path: '/requests',
+      component: Request,
+      props: route => {
+        const page = route.query.page
+        return { page: /^[1-9][0-9]*$/.test(page) ? page * 1 : 1, pageName:'requests' }
+      },
+      beforeEnter (to, from, next) {
+        if (!store.getters['auth/check']) {
+          next('/')
+        } else {
+          next()
+        }
+      }
     },
     {
         path: '/works',

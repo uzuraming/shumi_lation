@@ -16,6 +16,9 @@ class ChatRoom extends Model
         return $this->belongsToMany(User::class, 'chat_user', 'chat_room_id', 'user_id')->withTimestamps();
     }
 
+    
+
+
 
 
 }

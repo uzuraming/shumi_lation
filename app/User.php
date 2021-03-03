@@ -285,7 +285,7 @@ class User extends Authenticatable
 
     // リクエストを拒否する関数
     public function refuse_request($userId){
-        if(!is_accept_request($userId)){
+        if(!$this->is_accept_request($userId)){
             $this->chat_requester()->detach($userId);
             return true;
 
@@ -298,7 +298,7 @@ class User extends Authenticatable
 
     // リクエストを許可する関数
     public function accept_request($userId){
-        if(!is_accept_request($userId)){
+        if(!$this->is_accept_request($userId)){
             $this->chat_requester()->updateExistingPivot($userId, ['approval' => true]);
             return true;
         }else{
