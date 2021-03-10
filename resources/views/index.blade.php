@@ -14,7 +14,7 @@
   
   
 </head>
-<body class="">
+<body class="rgba-brown-slight">
   <div id="app"></div>
 </body>
 </html>

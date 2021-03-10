@@ -4,7 +4,7 @@
      <header>
          <Navbar/>
      </header>
-     <main class="mt-5">
+     <main class="mt-3">
       <div class="container">
         <RouterView />
       </div>

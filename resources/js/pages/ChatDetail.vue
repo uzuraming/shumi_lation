@@ -1,0 +1,138 @@
+<template>
+  <div>
+      <div class="mb-5">
+          <div v-for="(message, index) in messages" :key="index">
+          <div :class="{'d-flex justify-content-end' : message.id == your_id}">
+                <div :class="{'balloon1_right' : message.id == your_id, 'balloon1_left' : message.id != your_id}" >
+                    <p>{{ message.pivot.message }}</p>
+                    <small>{{message.pivot.created_at}}</small>
+                </div>
+
+          </div>
+        
+
+      </div>
+
+
+      </div>
+      
+
+  <form class="form-inline row fixed-bottom white d-flex justify-content-center shadow">
+      <input class="form-control m-1 col-8" type="text" v-model="new_message">
+      <button @click="postChat" class="btn shadow-none btn-outline-success mx-1 col-2 px-1" type="button">send</button>
+    </form>
+
+
+  </div>
+</template>
+
+<script>
+import { OK } from '../util';
+
+export default {
+    data(){
+        return{
+            messages:[],
+            your_id:null,
+            new_message:"",
+
+        }
+    },
+    props:{
+        chat_room_id:String,
+    },
+    methods:{
+        async fetchChat(){
+            const response = await axios.get(`/api/chats/${this.chat_room_id}/`);
+            if (response.status !== OK) {
+                this.$store.commit('error/setCode', response.status)
+                return false
+            }
+
+            console.log(response)
+            this.messages = response.data.messages.data
+            this.your_id = response.data.your_id
+            console.log(this.messages)
+        },
+        async postChat(){
+            const response = await axios.post(`/api/chats/${this.chat_room_id}`, { 'message': this.new_message });
+            this.new_message = "";
+            console.log(response.status);
+            this.fetchChat();
+
+        },
+
+        
+    },
+
+    watch: {
+        $route: {
+        async handler () {
+            await this.fetchChat();
+        },
+        immediate: true
+        }
+    },
+
+
+}
+</script>
+
+<style scoped>
+    .balloon1_right {
+    position: relative;
+    display: inline-block;
+    margin: 1.5em 15px 1.5em 0;
+    padding: 7px 10px;
+    min-width: 50%;
+    max-width: 100%;
+    color: #555;
+    font-size: 16px;
+    background: #e0edff;
+    }
+
+    .balloon1_right:before {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 100%;
+    margin-top: -15px;
+    border: 15px solid transparent;
+    border-left: 15px solid #e0edff;
+    }
+
+    .balloon1_right p {
+    margin: 0;
+    padding: 0;
+    }
+
+
+    .balloon1_left {
+    position: relative;
+    display: inline-block;
+    margin: 1.5em 0 1.5em 15px;
+    padding: 7px 10px;
+    min-width: 50%;
+    max-width: 100%;
+    color: #555;
+    font-size: 16px;
+    background: #e0edff;
+    }
+
+    .balloon1_left:before {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: -30px;
+    margin-top: -15px;
+    border: 15px solid transparent;
+    border-right: 15px solid #e0edff;
+    }
+
+    .balloon1_left p {
+    margin: 0;
+    padding: 0;
+    }
+
+</style>>
+

@@ -9,21 +9,22 @@ class ChatController extends Controller
     public function index(){
         $auth = \Auth::user();
         $chat_rooms = $auth->chat_rooms()->with(['chat_room_mate' => function ($query) {
+            $auth = \Auth::user();
             $query->whereNotIn('user_id', [$auth->id]);
-        }])->get();
+        }])->orderBy('created_at', 'desc')->paginate(5);
+
+        return $chat_rooms;
 
     }
 
     public function show($id){
         $auth = \Auth::user();
         $chat_room = $auth->chat_rooms()->findOrFail($id);
-        $messages = $chat_room->messages;
+        $messages = $chat_room->messages()->orderBy('messages.created_at', 'asc')
+        ->paginate(10);
 
-        return view('chat_rooms.show', [
-            'auth' => $auth,
-            'chat_room' => $chat_room,
-            'messages' => $messages
-        ]);
+        return (['messages' => $messages, 'your_id' => $auth->id]);
+
       
     }
 
@@ -31,9 +32,6 @@ class ChatController extends Controller
         $auth = \Auth::user();
         $message = $request->message;
         $auth->send_message($id, $message);
-
-        return back();
-
     }
 
 

@@ -1,8 +1,11 @@
 <template>
     <div>
-        <mdb-list-group flush>
-            <mdb-list-group-item v-for="(timeline, index) in timelines" :key="index">
-                <div>
+        <mdb-list-group flush class="shadow rounded">
+            <mdb-list-group-item v-for="(timeline, index) in timelines" :key="index" class="row">
+                <div class="col-4">
+                    aaaaaaaaaaa
+                </div>
+                <div class="col-8">
                     <div class="d-flex w-100 justify-content-between">
                     <small>
                         <router-link class="mb-2" :to="{ name: 'userDetail', params: { user_id: timeline.user.id }}" >{{ timeline.user.name }}</router-link >
@@ -208,8 +211,8 @@
         text-decoration: none;
         background: #2E2E2E;
         color: #FFF;
-        width: 120px;
-        height: 120px;
+        width: 60px;
+        height: 60px;
         line-height: 120px;
         border-radius: 50%;
         text-align: center;

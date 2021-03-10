@@ -71,3 +71,8 @@ Route::post('/favorites/{id}', 'FavoriteController@store');
 Route::delete('/favorites/{id}', 'FavoriteController@destroy');
 
 Route::get('/favorites', 'FavoriteController@index');
+
+
+Route::get('/chats', 'ChatController@index');
+Route::get('/chats/{id}', 'ChatController@show');
+Route::post('/chats/{id}', 'ChatController@send_message');

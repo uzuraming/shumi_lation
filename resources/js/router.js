@@ -20,6 +20,9 @@ import store from './store'
 
 import SystemError from './pages/errors/System.vue'
 
+import Chat from './pages/Chat.vue'
+import ChatDetail from './pages/ChatDetail.vue'
+
 // VueRouterプラグインを使用する
 // これによって<RouterView />コンポーネントなどを使うことができる
 Vue.use(VueRouter)
@@ -144,7 +147,21 @@ const routes = [
           next()
         }
     }
-  }
+  },
+  {
+    path: '/chats',
+    component: Chat,
+    props: route => {
+        const page = route.query.page
+        return { page: /^[1-9][0-9]*$/.test(page) ? page * 1 : 1}
+    },
+  },
+  {
+    path: '/chats/:chat_room_id',
+    name:'chatDetail',
+    component: ChatDetail,
+    props: true,
+  },
 ]
 
 // VueRouterインスタンスを作成する

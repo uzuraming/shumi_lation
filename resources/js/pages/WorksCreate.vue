@@ -1,5 +1,20 @@
 <template>
-  <div>
+
+  <div class="">
+    <mdb-card class="card-body" style="">
+
+        <mdb-card-title v-if="pageName != 'editWork'" class="text-center">新規作成</mdb-card-title>
+        <mdb-card-title v-if="pageName == 'editWork'" class="text-center">{{title}}の編集</mdb-card-title>
+        <div class="flex-row">
+        <form @submit.prevent="pageName=='editWork'? editWork() : postWork()" class="mt-5">
+        <mdb-input label="title" v-model="title" type="text"/>
+        <vue-editor v-model="content" />
+        <div class="text-center mt-4">
+            <button class="btn btn-dark shadow-none rounded-0" :disabled="content.length<=0 || title.length<=0 || !isFormBtnActive"  type="submit">{{ formBtnMsg }}</button>
+        </div>
+    </form>
+        </div>
+    </mdb-card>
     <h2 v-if="pageName != 'editWork'" class="text-center">新規作成</h2>
     <h2 v-if="pageName == 'editWork'" class="text-center">{{title}}の編集</h2>
     
@@ -41,7 +56,8 @@ import { mdbBtn,
         mdbModalHeader, 
         mdbModalTitle, 
         mdbModalBody, 
-        mdbModalFooter,} from 'mdbvue';
+        mdbModalFooter,
+        mdbCard, mdbCardTitle, mdbCardText} from 'mdbvue';
 
 
 export default {
@@ -49,7 +65,8 @@ export default {
         mdbModalHeader, 
         mdbModalTitle, 
         mdbModalBody, 
-        mdbModalFooter, },
+        mdbModalFooter,
+        mdbCard, mdbCardTitle, mdbCardText },
     data(){
         return{
             content: "",
