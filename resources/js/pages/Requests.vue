@@ -1,6 +1,6 @@
 <template>
 
-<!-- ssssssss -->
+
   <div>
       <div class="h4" v-if="requests.length <= 0">
           チャットリクエストはありません。

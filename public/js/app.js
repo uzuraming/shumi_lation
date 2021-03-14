@@ -23937,7 +23937,7 @@ var render = function() {
     [
       _vm.requests.length <= 0
         ? _c("div", { staticClass: "h4" }, [
-            _vm._v("\n          チャットリクエストはありません。\n      ")
+            _vm._v("\n        チャットリクエストはありません。\n    ")
           ])
         : _vm._e(),
       _vm._v(" "),
@@ -23982,7 +23982,7 @@ var render = function() {
                   _c("small", [
                     _vm._v(
                       _vm._s(request.pivot.created_at) +
-                        "\n\n                        "
+                        "\n\n                      "
                     ),
                     _c(
                       "span",
