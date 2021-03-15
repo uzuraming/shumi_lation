@@ -11,7 +11,6 @@
                         <!-- <router-link class="mb-2" :to="{ name: 'userDetail', params: { user_id: timeline.user.id }}" >{{ timeline.user.name }}</router-link > -->
                     <small>{{chat.created_at}}</small>
                 </div>
-                <button @click="test(chat.chat_room_mate[0])"> aaa</button>
             </mdb-list-group-item>
         </mdb-list-group>
 

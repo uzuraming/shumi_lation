@@ -10,6 +10,7 @@ class Work extends Model
     protected $fillable = [
         'title',
         'content',
+        'genre'
     ];
     
 

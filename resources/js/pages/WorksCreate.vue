@@ -8,6 +8,15 @@
         <div class="flex-row">
         <form @submit.prevent="pageName=='editWork'? editWork() : postWork()" class="mt-5">
         <mdb-input label="title" v-model="title" type="text"/>
+        <select v-model="genre" class="browser-default custom-select mb-2">
+            <option value="文学" selected>文学</option>
+            <option value="エッセイ">エッセイ</option>
+            <option value="ライトノベル">ライトノベル</option>
+            <option value="ファンタジー">ファンタジー</option>
+            <option value="恋愛">恋愛</option>
+            <option value="SF">SF</option>
+            <option value="other">その他</option>
+        </select>
         <vue-editor v-model="content" />
         <div class="text-center mt-4">
             <button class="btn btn-dark shadow-none rounded-0" :disabled="content.length<=0 || title.length<=0 || !isFormBtnActive"  type="submit">{{ formBtnMsg }}</button>
@@ -76,6 +85,7 @@ export default {
             confirmation_modal:false,
             isDeleteBtnActive:true,
             deleteBtnMsg:'delete',
+            genre:'文学'
           
         }
     },
@@ -86,7 +96,7 @@ export default {
         async postWork(){  
                 this.isFormBtnActive = false;
                 this.formBtnMsg = 'Sending...';
-                const response = await axios.post('/api/works', {'content': this.content, 'title': this.title});
+                const response = await axios.post('/api/works', {'content': this.content, 'title': this.title, 'genre':this.genre});
              
                     // 戻る
                     this.$router.back()     
@@ -95,7 +105,7 @@ export default {
         async editWork(){  
                 this.isFormBtnActive = false;
                 this.formBtnMsg = 'Sending...';
-                const response = await axios.put(`/api/works/${this.$route.params.work_id}`, {'content': this.content, 'title': this.title});
+                const response = await axios.put(`/api/works/${this.$route.params.work_id}`, {'content': this.content, 'title': this.title, 'genre':this.genre});
              
                 // 戻る
                 this.$router.back()     

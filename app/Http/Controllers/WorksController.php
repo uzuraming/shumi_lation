@@ -10,14 +10,30 @@ use App\Comment;
 class WorksController extends Controller
 {
 
-     // フォローしているtimelineを表示
-     public function index()
-     {    
-        $works = Work::with(['user'])->orderBy('created_at', 'desc')->paginate(5);
- 
+  
+     public function index(Request $request)
+     {  
+        
+        if($request->genre == 'all'){
+            $works = Work::with(['user'])->orderBy('created_at', 'desc')->paginate(5);
+
+        }else{
+            $works = Work::with(['user'])->where('genre', $request->input('genre'))->orderBy('created_at', 'desc')->paginate(5);
+
+        }
+        
          // Welcomeビューでそれらを表示
         return $works;
     }
+
+    public function search_word(Request $request)
+     {  
+        
+        $works = Work::with(['user'])->where('title', 'like', '%'.$request->input('search_word').'%')->orderBy('created_at', 'desc')->paginate(5);
+
+        return $works;
+    }
+
 
     // workの詳細
     public function show($id){
@@ -106,6 +122,7 @@ class WorksController extends Controller
         // 現在ログイン中のユーザー
         $user = \Auth::user();
         $title = $request->title;
+        $genre = $request->genre;
         $content = $request->content;
 
 
@@ -113,6 +130,7 @@ class WorksController extends Controller
         // 作品を作成
         $user->works()->create([
             'title' => $title,
+            'genre' => $genre,
             'content' => $content
         ]);
 
@@ -143,11 +161,13 @@ class WorksController extends Controller
         $work = Work::findOrFail($id);
         if($work->user->id == \Auth::user()->id){
             $title = $request->title;
+            $genre = $request->genre;
             $content = $request->content;
 
             // 作品を作成
             $work->update([
                 'title' => $title,
+                'genre' => $genre,
                 'content' => $content
             ]);
         }

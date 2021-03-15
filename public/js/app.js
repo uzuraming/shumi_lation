@@ -14966,7 +14966,6 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
-//
  // ★ 追加
 
 
@@ -15090,8 +15089,6 @@ function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try
 
 function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
 
-//
-//
 //
 //
 //
@@ -16724,6 +16721,23 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
  // ★ 追加
 
 
@@ -16750,7 +16764,9 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       timelinesModal: false,
       timelinesForm: "",
       currentPage: 0,
-      lastPage: 0
+      lastPage: 0,
+      genre: 'all',
+      search_word: ""
     };
   },
   props: {
@@ -16771,7 +16787,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
             switch (_context.prev = _context.next) {
               case 0:
                 _context.next = 2;
-                return axios.get("/api/works/?page=".concat(_this.page));
+                return axios.get("/api/works/?page=".concat(_this.page, "&genre=").concat(_this.genre));
 
               case 2:
                 response = _context.sent;
@@ -16798,6 +16814,44 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
           }
         }, _callee);
       }))();
+    },
+    searchWorks: function searchWorks() {
+      var _this2 = this;
+
+      return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee2() {
+        var response;
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee2$(_context2) {
+          while (1) {
+            switch (_context2.prev = _context2.next) {
+              case 0:
+                _context2.next = 2;
+                return axios.get("/api/works/search/?page=".concat(_this2.page, "&search_word=").concat(_this2.search_word));
+
+              case 2:
+                response = _context2.sent;
+
+                if (!(response.status !== _util__WEBPACK_IMPORTED_MODULE_3__["OK"])) {
+                  _context2.next = 6;
+                  break;
+                }
+
+                _this2.$store.commit('error/setCode', response.status);
+
+                return _context2.abrupt("return", false);
+
+              case 6:
+                _this2.works = response.data.data;
+                console.log(response);
+                _this2.currentPage = response.data.current_page;
+                _this2.lastPage = response.data.last_page;
+
+              case 10:
+              case "end":
+                return _context2.stop();
+            }
+          }
+        }, _callee2);
+      }))();
     } // モーダルを初期化する関数
     // clearTimelineModal(){
     //     this.timelinesModal = false;
@@ -16813,22 +16867,22 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
   watch: {
     $route: {
       handler: function handler() {
-        var _this2 = this;
+        var _this3 = this;
 
-        return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee2() {
-          return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee2$(_context2) {
+        return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee3() {
+          return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee3$(_context3) {
             while (1) {
-              switch (_context2.prev = _context2.next) {
+              switch (_context3.prev = _context3.next) {
                 case 0:
-                  _context2.next = 2;
-                  return _this2.fetchWorks();
+                  _context3.next = 2;
+                  return _this3.fetchWorks();
 
                 case 2:
                 case "end":
-                  return _context2.stop();
+                  return _context3.stop();
               }
             }
-          }, _callee2);
+          }, _callee3);
         }))();
       },
       immediate: true
@@ -16915,6 +16969,15 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -16941,7 +17004,8 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       formBtnMsg: 'SEND',
       confirmation_modal: false,
       isDeleteBtnActive: true,
-      deleteBtnMsg: 'delete'
+      deleteBtnMsg: 'delete',
+      genre: '文学'
     };
   },
   props: {
@@ -16962,7 +17026,8 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                 _context.next = 4;
                 return axios.post('/api/works', {
                   'content': _this.content,
-                  'title': _this.title
+                  'title': _this.title,
+                  'genre': _this.genre
                 });
 
               case 4:
@@ -16993,7 +17058,8 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                 _context2.next = 4;
                 return axios.put("/api/works/".concat(_this2.$route.params.work_id), {
                   'content': _this2.content,
-                  'title': _this2.title
+                  'title': _this2.title,
+                  'genre': _this2.genre
                 });
 
               case 4:
@@ -20138,7 +20204,7 @@ exports = module.exports = __webpack_require__(/*! ../../../node_modules/css-loa
 
 
 // module
-exports.push([module.i, "\n.balloon1_right[data-v-011b7b92] {\nposition: relative;\ndisplay: inline-block;\nmargin: 1.5em 15px 1.5em 0;\npadding: 7px 10px;\nmin-width: 50%;\nmax-width: 100%;\ncolor: #555;\nfont-size: 16px;\nbackground: #e0edff;\n}\n.balloon1_right[data-v-011b7b92]:before {\ncontent: \"\";\nposition: absolute;\ntop: 50%;\nleft: 100%;\nmargin-top: -15px;\nborder: 15px solid transparent;\nborder-left: 15px solid #e0edff;\n}\n.balloon1_right p[data-v-011b7b92] {\nmargin: 0;\npadding: 0;\n}\n.balloon1_left[data-v-011b7b92] {\nposition: relative;\ndisplay: inline-block;\nmargin: 1.5em 0 1.5em 15px;\npadding: 7px 10px;\nmin-width: 50%;\nmax-width: 100%;\ncolor: #555;\nfont-size: 16px;\nbackground: #e0edff;\n}\n.balloon1_left[data-v-011b7b92]:before {\ncontent: \"\";\nposition: absolute;\ntop: 50%;\nleft: -30px;\nmargin-top: -15px;\nborder: 15px solid transparent;\nborder-right: 15px solid #e0edff;\n}\n.balloon1_left p[data-v-011b7b92] {\nmargin: 0;\npadding: 0;\n}\n\n", ""]);
+exports.push([module.i, "\n.balloon1_right[data-v-011b7b92] {\nposition: relative;\ndisplay: inline-block;\nmargin: 1.5em 15px 1.5em 0;\npadding: 7px 10px;\nmin-width: 50%;\nmax-width: 100%;\ncolor: white;\nfont-size: 16px;\nbackground: #2E2E2E;\n}\n.balloon1_right[data-v-011b7b92]:before {\ncontent: \"\";\nposition: absolute;\ntop: 50%;\nleft: 100%;\nmargin-top: -15px;\nborder: 15px solid transparent;\nborder-left: 15px solid #2E2E2E;\n}\n.balloon1_right p[data-v-011b7b92] {\nmargin: 0;\npadding: 0;\n}\n.balloon1_left[data-v-011b7b92] {\nposition: relative;\ndisplay: inline-block;\nmargin: 1.5em 0 1.5em 15px;\npadding: 7px 10px;\nmin-width: 50%;\nmax-width: 100%;\ncolor: #555;\nfont-size: 16px;\nbackground: white;\n}\n.balloon1_left[data-v-011b7b92]:before {\ncontent: \"\";\nposition: absolute;\ntop: 50%;\nleft: -30px;\nmargin-top: -15px;\nborder: 15px solid transparent;\nborder-right: 15px solid white;\n}\n.balloon1_left p[data-v-011b7b92] {\nmargin: 0;\npadding: 0;\n}\n\n", ""]);
 
 // exports
 
@@ -23090,18 +23156,6 @@ var render = function() {
                 _c("small", [_vm._v(_vm._s(chat.created_at))])
               ],
               2
-            ),
-            _vm._v(" "),
-            _c(
-              "button",
-              {
-                on: {
-                  click: function($event) {
-                    return _vm.test(chat.chat_room_mate[0])
-                  }
-                }
-              },
-              [_vm._v(" aaa")]
             )
           ])
         }),
@@ -23214,7 +23268,7 @@ var render = function() {
           "button",
           {
             staticClass: "btn shadow-none btn-outline-success mx-1 col-2 px-1",
-            attrs: { type: "button" },
+            attrs: { disabled: _vm.new_message.length <= 0, type: "button" },
             on: { click: _vm.postChat }
           },
           [_vm._v("send")]
@@ -24587,6 +24641,98 @@ var render = function() {
     "div",
     [
       _c(
+        "select",
+        {
+          directives: [
+            {
+              name: "model",
+              rawName: "v-model",
+              value: _vm.genre,
+              expression: "genre"
+            }
+          ],
+          staticClass: "browser-default custom-select mb-2",
+          on: {
+            change: [
+              function($event) {
+                var $$selectedVal = Array.prototype.filter
+                  .call($event.target.options, function(o) {
+                    return o.selected
+                  })
+                  .map(function(o) {
+                    var val = "_value" in o ? o._value : o.value
+                    return val
+                  })
+                _vm.genre = $event.target.multiple
+                  ? $$selectedVal
+                  : $$selectedVal[0]
+              },
+              _vm.fetchWorks
+            ]
+          }
+        },
+        [
+          _c("option", { attrs: { value: "all", selected: "" } }, [
+            _vm._v("すべて")
+          ]),
+          _vm._v(" "),
+          _c("option", { attrs: { value: "文学" } }, [_vm._v("文学")]),
+          _vm._v(" "),
+          _c("option", { attrs: { value: "エッセイ" } }, [_vm._v("エッセイ")]),
+          _vm._v(" "),
+          _c("option", { attrs: { value: "ライトノベル" } }, [
+            _vm._v("ライトノベル")
+          ]),
+          _vm._v(" "),
+          _c("option", { attrs: { value: "ファンタジー" } }, [
+            _vm._v("ファンタジー")
+          ]),
+          _vm._v(" "),
+          _c("option", { attrs: { value: "恋愛" } }, [_vm._v("恋愛")]),
+          _vm._v(" "),
+          _c("option", { attrs: { value: "SF" } }, [_vm._v("SF")]),
+          _vm._v(" "),
+          _c("option", { attrs: { value: "other" } }, [_vm._v("その他")])
+        ]
+      ),
+      _vm._v(" "),
+      _c("div", { staticClass: "input-group mb-2" }, [
+        _c("input", {
+          directives: [
+            {
+              name: "model",
+              rawName: "v-model",
+              value: _vm.search_word,
+              expression: "search_word"
+            }
+          ],
+          staticClass: "form-control",
+          attrs: { type: "text" },
+          domProps: { value: _vm.search_word },
+          on: {
+            input: function($event) {
+              if ($event.target.composing) {
+                return
+              }
+              _vm.search_word = $event.target.value
+            }
+          }
+        }),
+        _vm._v(" "),
+        _c("div", { staticClass: "input-group-btn mx-0" }, [
+          _c(
+            "button",
+            {
+              staticClass: "btn btn-default my-0 py-2 h-100 shadow-none",
+              attrs: { disabled: _vm.search_word.length <= 0, type: "button" },
+              on: { click: _vm.searchWorks }
+            },
+            [_vm._v("検索")]
+          )
+        ])
+      ]),
+      _vm._v(" "),
+      _c(
         "mdb-list-group",
         { attrs: { flush: "" } },
         _vm._l(_vm.works, function(work) {
@@ -24740,6 +24886,63 @@ var render = function() {
                     expression: "title"
                   }
                 }),
+                _vm._v(" "),
+                _c(
+                  "select",
+                  {
+                    directives: [
+                      {
+                        name: "model",
+                        rawName: "v-model",
+                        value: _vm.genre,
+                        expression: "genre"
+                      }
+                    ],
+                    staticClass: "browser-default custom-select mb-2",
+                    on: {
+                      change: function($event) {
+                        var $$selectedVal = Array.prototype.filter
+                          .call($event.target.options, function(o) {
+                            return o.selected
+                          })
+                          .map(function(o) {
+                            var val = "_value" in o ? o._value : o.value
+                            return val
+                          })
+                        _vm.genre = $event.target.multiple
+                          ? $$selectedVal
+                          : $$selectedVal[0]
+                      }
+                    }
+                  },
+                  [
+                    _c("option", { attrs: { value: "文学", selected: "" } }, [
+                      _vm._v("文学")
+                    ]),
+                    _vm._v(" "),
+                    _c("option", { attrs: { value: "エッセイ" } }, [
+                      _vm._v("エッセイ")
+                    ]),
+                    _vm._v(" "),
+                    _c("option", { attrs: { value: "ライトノベル" } }, [
+                      _vm._v("ライトノベル")
+                    ]),
+                    _vm._v(" "),
+                    _c("option", { attrs: { value: "ファンタジー" } }, [
+                      _vm._v("ファンタジー")
+                    ]),
+                    _vm._v(" "),
+                    _c("option", { attrs: { value: "恋愛" } }, [
+                      _vm._v("恋愛")
+                    ]),
+                    _vm._v(" "),
+                    _c("option", { attrs: { value: "SF" } }, [_vm._v("SF")]),
+                    _vm._v(" "),
+                    _c("option", { attrs: { value: "other" } }, [
+                      _vm._v("その他")
+                    ])
+                  ]
+                ),
                 _vm._v(" "),
                 _c("vue-editor", {
                   model: {

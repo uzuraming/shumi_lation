@@ -36,6 +36,7 @@ Route::get('/timelines', 'TimelinesController@index');
 Route::post('/timelines', 'TimelinesController@store');
 
 Route::get('/works', 'WorksController@index');
+Route::get('/works/search', 'WorksController@search_word');
 Route::get('/works/{id}', 'WorksController@show');
 Route::put('/works/{id}', 'WorksController@update');
 Route::post('/works', 'WorksController@store');

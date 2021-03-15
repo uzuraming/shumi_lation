@@ -1,5 +1,22 @@
 <template>
     <div>
+        <select v-model="genre" @change="fetchWorks" class="browser-default custom-select mb-2">
+            <option value="all" selected>すべて</option>
+            <option value="文学">文学</option>
+            <option value="エッセイ">エッセイ</option>
+            <option value="ライトノベル">ライトノベル</option>
+            <option value="ファンタジー">ファンタジー</option>
+            <option value="恋愛">恋愛</option>
+            <option value="SF">SF</option>
+            <option value="other">その他</option>
+        </select>
+        <div class="input-group mb-2">
+            <input v-model="search_word" type="text" class="form-control">
+            <div class="input-group-btn mx-0">
+                <button :disabled="search_word.length<=0" class="btn btn-default my-0 py-2 h-100 shadow-none" type="button" @click="searchWorks">検索</button>
+            </div>
+        </div>
+  
         <mdb-list-group flush>
             <mdb-list-group-item v-for="work in works" :key="work.id">
                 <div>
@@ -80,7 +97,9 @@
                 timelinesModal:false,
                 timelinesForm:"",
                 currentPage: 0,
-                lastPage: 0
+                lastPage: 0,
+                genre:'all',
+                search_word:""
             }
         },
         props: {
@@ -93,7 +112,7 @@
 
         methods:{
             async fetchWorks(){
-                const response = await axios.get(`/api/works/?page=${this.page}`)
+                const response = await axios.get(`/api/works/?page=${this.page}&genre=${this.genre}`)
         
                 if (response.status !== OK) {
                     this.$store.commit('error/setCode', response.status)
@@ -106,6 +125,22 @@
                 this.currentPage = response.data.current_page
                 this.lastPage = response.data.last_page
             },
+            async searchWorks(){
+                const response = await axios.get(`/api/works/search/?page=${this.page}&search_word=${this.search_word}`)
+        
+                if (response.status !== OK) {
+                    this.$store.commit('error/setCode', response.status)
+                    return false
+                }
+                this.works = response.data.data;
+                console.log(response)
+                
+
+                this.currentPage = response.data.current_page
+                this.lastPage = response.data.last_page
+            },
+
+            
             // モーダルを初期化する関数
             // clearTimelineModal(){
                 

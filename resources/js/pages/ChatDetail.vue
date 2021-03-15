@@ -7,10 +7,8 @@
                     <p>{{ message.pivot.message }}</p>
                     <small>{{message.pivot.created_at}}</small>
                 </div>
-
           </div>
         
-
       </div>
 
 
@@ -19,7 +17,7 @@
 
   <form class="form-inline row fixed-bottom white d-flex justify-content-center shadow">
       <input class="form-control m-1 col-8" type="text" v-model="new_message">
-      <button @click="postChat" class="btn shadow-none btn-outline-success mx-1 col-2 px-1" type="button">send</button>
+      <button :disabled="new_message.length<=0" @click="postChat" class="btn shadow-none btn-outline-success mx-1 col-2 px-1" type="button">send</button>
     </form>
 
 
@@ -86,9 +84,9 @@ export default {
     padding: 7px 10px;
     min-width: 50%;
     max-width: 100%;
-    color: #555;
+    color: white;
     font-size: 16px;
-    background: #e0edff;
+    background: #2E2E2E;
     }
 
     .balloon1_right:before {
@@ -98,7 +96,7 @@ export default {
     left: 100%;
     margin-top: -15px;
     border: 15px solid transparent;
-    border-left: 15px solid #e0edff;
+    border-left: 15px solid #2E2E2E;
     }
 
     .balloon1_right p {
@@ -116,7 +114,7 @@ export default {
     max-width: 100%;
     color: #555;
     font-size: 16px;
-    background: #e0edff;
+    background: white;
     }
 
     .balloon1_left:before {
@@ -126,7 +124,7 @@ export default {
     left: -30px;
     margin-top: -15px;
     border: 15px solid transparent;
-    border-right: 15px solid #e0edff;
+    border-right: 15px solid white;
     }
 
     .balloon1_left p {
