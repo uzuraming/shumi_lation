@@ -9,7 +9,8 @@ const state = {
 
 const getters = {
   check: state => !! state.user,
-  username: state => state.user ? state.user.name : ''
+  username: state => state.user ? state.user.name : '',
+  is_verified: state => state.user ? !!state.user.email_verified_at : false
 }
 
 const mutations = {

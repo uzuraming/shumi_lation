@@ -1,9 +1,11 @@
 <template>
   <div class="wrapper">
+      
     
      <header>
          <Navbar/>
      </header>
+     <EmailVerifiedMessage/>
      <main class="mt-3">
       <div class="container">
         <RouterView />
@@ -24,13 +26,15 @@
     import Navbar from './components/Navbar.vue'
     import Footer from './components/Footer.vue'
     import Tabs from './components/Tabs.vue'
+    import EmailVerifiedMessage from './components/EmailVerifiedMessage.vue'
     
 
     export default {
         components: {
             Navbar,
             Footer,
-            Tabs
+            Tabs,
+            EmailVerifiedMessage
         },
         computed: {
             errorCode () {

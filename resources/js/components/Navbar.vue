@@ -10,9 +10,9 @@
         <mdb-nav-item to="/works">Work</mdb-nav-item>
         <mdb-nav-item v-if="!isLogin" to="/login">login</mdb-nav-item>
         <mdb-nav-item v-if="!isLogin" to="/signup">signup</mdb-nav-item>
-        <mdb-nav-item v-if="isLogin" to="/requests">Resuests</mdb-nav-item>
-        <mdb-nav-item v-if="isLogin" to="/chats">Chats</mdb-nav-item>
-        <mdb-nav-item v-if="isLogin" to="/favorites">favorites</mdb-nav-item>
+        <mdb-nav-item v-if="isLogin && isVerified" to="/requests">Resuests</mdb-nav-item>
+        <mdb-nav-item v-if="isLogin && isVerified" to="/chats">Chats</mdb-nav-item>
+        <mdb-nav-item v-if="isLogin && isVerified" to="/favorites">favorites</mdb-nav-item>
         <mdb-nav-item v-if="isLogin" href="#" @click.prevent="logout">logout</mdb-nav-item>
       </mdb-navbar-nav>
     </mdb-navbar-toggler>
@@ -44,6 +44,9 @@
     computed: {
       isLogin () {
         return this.$store.getters['auth/check']
+      },
+      isVerified () {
+        return this.$store.getters['auth/is_verified']
       },
       username () {
         return this.$store.getters['auth/username']

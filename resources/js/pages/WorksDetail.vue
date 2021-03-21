@@ -18,7 +18,7 @@
                         {{work.comments_count }}件のコメント</router-link >
                 </div>
 
-            <div v-if="work.its_mine" @click="$router.push({name:'editWork', params:work_id})" class="btn-circle-flat shadow mousepointer-hand"><span class="h2">+</span></div>
+            <div v-if="work.its_mine && isLogin" @click="$router.push({name:'editWork', params:work_id})" class="btn-circle-flat shadow mousepointer-hand"><span class="h2">+</span></div>
 
         </mdb-card-text>
     
@@ -74,6 +74,14 @@ export default {
             immediate: true
         }
     },
+    computed: {
+            isLogin () {
+                return this.$store.getters['auth/check']&& this.$store.getters['auth/is_verified'];
+            },
+            username () {
+                return this.$store.getters['auth/username'];
+            }
+        }
 
 }
 </script>

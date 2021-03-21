@@ -34,7 +34,7 @@
             </mdb-list-group-item>
         </mdb-list-group>
 
-        <div v-if="isLogin" @click="$router.push('works/create')" class="btn-circle-flat shadow mousepointer-hand"><span class="h2">+</span></div>
+        <div v-if="isLogin" @click="$router.push({ name:'workCreate' }) " class="btn-circle-flat shadow mousepointer-hand"><span class="h2">+</span></div>
     
         <div class="d-flex justify-content-center" >
             <Pagination :component="'works'" :current-page="currentPage" :last-page="lastPage" />
@@ -164,7 +164,7 @@
         },
         computed: {
             isLogin () {
-                return this.$store.getters['auth/check']
+                return this.$store.getters['auth/check']&& this.$store.getters['auth/is_verified']
             },
             username () {
                 return this.$store.getters['auth/username']

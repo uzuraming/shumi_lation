@@ -190,7 +190,7 @@
         },
         computed: {
             isLogin () {
-                return this.$store.getters['auth/check'];
+                return this.$store.getters['auth/check']&& this.$store.getters['auth/is_verified'];
             },
             username () {
                 return this.$store.getters['auth/username'];

@@ -20,8 +20,8 @@ class ChatController extends Controller
     public function show($id){
         $auth = \Auth::user();
         $chat_room = $auth->chat_rooms()->findOrFail($id);
-        $messages = $chat_room->messages()->orderBy('messages.created_at', 'asc')
-        ->paginate(10);
+        $messages = $chat_room->messages()->orderBy('messages.created_at', 'desc')->paginate(10);
+
 
         return (['messages' => $messages, 'your_id' => $auth->id]);
 

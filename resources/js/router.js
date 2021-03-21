@@ -23,6 +23,8 @@ import SystemError from './pages/errors/System.vue'
 import Chat from './pages/Chat.vue'
 import ChatDetail from './pages/ChatDetail.vue'
 
+import WaitVerify from './pages/WaitVerify.vue'
+
 // VueRouterプラグインを使用する
 // これによって<RouterView />コンポーネントなどを使うことができる
 Vue.use(VueRouter)
@@ -73,6 +75,7 @@ const routes = [
         }
     },
     {
+      name:'workCreate',
       path: '/works/create',
       component: WorkCreate,
       beforeEnter (to, from, next) {
@@ -161,6 +164,11 @@ const routes = [
     name:'chatDetail',
     component: ChatDetail,
     props: true,
+  },
+  {
+    path: '/wait_verify',
+    name:'waitVerify',
+    component: WaitVerify,
   },
 ]
 

@@ -68,7 +68,7 @@ export default {
             await this.$store.dispatch('auth/register', this.registerForm)
               if (this.apiStatus) {
               // トップページに移動する
-              this.$router.push('/')
+              this.$router.push({ name:'waitVerify' })
           }
         },
         clearError () {

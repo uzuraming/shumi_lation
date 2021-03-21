@@ -42,7 +42,7 @@
                 <mdb-modal-title>警告</mdb-modal-title>
             </mdb-modal-header>
             <mdb-modal-body>
-                いいねにはログインが必要です。
+                いいねにはユーザー登録が必要です。
             </mdb-modal-body>
             <mdb-modal-footer>    
                 <mdb-btn class="shadow-none" color="elegant" @click.native="warnModal=false">Close</mdb-btn>
@@ -188,7 +188,7 @@
         },
         computed: {
             isLogin () {
-                return this.$store.getters['auth/check'];
+                return this.$store.getters['auth/check']&& this.$store.getters['auth/is_verified'];
             },
             username () {
                 return this.$store.getters['auth/username'];
