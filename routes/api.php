@@ -75,6 +75,14 @@ Route::group(['middleware' => ['auth','verified']], function () {
 
     Route::get('/favorites', 'FavoriteController@index');
 
+    // ブックマーク
+    Route::post('/bookmarks/{id}', 'BookmarksController@store');
+    Route::delete('/bookmarks/{id}', 'BookmarksController@destroy');
+
+    Route::get('/bookmarks', 'BookmarksController@index');
+
+    // 
+
 
     Route::put('/users/{id}/', 'UsersController@update');
 

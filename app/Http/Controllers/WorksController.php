@@ -15,10 +15,10 @@ class WorksController extends Controller
      {  
         
         if($request->genre == 'all'){
-            $works = Work::with(['user'])->orderBy('created_at', 'desc')->paginate(5);
+            $works = Work::with(['user'])->withCount('bookmarking_user')->orderBy($request->is_rank, 'desc')->paginate(5);
 
         }else{
-            $works = Work::with(['user'])->where('genre', $request->input('genre'))->orderBy('created_at', 'desc')->paginate(5);
+            $works = Work::with(['user'])->withCount('bookmarking_user')->where('genre', $request->input('genre'))->orderBy($request->is_rank, 'desc')->paginate(5);
 
         }
         

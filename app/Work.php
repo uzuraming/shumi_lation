@@ -12,6 +12,27 @@ class Work extends Model
         'content',
         'genre'
     ];
+
+
+    /** JSONに含めるアクセサ */
+    protected $appends = [
+        'bookmarked_by_user', 'bookmark_count'
+    ];
+
+    public function getBookmarkedByUserAttribute()
+    {
+        if (\Auth::guest()) {
+            return false;
+        }
+        return \Auth::user()->is_bookmarking($this->id);
+        
+    }
+
+    public function getBookmarkCountAttribute()
+    {
+        return $this->bookmarking_user->count();
+        
+    }
     
 
     // この作品を所有するユーザー
@@ -45,5 +66,11 @@ class Work extends Model
             return false;
         }
 
+    }
+
+
+    //このタイムラインがお気に入りしている作品
+    public function bookmarking_user(){
+        return $this->belongsToMany(User::class, 'bookmarks', 'bookmark_id', 'user_id');
     }
 }

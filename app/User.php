@@ -330,23 +330,53 @@ class User extends Authenticatable implements MustVerifyEmail
 
 
     
+     // --------------------------------------------
+    // 以下ブックマーク関する関数
+    // --------------------------------------------
+    
+    //このユーザーがお気に入りしているタイムライン
+    public function bookmarks(){
+        return $this->belongsToMany(Work::class, 'bookmarks', 'user_id', 'bookmark_id');
+    }
 
-    // TODO:チャットを送信する関数
-    // public function send_message($userId) {
-    //     $is_accecpt = $this->chat_requester()
-    //                         ->where('from_user_id', $userId)
-    //                         ->firstOrFail()
-    //                         ->approval
-    //     if($is_accecpt){
+    // お気に入りしているか否かを判断する関数
+    public function is_bookmarking($workId){
+        // フォロー中ユーザの中に $userIdのものが存在するか判断する関数
+        return $this->bookmarks()->where('bookmark_id', $workId)->exists();      
+    }
 
-    //     }
 
-        
-        
-    // }
+    // お気に入りする関数
+    public function bookmark($workId){
+        // お気に入り済かどうか確認し、その結果をこの変数に入れる
+        $exist = $this->is_bookmarking($workId);
 
-    // TODO:画像を送信する関数
+        if($exist){
+            // すでにお気に入り済みなら何もしない
+            return false;
+        }else{
+            // お気に入りしていなかったらお気に入りする
+            $this->bookmarks()->attach($workId);
+            return true;
+        }
+    }
 
+    // お気に入りを外す関数
+    public function unbookmark($workId){
+        // お気に入り済かどうか確認し、その結果をこの変数に入れる
+        $exist = $this->is_bookmarking($workId);
+
+        if($exist){
+            // すでにお気に入りしている場合は外す
+
+            $this->bookmarks()->detach($workId);
+            return true;
+            
+        }else{
+            // お気に入りしていないならなにもしない
+            return false;
+        }
+    }
     
 
 }

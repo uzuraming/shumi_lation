@@ -1,17 +1,23 @@
 <template>
-  <mdb-navbar color="default" position="bottom" dark>
+  
+  <div class="fixed-bottom">
+      <ul class="nav nav-pills">
+      <li class="nav-item">
+        <a class="nav-link active" href="#">Active</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="#">Link</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="#">Link</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link disabled" href="#">Disabled</a>
+      </li>
+    </ul>
+  </div>
 
-    <mdb-navbar-toggler>
-      <mdb-navbar-nav>
-        <mdb-nav-item href="#" active>Home</mdb-nav-item>
-        <mdb-nav-item href="#">Features</mdb-nav-item>
-        <mdb-nav-item href="#">Pricing</mdb-nav-item>
-      </mdb-navbar-nav>
-      <form>
-        <mdb-input type="text" class="text-white" placeholder="Search" aria-label="Search" label navInput waves waves-fixed/>
-      </form>
-    </mdb-navbar-toggler>
-  </mdb-navbar>
+  
 </template>
 
 <script>
@@ -28,3 +34,5 @@
     }
   }
 </script>
+
+</style>

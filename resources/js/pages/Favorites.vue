@@ -110,7 +110,6 @@
         methods:{
             async fetchTimelines(){
 
-              
                 const response = await axios.get(`/api/${this.pageName}/?page=${this.page}`);
             
                 if (response.status !== OK) {

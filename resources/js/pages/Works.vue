@@ -1,24 +1,37 @@
 <template>
     <div>
-        <select v-model="genre" @change="fetchWorks" class="browser-default custom-select mb-2">
-            <option value="all" selected>すべて</option>
-            <option value="文学">文学</option>
-            <option value="エッセイ">エッセイ</option>
-            <option value="ライトノベル">ライトノベル</option>
-            <option value="ファンタジー">ファンタジー</option>
-            <option value="恋愛">恋愛</option>
-            <option value="SF">SF</option>
-            <option value="other">その他</option>
-        </select>
-        <div class="input-group mb-2">
-            <input v-model="search_word" type="text" class="form-control">
-            <div class="input-group-btn mx-0">
-                <button :disabled="search_word.length<=0" class="btn btn-default my-0 py-2 h-100 shadow-none" type="button" @click="searchWorks">検索</button>
+        <input id="acd-check1" class="acd-check" type="checkbox">
+        <label class="acd-label" for="acd-check1">詳細</label>
+            <div class="acd-content">
+                <div contextmenu="acd-child">
+                    <select v-model="genre" @change="fetchWorksByGenre" class="browser-default custom-select mb-2">
+                <option value="all" selected>すべて</option>
+                <option value="文学">文学</option>
+                <option value="エッセイ">エッセイ</option>
+                <option value="ライトノベル">ライトノベル</option>
+                <option value="ファンタジー">ファンタジー</option>
+                <option value="恋愛">恋愛</option>
+                <option value="SF">SF</option>
+                <option value="other">その他</option>
+            </select>
+            <select v-model="is_rank" @change="fetchWorksByGenre" class="browser-default custom-select mb-2">
+                <option value="created_at" selected>新しい順</option>
+                <option value="bookmarking_user_count">ブックマークの多い順</option>
+            </select>
+            <div class="input-group mb-2">
+                <input v-model="search_word" type="text" class="form-control">
+                <div class="input-group-btn mx-0">
+                    <button :disabled="search_word.length<=0" class="btn btn-default my-0 py-2 h-100 shadow-none" type="button" @click="searchWorks">検索</button>
+                </div>
             </div>
+
+                </div>
+                
         </div>
+        
   
         <mdb-list-group flush>
-            <mdb-list-group-item v-for="work in works" :key="work.id">
+            <mdb-list-group-item v-for="(work, index) in works" :key="index">
                 <div>
                     <div class="d-flex w-100 justify-content-between">
                     <small>
@@ -30,6 +43,11 @@
                         <router-link class="" :to="{ name: 'workDetail', params: { work_id: work.id }}" >{{work.title}}</router-link >
                     </p>
                     <small>{{work.created_at}}</small>  
+                    <span :class="{active_fav : is_bookmarking}" @click="bookmark(work.id, index)" class="ml-1 mousepointer-hand" v-if="!work.bookmarked_by_user"><mdb-icon color="orange" class="mr-1" far icon="bookmark" />{{work.bookmark_count}}</span>
+                    
+                    <span :class="{active_fav : is_bookmarking}" @click="unBookmark(work.id, index)" class="ml-1 mousepointer-hand" v-if="work.bookmarked_by_user"><mdb-icon  color="orange"  class="mr-1" icon="bookmark" />{{work.bookmark_count}}</span>
+                    
+                    
                 </div>
             </mdb-list-group-item>
         </mdb-list-group>
@@ -99,7 +117,9 @@
                 currentPage: 0,
                 lastPage: 0,
                 genre:'all',
-                search_word:""
+                search_word:"",
+                is_bookmarking:false,
+                is_rank:'created_at',
             }
         },
         props: {
@@ -112,7 +132,7 @@
 
         methods:{
             async fetchWorks(){
-                const response = await axios.get(`/api/works/?page=${this.page}&genre=${this.genre}`)
+                const response = await axios.get(`/api/works/?page=${this.page}&genre=${this.genre}&is_rank=${this.is_rank}`)
         
                 if (response.status !== OK) {
                     this.$store.commit('error/setCode', response.status)
@@ -125,8 +145,8 @@
                 this.currentPage = response.data.current_page
                 this.lastPage = response.data.last_page
             },
-            async searchWorks(){
-                const response = await axios.get(`/api/works/search/?page=${this.page}&search_word=${this.search_word}`)
+            async fetchWorksByGenre(){
+                const response = await axios.get(`/api/works/?page=1&genre=${this.genre}&is_rank=${this.is_rank}`)
         
                 if (response.status !== OK) {
                     this.$store.commit('error/setCode', response.status)
@@ -138,6 +158,56 @@
 
                 this.currentPage = response.data.current_page
                 this.lastPage = response.data.last_page
+            },
+            
+            async searchWorks(){
+                const response = await axios.get(`/api/works/search/?page=1&search_word=${this.search_word}`)
+        
+                if (response.status !== OK) {
+                    this.$store.commit('error/setCode', response.status)
+                    return false
+                }
+                this.works = response.data.data;
+                console.log(response)
+                
+
+                this.currentPage = response.data.current_page
+                this.lastPage = response.data.last_page
+            },
+            async bookmark(id, index){
+                this.is_bookmarking = true;
+                if(this.isLogin){
+                    const response = await axios.post(`/api/bookmarks/${id}`);
+        
+                    if (response.status !== OK) {
+                        this.$store.commit('error/setCode', response.status);
+                        return false;
+                    }
+                    this.works[index].bookmarked_by_user = true;
+                    this.works[index].bookmark_count += 1;
+                }else{
+                    this.warnModal =true;
+                }
+                this.is_bookmarking = false;
+            },
+            async unBookmark(id,index){
+                this.is_bookmarking = true;
+                if(this.isLogin){
+                    const response = await axios.delete(`/api/bookmarks/${id}`);
+        
+                    if (response.status !== OK) {
+                        this.$store.commit('error/setCode', response.status);
+                        return false;
+                    };
+
+                    this.works[index].bookmarked_by_user = false;
+                    this.works[index].bookmark_count -= 1;
+                }else{
+                    this.warnModal =true;
+                };
+
+                this.is_bookmarking = false;
+                
             },
 
             
@@ -203,5 +273,38 @@
     .btn-circle-flat:hover {
         background: #4B515D;
     }
+
+
+
+    .acd-check{
+  display: none;
+}
+.acd-label{
+  background: #333;
+  color: #fff;
+  display: block;
+  margin-bottom: 1px;
+  padding: 10px;
+}
+.acd-content{
+  height: 0;
+  opacity: 0;
+  padding: 0 10px;
+  transition: .5s;
+  visibility: hidden;
+}
+.acd-check:checked + .acd-label + .acd-content{
+
+  opacity: 1;
+  padding: 10px;
+  visibility: visible;
+  width: 100%;
+  display: table;
+  height: inherit;
+}
+
+.acd-child{
+    display: table-cell;
+}
    
 </style>

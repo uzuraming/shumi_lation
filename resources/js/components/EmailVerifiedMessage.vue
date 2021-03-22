@@ -4,7 +4,7 @@
             <mdb-card color="red lighten-1" class="text-center">
                 <mdb-card-body>
                     メール認証がまだ終わっていません。
-                    <button @click="resend" class="btn btn-danger">再送する</button>
+                    <button @click="resend" class="btn btn-danger shadow-none">再送する</button>
                 </mdb-card-body>
             </mdb-card>
         </div>

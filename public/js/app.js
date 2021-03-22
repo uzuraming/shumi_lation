@@ -14810,6 +14810,12 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: 'NavbarPage',
@@ -16923,6 +16929,24 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
  // ★ 追加
 
 
@@ -16951,7 +16975,9 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       currentPage: 0,
       lastPage: 0,
       genre: 'all',
-      search_word: ""
+      search_word: "",
+      is_bookmarking: false,
+      is_rank: 'created_at'
     };
   },
   props: {
@@ -16972,7 +16998,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
             switch (_context.prev = _context.next) {
               case 0:
                 _context.next = 2;
-                return axios.get("/api/works/?page=".concat(_this.page, "&genre=").concat(_this.genre));
+                return axios.get("/api/works/?page=".concat(_this.page, "&genre=").concat(_this.genre, "&is_rank=").concat(_this.is_rank));
 
               case 2:
                 response = _context.sent;
@@ -17000,7 +17026,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         }, _callee);
       }))();
     },
-    searchWorks: function searchWorks() {
+    fetchWorksByGenre: function fetchWorksByGenre() {
       var _this2 = this;
 
       return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee2() {
@@ -17010,7 +17036,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
             switch (_context2.prev = _context2.next) {
               case 0:
                 _context2.next = 2;
-                return axios.get("/api/works/search/?page=".concat(_this2.page, "&search_word=").concat(_this2.search_word));
+                return axios.get("/api/works/?page=1&genre=".concat(_this2.genre, "&is_rank=").concat(_this2.is_rank));
 
               case 2:
                 response = _context2.sent;
@@ -17037,6 +17063,148 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
           }
         }, _callee2);
       }))();
+    },
+    searchWorks: function searchWorks() {
+      var _this3 = this;
+
+      return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee3() {
+        var response;
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee3$(_context3) {
+          while (1) {
+            switch (_context3.prev = _context3.next) {
+              case 0:
+                _context3.next = 2;
+                return axios.get("/api/works/search/?page=1&search_word=".concat(_this3.search_word));
+
+              case 2:
+                response = _context3.sent;
+
+                if (!(response.status !== _util__WEBPACK_IMPORTED_MODULE_3__["OK"])) {
+                  _context3.next = 6;
+                  break;
+                }
+
+                _this3.$store.commit('error/setCode', response.status);
+
+                return _context3.abrupt("return", false);
+
+              case 6:
+                _this3.works = response.data.data;
+                console.log(response);
+                _this3.currentPage = response.data.current_page;
+                _this3.lastPage = response.data.last_page;
+
+              case 10:
+              case "end":
+                return _context3.stop();
+            }
+          }
+        }, _callee3);
+      }))();
+    },
+    bookmark: function bookmark(id, index) {
+      var _this4 = this;
+
+      return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee4() {
+        var response;
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee4$(_context4) {
+          while (1) {
+            switch (_context4.prev = _context4.next) {
+              case 0:
+                _this4.is_bookmarking = true;
+
+                if (!_this4.isLogin) {
+                  _context4.next = 12;
+                  break;
+                }
+
+                _context4.next = 4;
+                return axios.post("/api/bookmarks/".concat(id));
+
+              case 4:
+                response = _context4.sent;
+
+                if (!(response.status !== _util__WEBPACK_IMPORTED_MODULE_3__["OK"])) {
+                  _context4.next = 8;
+                  break;
+                }
+
+                _this4.$store.commit('error/setCode', response.status);
+
+                return _context4.abrupt("return", false);
+
+              case 8:
+                _this4.works[index].bookmarked_by_user = true;
+                _this4.works[index].bookmark_count += 1;
+                _context4.next = 13;
+                break;
+
+              case 12:
+                _this4.warnModal = true;
+
+              case 13:
+                _this4.is_bookmarking = false;
+
+              case 14:
+              case "end":
+                return _context4.stop();
+            }
+          }
+        }, _callee4);
+      }))();
+    },
+    unBookmark: function unBookmark(id, index) {
+      var _this5 = this;
+
+      return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee5() {
+        var response;
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee5$(_context5) {
+          while (1) {
+            switch (_context5.prev = _context5.next) {
+              case 0:
+                _this5.is_bookmarking = true;
+
+                if (!_this5.isLogin) {
+                  _context5.next = 13;
+                  break;
+                }
+
+                _context5.next = 4;
+                return axios["delete"]("/api/bookmarks/".concat(id));
+
+              case 4:
+                response = _context5.sent;
+
+                if (!(response.status !== _util__WEBPACK_IMPORTED_MODULE_3__["OK"])) {
+                  _context5.next = 8;
+                  break;
+                }
+
+                _this5.$store.commit('error/setCode', response.status);
+
+                return _context5.abrupt("return", false);
+
+              case 8:
+                ;
+                _this5.works[index].bookmarked_by_user = false;
+                _this5.works[index].bookmark_count -= 1;
+                _context5.next = 14;
+                break;
+
+              case 13:
+                _this5.warnModal = true;
+
+              case 14:
+                ;
+                _this5.is_bookmarking = false;
+
+              case 16:
+              case "end":
+                return _context5.stop();
+            }
+          }
+        }, _callee5);
+      }))();
     } // モーダルを初期化する関数
     // clearTimelineModal(){
     //     this.timelinesModal = false;
@@ -17052,22 +17220,22 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
   watch: {
     $route: {
       handler: function handler() {
-        var _this3 = this;
+        var _this6 = this;
 
-        return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee3() {
-          return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee3$(_context3) {
+        return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee6() {
+          return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee6$(_context6) {
             while (1) {
-              switch (_context3.prev = _context3.next) {
+              switch (_context6.prev = _context6.next) {
                 case 0:
-                  _context3.next = 2;
-                  return _this3.fetchWorks();
+                  _context6.next = 2;
+                  return _this6.fetchWorks();
 
                 case 2:
                 case "end":
-                  return _context3.stop();
+                  return _context6.stop();
               }
             }
-          }, _callee3);
+          }, _callee6);
         }))();
       },
       immediate: true
@@ -20492,7 +20660,7 @@ exports = module.exports = __webpack_require__(/*! ../../../node_modules/css-loa
 
 
 // module
-exports.push([module.i, "\n.btn-circle-flat[data-v-381f5a6e] {\n       display: inline-block;\n       text-decoration: none;\n       background: #2E2E2E;\n       color: #FFF;\n       width: 120px;\n       height: 120px;\n       line-height: 120px;\n       border-radius: 50%;\n       text-align: center;\n       overflow: hidden;\n       transition: .4s;\n       position: fixed;\n       bottom: 15px; \n       right: 10px;\n       display: -webkit-flex;\ndisplay: flex;\n-webkit-align-items: center; /* 縦方向中央揃え（Safari用） */\nalign-items: center; /* 縦方向中央揃え */\n-webkit-justify-content: center; /* 横方向中央揃え（Safari用） */\njustify-content: center; /* 横方向中央揃え */\n}\n.btn-circle-flat[data-v-381f5a6e]:hover {\n       background: #4B515D;\n}\n  \n", ""]);
+exports.push([module.i, "\n.btn-circle-flat[data-v-381f5a6e] {\n        display: inline-block;\n        text-decoration: none;\n        background: #2E2E2E;\n        color: #FFF;\n        width: 120px;\n        height: 120px;\n        line-height: 120px;\n        border-radius: 50%;\n        text-align: center;\n        overflow: hidden;\n        transition: .4s;\n        position: fixed;\n        bottom: 15px; \n        right: 10px;\n        display: -webkit-flex;\n display: flex;\n -webkit-align-items: center; /* 縦方向中央揃え（Safari用） */\n align-items: center; /* 縦方向中央揃え */\n -webkit-justify-content: center; /* 横方向中央揃え（Safari用） */\n justify-content: center; /* 横方向中央揃え */\n}\n.btn-circle-flat[data-v-381f5a6e]:hover {\n        background: #4B515D;\n}\n.acd-check[data-v-381f5a6e]{\n  display: none;\n}\n.acd-label[data-v-381f5a6e]{\n  background: #333;\n  color: #fff;\n  display: block;\n  margin-bottom: 1px;\n  padding: 10px;\n}\n.acd-content[data-v-381f5a6e]{\n  height: 0;\n  opacity: 0;\n  padding: 0 10px;\n  transition: .5s;\n  visibility: hidden;\n}\n.acd-check:checked + .acd-label + .acd-content[data-v-381f5a6e]{\n\n  opacity: 1;\n  padding: 10px;\n  visibility: visible;\n  width: 100%;\n  display: table;\n  height: inherit;\n}\n.acd-child[data-v-381f5a6e]{\n    display: table-cell;\n}\n   \n", ""]);
 
 // exports
 
@@ -23012,9 +23180,7 @@ var render = function() {
       _vm._v(" "),
       _c("main", { staticClass: "mt-3" }, [
         _c("div", { staticClass: "container" }, [_c("RouterView")], 1)
-      ]),
-      _vm._v(" "),
-      _c("footer")
+      ])
     ],
     1
   )
@@ -23061,7 +23227,7 @@ var render = function() {
                       _c(
                         "button",
                         {
-                          staticClass: "btn btn-danger",
+                          staticClass: "btn btn-danger shadow-none",
                           on: { click: _vm.resend }
                         },
                         [_vm._v("再送する")]
@@ -23099,55 +23265,42 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c(
-    "mdb-navbar",
-    { attrs: { color: "default", position: "bottom", dark: "" } },
-    [
-      _c(
-        "mdb-navbar-toggler",
-        [
-          _c(
-            "mdb-navbar-nav",
-            [
-              _c("mdb-nav-item", { attrs: { href: "#", active: "" } }, [
-                _vm._v("Home")
-              ]),
-              _vm._v(" "),
-              _c("mdb-nav-item", { attrs: { href: "#" } }, [
-                _vm._v("Features")
-              ]),
-              _vm._v(" "),
-              _c("mdb-nav-item", { attrs: { href: "#" } }, [_vm._v("Pricing")])
-            ],
-            1
-          ),
-          _vm._v(" "),
-          _c(
-            "form",
-            [
-              _c("mdb-input", {
-                staticClass: "text-white",
-                attrs: {
-                  type: "text",
-                  placeholder: "Search",
-                  "aria-label": "Search",
-                  label: "",
-                  navInput: "",
-                  waves: "",
-                  "waves-fixed": ""
-                }
-              })
-            ],
-            1
-          )
-        ],
-        1
-      )
-    ],
-    1
-  )
+  return _vm._m(0)
 }
-var staticRenderFns = []
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "fixed-bottom" }, [
+      _c("ul", { staticClass: "nav nav-pills" }, [
+        _c("li", { staticClass: "nav-item" }, [
+          _c("a", { staticClass: "nav-link active", attrs: { href: "#" } }, [
+            _vm._v("Active")
+          ])
+        ]),
+        _vm._v(" "),
+        _c("li", { staticClass: "nav-item" }, [
+          _c("a", { staticClass: "nav-link", attrs: { href: "#" } }, [
+            _vm._v("Link")
+          ])
+        ]),
+        _vm._v(" "),
+        _c("li", { staticClass: "nav-item" }, [
+          _c("a", { staticClass: "nav-link", attrs: { href: "#" } }, [
+            _vm._v("Link")
+          ])
+        ]),
+        _vm._v(" "),
+        _c("li", { staticClass: "nav-item" }, [
+          _c("a", { staticClass: "nav-link disabled", attrs: { href: "#" } }, [
+            _vm._v("Disabled")
+          ])
+        ])
+      ])
+    ])
+  }
+]
 render._withStripped = true
 
 
@@ -24962,103 +25115,163 @@ var render = function() {
   return _c(
     "div",
     [
-      _c(
-        "select",
-        {
-          directives: [
-            {
-              name: "model",
-              rawName: "v-model",
-              value: _vm.genre,
-              expression: "genre"
-            }
-          ],
-          staticClass: "browser-default custom-select mb-2",
-          on: {
-            change: [
-              function($event) {
-                var $$selectedVal = Array.prototype.filter
-                  .call($event.target.options, function(o) {
-                    return o.selected
-                  })
-                  .map(function(o) {
-                    var val = "_value" in o ? o._value : o.value
-                    return val
-                  })
-                _vm.genre = $event.target.multiple
-                  ? $$selectedVal
-                  : $$selectedVal[0]
-              },
-              _vm.fetchWorks
-            ]
-          }
-        },
-        [
-          _c("option", { attrs: { value: "all", selected: "" } }, [
-            _vm._v("すべて")
-          ]),
-          _vm._v(" "),
-          _c("option", { attrs: { value: "文学" } }, [_vm._v("文学")]),
-          _vm._v(" "),
-          _c("option", { attrs: { value: "エッセイ" } }, [_vm._v("エッセイ")]),
-          _vm._v(" "),
-          _c("option", { attrs: { value: "ライトノベル" } }, [
-            _vm._v("ライトノベル")
-          ]),
-          _vm._v(" "),
-          _c("option", { attrs: { value: "ファンタジー" } }, [
-            _vm._v("ファンタジー")
-          ]),
-          _vm._v(" "),
-          _c("option", { attrs: { value: "恋愛" } }, [_vm._v("恋愛")]),
-          _vm._v(" "),
-          _c("option", { attrs: { value: "SF" } }, [_vm._v("SF")]),
-          _vm._v(" "),
-          _c("option", { attrs: { value: "other" } }, [_vm._v("その他")])
-        ]
-      ),
+      _c("input", {
+        staticClass: "acd-check",
+        attrs: { id: "acd-check1", type: "checkbox" }
+      }),
       _vm._v(" "),
-      _c("div", { staticClass: "input-group mb-2" }, [
-        _c("input", {
-          directives: [
-            {
-              name: "model",
-              rawName: "v-model",
-              value: _vm.search_word,
-              expression: "search_word"
-            }
-          ],
-          staticClass: "form-control",
-          attrs: { type: "text" },
-          domProps: { value: _vm.search_word },
-          on: {
-            input: function($event) {
-              if ($event.target.composing) {
-                return
-              }
-              _vm.search_word = $event.target.value
-            }
-          }
-        }),
-        _vm._v(" "),
-        _c("div", { staticClass: "input-group-btn mx-0" }, [
+      _c("label", { staticClass: "acd-label", attrs: { for: "acd-check1" } }, [
+        _vm._v("詳細")
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "acd-content" }, [
+        _c("div", { attrs: { contextmenu: "acd-child" } }, [
           _c(
-            "button",
+            "select",
             {
-              staticClass: "btn btn-default my-0 py-2 h-100 shadow-none",
-              attrs: { disabled: _vm.search_word.length <= 0, type: "button" },
-              on: { click: _vm.searchWorks }
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.genre,
+                  expression: "genre"
+                }
+              ],
+              staticClass: "browser-default custom-select mb-2",
+              on: {
+                change: [
+                  function($event) {
+                    var $$selectedVal = Array.prototype.filter
+                      .call($event.target.options, function(o) {
+                        return o.selected
+                      })
+                      .map(function(o) {
+                        var val = "_value" in o ? o._value : o.value
+                        return val
+                      })
+                    _vm.genre = $event.target.multiple
+                      ? $$selectedVal
+                      : $$selectedVal[0]
+                  },
+                  _vm.fetchWorksByGenre
+                ]
+              }
             },
-            [_vm._v("検索")]
-          )
+            [
+              _c("option", { attrs: { value: "all", selected: "" } }, [
+                _vm._v("すべて")
+              ]),
+              _vm._v(" "),
+              _c("option", { attrs: { value: "文学" } }, [_vm._v("文学")]),
+              _vm._v(" "),
+              _c("option", { attrs: { value: "エッセイ" } }, [
+                _vm._v("エッセイ")
+              ]),
+              _vm._v(" "),
+              _c("option", { attrs: { value: "ライトノベル" } }, [
+                _vm._v("ライトノベル")
+              ]),
+              _vm._v(" "),
+              _c("option", { attrs: { value: "ファンタジー" } }, [
+                _vm._v("ファンタジー")
+              ]),
+              _vm._v(" "),
+              _c("option", { attrs: { value: "恋愛" } }, [_vm._v("恋愛")]),
+              _vm._v(" "),
+              _c("option", { attrs: { value: "SF" } }, [_vm._v("SF")]),
+              _vm._v(" "),
+              _c("option", { attrs: { value: "other" } }, [_vm._v("その他")])
+            ]
+          ),
+          _vm._v(" "),
+          _c(
+            "select",
+            {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.is_rank,
+                  expression: "is_rank"
+                }
+              ],
+              staticClass: "browser-default custom-select mb-2",
+              on: {
+                change: [
+                  function($event) {
+                    var $$selectedVal = Array.prototype.filter
+                      .call($event.target.options, function(o) {
+                        return o.selected
+                      })
+                      .map(function(o) {
+                        var val = "_value" in o ? o._value : o.value
+                        return val
+                      })
+                    _vm.is_rank = $event.target.multiple
+                      ? $$selectedVal
+                      : $$selectedVal[0]
+                  },
+                  _vm.fetchWorksByGenre
+                ]
+              }
+            },
+            [
+              _c("option", { attrs: { value: "created_at", selected: "" } }, [
+                _vm._v("新しい順")
+              ]),
+              _vm._v(" "),
+              _c("option", { attrs: { value: "bookmarking_user_count" } }, [
+                _vm._v("ブックマークの多い順")
+              ])
+            ]
+          ),
+          _vm._v(" "),
+          _c("div", { staticClass: "input-group mb-2" }, [
+            _c("input", {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.search_word,
+                  expression: "search_word"
+                }
+              ],
+              staticClass: "form-control",
+              attrs: { type: "text" },
+              domProps: { value: _vm.search_word },
+              on: {
+                input: function($event) {
+                  if ($event.target.composing) {
+                    return
+                  }
+                  _vm.search_word = $event.target.value
+                }
+              }
+            }),
+            _vm._v(" "),
+            _c("div", { staticClass: "input-group-btn mx-0" }, [
+              _c(
+                "button",
+                {
+                  staticClass: "btn btn-default my-0 py-2 h-100 shadow-none",
+                  attrs: {
+                    disabled: _vm.search_word.length <= 0,
+                    type: "button"
+                  },
+                  on: { click: _vm.searchWorks }
+                },
+                [_vm._v("検索")]
+              )
+            ])
+          ])
         ])
       ]),
       _vm._v(" "),
       _c(
         "mdb-list-group",
         { attrs: { flush: "" } },
-        _vm._l(_vm.works, function(work) {
-          return _c("mdb-list-group-item", { key: work.id }, [
+        _vm._l(_vm.works, function(work, index) {
+          return _c("mdb-list-group-item", { key: index }, [
             _c("div", [
               _c(
                 "div",
@@ -25103,7 +25316,53 @@ var render = function() {
                 1
               ),
               _vm._v(" "),
-              _c("small", [_vm._v(_vm._s(work.created_at))])
+              _c("small", [_vm._v(_vm._s(work.created_at))]),
+              _vm._v(" "),
+              !work.bookmarked_by_user
+                ? _c(
+                    "span",
+                    {
+                      staticClass: "ml-1 mousepointer-hand",
+                      class: { active_fav: _vm.is_bookmarking },
+                      on: {
+                        click: function($event) {
+                          return _vm.bookmark(work.id, index)
+                        }
+                      }
+                    },
+                    [
+                      _c("mdb-icon", {
+                        staticClass: "mr-1",
+                        attrs: { color: "orange", far: "", icon: "bookmark" }
+                      }),
+                      _vm._v(_vm._s(work.bookmark_count))
+                    ],
+                    1
+                  )
+                : _vm._e(),
+              _vm._v(" "),
+              work.bookmarked_by_user
+                ? _c(
+                    "span",
+                    {
+                      staticClass: "ml-1 mousepointer-hand",
+                      class: { active_fav: _vm.is_bookmarking },
+                      on: {
+                        click: function($event) {
+                          return _vm.unBookmark(work.id, index)
+                        }
+                      }
+                    },
+                    [
+                      _c("mdb-icon", {
+                        staticClass: "mr-1",
+                        attrs: { color: "orange", icon: "bookmark" }
+                      }),
+                      _vm._v(_vm._s(work.bookmark_count))
+                    ],
+                    1
+                  )
+                : _vm._e()
             ])
           ])
         }),
