@@ -29,6 +29,8 @@
     },
     "dependencies": {
         "chart.js": "^2.9.4",
-        "mdbvue": "^6.7.2"
+        "laravel-echo": "^1.10.0",
+        "mdbvue": "^6.7.2",
+        "pusher-js": "^7.0.3"
     }
 }

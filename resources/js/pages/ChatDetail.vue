@@ -1,23 +1,17 @@
 <template>
-  <div>
+  <div ref="a">
       <div class="mb-5">
-          <div @click="moreChat" class="d-flex justify-content-center">
-              <mdb-icon icon="ellipsis-h" />
-          </div>
-          <div v-for="(message, index) in reverseItems" :key="index">
-              <div v-for="(d, index) in message" :key="index">
-                  <div :class="{'d-flex justify-content-end' : d.id == your_id}">
-                    <div :class="{'balloon1_right' : d.id == your_id, 'balloon1_left' : d.id != your_id}" >
-                        <p>{{ d.pivot.message }}</p>
-                        <small>{{d.pivot.created_at}}</small>
-                    </div>
-                </div>
-
-              </div>
-            
         
-      </div>
+          <div v-for="(message, index) in messages" :key="index">
 
+                  <div :class="{'d-flex justify-content-end' : message.id == your_id}">
+                    <div :class="{'balloon1_right' : message.id == your_id, 'balloon1_left' : message.id != your_id}" >
+                        <p>{{ message.pivot.message }}</p>
+                        <small>{{message.pivot.created_at}}</small>
+    
+                     </div>
+            </div>
+        </div>
 
       </div>
       
@@ -59,39 +53,33 @@ export default {
     },
     methods:{
         async fetchChat(){
-            const response = await axios.get(`/api/chats/${this.chat_room_id}?page=${this.pagination.page}`);
+            
+            const response = await axios.get(`/api/chats/${this.chat_room_id}`);
             if (response.status !== OK) {
                 this.$store.commit('error/setCode', response.status)
                 return false
             }
 
             console.log(response)
-            this.messages.push(response.data.messages.data.slice().reverse());
+            this.messages = response.data.messages;
             this.your_id = response.data.your_id
             console.log(this.messages)
+
+
+
+           
+
+            
         },
         async postChat(){
             const response = await axios.post(`/api/chats/${this.chat_room_id}`, { 'message': this.new_message });
             this.new_message = "";
             console.log(response.status);
-            this.fetchChat();
+       
 
         },
-        moreChat(){
-            this.moreButtonStat.isActive =false;
-            this.pagination.page += 1;
-            this.fetchChat();
-            this.moreButtonStat.isActive =true;
-        }
-
         
     },
-    computed:{
-        reverseItems() {
-            return this.messages.slice().reverse();
-        }
-    },
-
     watch: {
         $route: {
         async handler () {
@@ -100,6 +88,24 @@ export default {
         immediate: true
         }
     },
+    updated(){
+        const chatLog = this.$refs.a;
+        console.log(chatLog.scrollHeight)
+        
+            window.scroll({
+                top: chatLog.scrollHeight,
+                behavior: "instant"
+            });
+
+    },
+    mounted() {
+        Echo.private(`chat.${this.chat_room_id}`)
+        .listen('MessageCreated', (e) => {
+            this.fetchChat(); // 全メッセージを再読込
+        });
+
+      
+    }
 
 
 }

@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
+use App\Events\MessageCreated;
+
 class ChatController extends Controller
 {
     public function index(){
@@ -20,7 +22,7 @@ class ChatController extends Controller
     public function show($id){
         $auth = \Auth::user();
         $chat_room = $auth->chat_rooms()->findOrFail($id);
-        $messages = $chat_room->messages()->orderBy('messages.created_at', 'desc')->paginate(10);
+        $messages = $chat_room->messages()->orderBy('messages.created_at', 'asc')->get();
 
 
         return (['messages' => $messages, 'your_id' => $auth->id]);
@@ -32,6 +34,8 @@ class ChatController extends Controller
         $auth = \Auth::user();
         $message = $request->message;
         $auth->send_message($id, $message);
+
+        event(new MessageCreated($message, $id));
     }
 
 
