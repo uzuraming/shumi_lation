@@ -182,112 +182,112 @@ class UsersController extends Controller
         }
     }
 
-        // フォローしている人を取得する処理
-        public function followings($id){
-            $user = User::findOrFail($id);
+    // フォローしている人を取得する処理
+    public function followings($id){
+        $user = User::findOrFail($id);
+
+        // フォローしている人の人数を計測
+        $user->loadRelationshipCounts();
+
+        // ユーザーのフォローしているユーザーを取得
+        $followings = $user->followings()->paginate(10);
+
+        // 表示
+        return view('users.followings', ([
+            'user' => $user,
+            'users' => $followings,
+        ]));
+        
+    }
     
-            // フォローしている人の人数を計測
-            $user->loadRelationshipCounts();
-    
-            // ユーザーのフォローしているユーザーを取得
-            $followings = $user->followings()->paginate(10);
-    
-            // 表示
-            return view('users.followings', ([
-                'user' => $user,
-                'users' => $followings,
-            ]));
-            
+    // フォロワーを取得する処理
+    public function followers($id){
+
+        $user = User::findOrFail($id);
+
+        // フォローされている人の人数を計測
+        $user->loadRelationshipCounts();
+
+        // ユーザーのフォローされているユーザーを取得
+        $followers = $user->followers()->paginate(10);
+
+        // 表示
+        return view('users.followers', ([
+            'user' => $user,
+            'users' => $followers,
+        ]));
+        
+    }
+
+    // 作品一覧
+    public function works($id){
+
+        $user = User::findOrFail($id);
+        $works = $user->works()->paginate(10);
+
+        // 表示
+        return view('users.works',([
+            'user' => $user,
+            'works' => $works,
+        ]));
+        
+    }
+
+    // 作品一覧
+    public function worksShow($id, $workId){
+
+        $user = User::findOrFail($id);
+        $work = $user->works()->findOrFail($workId);
+        $comments = $work->comments()->paginate(10);
+
+
+        // 表示
+        return view('users.works_show',([
+            'user' => $user,
+            'work' => $work,
+            'comments' => $comments,
+        ]));
+        
+    }
+
+    public function commentStore(Request $request, $id, $workId){
+        $from_user = \Auth::user();
+
+        $user = User::findOrFail($id);
+        $work = $user->works()->findOrFail($workId);
+
+        $new_comment = new Comment;
+        $new_comment->comment = $request->comment;
+        // コメントしたユーザーに関連付ける
+
+        $new_comment->user()->associate($from_user);
+        $new_comment->work()->associate($work);
+
+        $new_comment->save();
+
+
+
+        return back();
+
+    }
+
+    public function commentDestroy($id, $workId, $commentId){
+        // ユーザー、作品、コメントの変数
+        $user = User::findOrFail($id);
+        $work = $user->works()->findOrFail($workId);
+        $comment = $work->comments()->findOrFail($commentId);
+
+        // ログイン中のユーザーがコメントの持ち主、あるいはコメントがついてる作品の持ち主か判断する
+        $its_my_work = $work->isMywork();
+        $its_my_comment = $comment->isMyComment($commentId);
+
+        if($its_my_work || $its_my_comment ){
+            $comment->delete();
         }
-    
-        // フォロワーを取得する処理
-        public function followers($id){
-    
-            $user = User::findOrFail($id);
-    
-            // フォローされている人の人数を計測
-            $user->loadRelationshipCounts();
-    
-            // ユーザーのフォローされているユーザーを取得
-            $followers = $user->followers()->paginate(10);
-    
-            // 表示
-            return view('users.followers', ([
-                'user' => $user,
-                'users' => $followers,
-            ]));
-            
-        }
 
-        // 作品一覧
-        public function works($id){
+        return back();
 
-            $user = User::findOrFail($id);
-            $works = $user->works()->paginate(10);
-
-            // 表示
-            return view('users.works',([
-                'user' => $user,
-                'works' => $works,
-            ]));
-            
-        }
-
-        // 作品一覧
-        public function worksShow($id, $workId){
-
-            $user = User::findOrFail($id);
-            $work = $user->works()->findOrFail($workId);
-            $comments = $work->comments()->paginate(10);
-
-
-            // 表示
-            return view('users.works_show',([
-                'user' => $user,
-                'work' => $work,
-                'comments' => $comments,
-            ]));
-            
-        }
-
-        public function commentStore(Request $request, $id, $workId){
-            $from_user = \Auth::user();
-
-            $user = User::findOrFail($id);
-            $work = $user->works()->findOrFail($workId);
-
-            $new_comment = new Comment;
-            $new_comment->comment = $request->comment;
-            // コメントしたユーザーに関連付ける
-
-            $new_comment->user()->associate($from_user);
-            $new_comment->work()->associate($work);
-
-            $new_comment->save();
-
-
-
-            return back();
-
-        }
-
-        public function commentDestroy($id, $workId, $commentId){
-            // ユーザー、作品、コメントの変数
-            $user = User::findOrFail($id);
-            $work = $user->works()->findOrFail($workId);
-            $comment = $work->comments()->findOrFail($commentId);
-
-            // ログイン中のユーザーがコメントの持ち主、あるいはコメントがついてる作品の持ち主か判断する
-            $its_my_work = $work->isMywork();
-            $its_my_comment = $comment->isMyComment($commentId);
-
-            if($its_my_work || $its_my_comment ){
-                $comment->delete();
-            }
-
-            return back();
-
-        }
+    }
 
         
     

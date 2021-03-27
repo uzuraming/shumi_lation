@@ -8,9 +8,7 @@ use App\Work;
 use App\Comment;
 
 class WorksController extends Controller
-{
-
-  
+{ 
      public function index(Request $request)
      {  
         
@@ -81,6 +79,7 @@ class WorksController extends Controller
 
         
     }
+
     public function comment_destroy($id,$commentId){
         // ユーザー、作品、コメントの変数
         $user = \Auth::user();
@@ -150,6 +149,7 @@ class WorksController extends Controller
         
     }
 
+
     public function update(Request $request, $id){        
         
         // バリデーション
@@ -170,13 +170,7 @@ class WorksController extends Controller
                 'genre' => $genre,
                 'content' => $content
             ]);
-        }
-        
-
-    
-
-
-        
+        }   
     }
 
     public function destroy($id){

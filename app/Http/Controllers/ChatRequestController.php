@@ -88,8 +88,5 @@ class ChatRequestController extends Controller
         $requesting = $auth->remove_request($id);     
     }
 
-    
-
-
 }
 
