@@ -100,4 +100,6 @@ Route::group(['middleware' => ['auth','verified']], function () {
 
     // タイムラインの各機能
     Route::post('/timelines', 'TimelinesController@store');
+
+
 });

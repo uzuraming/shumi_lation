@@ -16052,7 +16052,10 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
               case 2:
                 if (_this.apiStatus) {
                   // トップページに移動する
-                  _this.$router.push('/');
+                  _this.$router.go({
+                    path: '/',
+                    force: true
+                  });
                 }
 
               case 3:
@@ -51392,6 +51395,7 @@ function getCookieValue(searchKey) {
       return val = value;
     }
   });
+  console.log(val);
   return val;
 }
 var OK = 200;
