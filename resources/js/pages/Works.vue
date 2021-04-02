@@ -74,6 +74,17 @@
         </mdb-modal>
         <div v-if="isLogin" @click="timelinesModal=true" class="btn-circle-flat shadow"><span class="h2">+</span></div>
      -->
+        <mdb-modal :show="warnModal">
+            <mdb-modal-header>
+                <mdb-modal-title>警告</mdb-modal-title>
+            </mdb-modal-header>
+            <mdb-modal-body>
+                ブックマークにはログインが必要です。
+            </mdb-modal-body>
+            <mdb-modal-footer>    
+                <mdb-btn class="shadow-none" color="elegant" @click.native="warnModal=false">Close</mdb-btn>
+            </mdb-modal-footer>
+        </mdb-modal>
 
     </div>
     
@@ -120,6 +131,7 @@
                 search_word:"",
                 is_bookmarking:false,
                 is_rank:'created_at',
+                warnModal:false,
             }
         },
         props: {

@@ -15210,10 +15210,6 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
-//
-//
-//
-//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -15338,6 +15334,14 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
   mounted: function mounted() {
     var _this4 = this;
 
+    // Get csrf token from cookie
+    var name = 'XSRF-TOKEN';
+    var cookies = '; ' + document.cookie;
+    var parts = cookies.split('; ' + name + '=');
+    var value = parts.length == 2 ? parts.pop().split(';').shift() : null;
+    value = decodeURIComponent(value); // Set csrf token header for echo pusher config
+
+    Echo.connector.pusher.config.auth.headers['X-XSRF-TOKEN'] = value;
     Echo["private"]("chat.".concat(this.chat_room_id)).listen('MessageCreated', function (e) {
       _this4.fetchChat(); // 全メッセージを再読込
 
@@ -16052,10 +16056,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
               case 2:
                 if (_this.apiStatus) {
                   // トップページに移動する
-                  _this.$router.go({
-                    path: '/',
-                    force: true
-                  });
+                  _this.$router.push('/');
                 }
 
               case 3:
@@ -16945,6 +16946,17 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
  // ★ 追加
 
 
@@ -16975,7 +16987,8 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       genre: 'all',
       search_word: "",
       is_bookmarking: false,
-      is_rank: 'created_at'
+      is_rank: 'created_at',
+      warnModal: false
     };
   },
   props: {
@@ -31491,6 +31504,41 @@ var render = function() {
               "last-page": _vm.lastPage
             }
           })
+        ],
+        1
+      ),
+      _vm._v(" "),
+      _c(
+        "mdb-modal",
+        { attrs: { show: _vm.warnModal } },
+        [
+          _c("mdb-modal-header", [_c("mdb-modal-title", [_vm._v("警告")])], 1),
+          _vm._v(" "),
+          _c("mdb-modal-body", [
+            _vm._v(
+              "\n                ブックマークにはログインが必要です。\n            "
+            )
+          ]),
+          _vm._v(" "),
+          _c(
+            "mdb-modal-footer",
+            [
+              _c(
+                "mdb-btn",
+                {
+                  staticClass: "shadow-none",
+                  attrs: { color: "elegant" },
+                  nativeOn: {
+                    click: function($event) {
+                      _vm.warnModal = false
+                    }
+                  }
+                },
+                [_vm._v("Close")]
+              )
+            ],
+            1
+          )
         ],
         1
       )

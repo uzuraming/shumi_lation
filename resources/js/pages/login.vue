@@ -62,17 +62,8 @@ export default {
 
             if (this.apiStatus) {
                 // トップページに移動する
-                this.$router.go({path: '/', force: true})
+                this.$router.push('/')
             }
-
-
-            
-
-
-
-
-
-
         },
         clearError () {
             this.$store.commit('auth/setLoginErrorMessages', null)

@@ -18,13 +18,8 @@ window.axios.interceptors.response.use(
 )
 
 // pusher
-
-import Echo from 'laravel-echo'
-
+import Echo from 'laravel-echo';
 window.Pusher = require('pusher-js');
-
-
-
 
 
 
@@ -38,6 +33,9 @@ window.Echo = new Echo({
 
 
 });
+
+
+
 
 
 

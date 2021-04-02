@@ -1,24 +1,20 @@
 <template>
   <div ref="a">
-      <div class="mb-5">
-        
-          <div v-for="(message, index) in messages" :key="index">
-
-                  <div :class="{'d-flex justify-content-end' : message.id == your_id}">
-                    <div :class="{'balloon1_right' : message.id == your_id, 'balloon1_left' : message.id != your_id}" >
-                        <p>{{ message.pivot.message }}</p>
-                        <small>{{message.pivot.created_at}}</small>
-    
-                     </div>
+      <div class="mb-5">  
+        <div v-for="(message, index) in messages" :key="index">
+            <div :class="{'d-flex justify-content-end' : message.id == your_id}">
+                <div :class="{'balloon1_right' : message.id == your_id, 'balloon1_left' : message.id != your_id}" >
+                    <p>{{ message.pivot.message }}</p>
+                    <small>{{message.pivot.created_at}}</small>
+                    </div>
             </div>
         </div>
-
-      </div>
+    </div>
       
 
-  <form class="form-inline row fixed-bottom white d-flex justify-content-center shadow">
-      <input class="form-control m-1 col-8" type="text" v-model="new_message">
-      <button :disabled="new_message.length<=0" @click="postChat" class="btn shadow-none btn-outline-success mx-1 col-2 px-1" type="button">send</button>
+    <form class="form-inline row fixed-bottom white d-flex justify-content-center shadow">
+        <input class="form-control m-1 col-8" type="text" v-model="new_message">
+        <button :disabled="new_message.length<=0" @click="postChat" class="btn shadow-none btn-outline-success mx-1 col-2 px-1" type="button">send</button>
     </form>
 
 
@@ -99,6 +95,16 @@ export default {
 
     },
     mounted() {
+        // Get csrf token from cookie
+        const name = 'XSRF-TOKEN'
+        const cookies = '; ' + document.cookie
+        const parts = cookies.split('; ' + name + '=')
+        let value = parts.length == 2 ? parts.pop().split(';').shift() : null
+        value = decodeURIComponent(value)
+
+        // Set csrf token header for echo pusher config
+        Echo.connector.pusher.config.auth.headers['X-XSRF-TOKEN'] = value
+
         Echo.private(`chat.${this.chat_room_id}`)
         .listen('MessageCreated', (e) => {
             this.fetchChat(); // 全メッセージを再読込
