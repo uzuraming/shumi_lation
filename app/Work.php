@@ -1,6 +1,7 @@
 <?php
 
 namespace App;
+use Storage; // 追加
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -10,13 +11,14 @@ class Work extends Model
     protected $fillable = [
         'title',
         'content',
-        'genre'
+        'genre',
+        'img_path'
     ];
 
 
     /** JSONに含めるアクセサ */
     protected $appends = [
-        'bookmarked_by_user', 'bookmark_count'
+        'bookmarked_by_user', 'bookmark_count', 'url'
     ];
 
     public function getBookmarkedByUserAttribute()
@@ -31,6 +33,17 @@ class Work extends Model
     public function getBookmarkCountAttribute()
     {
         return $this->bookmarking_user->count();
+        
+    }
+
+    // 画像にURLをつける
+    public function getUrlAttribute()
+    {
+        if($this->img_path){
+            return Storage::cloud()->url($this->img_path);
+        }else{
+            return null;
+        }
         
     }
     

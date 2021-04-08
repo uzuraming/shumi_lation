@@ -7,6 +7,9 @@ use Illuminate\Http\Request;
 use App\Work;
 use App\Comment;
 
+use Storage;
+
+
 class WorksController extends Controller
 { 
      public function index(Request $request)
@@ -117,21 +120,40 @@ class WorksController extends Controller
             'title' => 'required|max:255',
             'content' => 'required|max:10000'
         ]);
+
+  
+        \Log::Debug($request->img_path);
+            
+        if ($request->img_path) {
+            $fileName = time() . $request->img_path->getClientOriginalName();
+            Storage::cloud()
+            ->putFileAs('', $request->img_path, $fileName, 'public');
+            // 画像のURL取得
+            // $filePath= Storage::disk('s3')->url($fileName);
+        } else {
+            // 画像がない場合は何もしない
+            $fileName  = null;
+        }
+
+
+
+            $user = \Auth::user();
+            $title = $request->title;
+            $genre = $request->genre;
+            $content = $request->content;
+   
+
+            // 作品を作成
+            $user->works()->create([
+                'title' => $title,
+                'genre' => $genre,
+                'content' => $content,
+                'img_path' => $fileName 
+            ]);
+
+
+        // todo:エラー時に画像を削除するトランザクション処理を書く
         
-        // 現在ログイン中のユーザー
-        $user = \Auth::user();
-        $title = $request->title;
-        $genre = $request->genre;
-        $content = $request->content;
-
-
-
-        // 作品を作成
-        $user->works()->create([
-            'title' => $title,
-            'genre' => $genre,
-            'content' => $content
-        ]);
 
         // トップページにリダイレクト
         // return redirect('/');
@@ -158,18 +180,51 @@ class WorksController extends Controller
             'content' => 'required|max:10000'
         ]);
 
+        
+        \Log::Debug(strval($request->img_path));   
+        $tmp_str = strval($request->img_path); // 受け取った値を文字列に変換
+        if($a == "default"){
+            // 画像データが”default”の文字列だった場合、画像関連の処理はしない
+            $fileName  = null;
+        }elseif ($request->img_path) {
+            $fileName = time() . $request->img_path->getClientOriginalName();
+            Storage::cloud()
+            ->putFileAs('', $request->img_path, $fileName, 'public');
+ 
+        }else{
+            // 画像がない場合は何もしない
+            $fileName  = null;
+        }
+
+    
+
         $work = Work::findOrFail($id);
+
         if($work->user->id == \Auth::user()->id){
             $title = $request->title;
             $genre = $request->genre;
             $content = $request->content;
 
-            // 作品を作成
-            $work->update([
-                'title' => $title,
-                'genre' => $genre,
-                'content' => $content
-            ]);
+            if($request->img_path==="default"){
+                // 作品を作成
+                $work->title = $title;
+                $work->genre = $genre;
+                $work->content = $content;
+                $work->save();
+            }else{
+                // ストレージ上の過去のファイルを削除
+                $s3_delete = Storage::disk('s3')->delete($work->img_path);
+                // 作品を作成
+                $work->title = $title;
+                $work->genre = $genre;
+                $work->content = $content;
+                $work->img_path = $fileName;
+                $work->save();
+
+                
+
+            }
+            
         }   
     }
 

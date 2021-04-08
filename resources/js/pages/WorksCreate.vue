@@ -17,9 +17,36 @@
             <option value="SF">SF</option>
             <option value="other">その他</option>
         </select>
+
+        <div class="p-2 border border-light">
+
+            <div class="input-group">
+              <div class="custom-file">
+                <input type="file" accept="image/*" @change="onFileChange" class="custom-file-input" id="home-inputfile" data-browse="参照" aria-describedby="inputGroupFileAddon01">
+                <label class="custom-file-label" for="inputGroupFile01">
+                    
+                    {{img_name}}
+                </label>
+              </div>
+            </div>
+
+            <!-- ここに添付した画像が表示される -->
+            <div class="position-relative" v-if="uploadedImage">
+              <img :src="uploadedImage" style="width:100%;"  />
+              <mdb-btn  class="z-depth-2 position-absolute remove-carousel" @click="removeUploadedImg()" color="danger">削除</mdb-btn>
+              
+            </div>
+
+
+            
+
+          </div>
+
+
+
         <vue-editor v-model="content" />
         <div class="text-center mt-4">
-            <button class="btn btn-dark shadow-none rounded-0" :disabled="content.length<=0 || title.length<=0 || !isFormBtnActive"  type="submit">{{ formBtnMsg }}</button>
+            <button class="btn btn-dark shadow-none rounded-0" :disabled="content.length<=0 || title.length<=0 || !isFormBtnActive || img_condition"  type="submit">{{ formBtnMsg }}</button>
         </div>
     </form>
         </div>
@@ -61,6 +88,7 @@ import { OK } from '../util'
 import { VueEditor } from "vue2-editor";
 import { mdbBtn, 
         mdbInput, 
+        mdbIcon,
         mdbModal, 
         mdbModalHeader, 
         mdbModalTitle, 
@@ -72,6 +100,7 @@ import { mdbBtn,
 export default {
     components: { VueEditor, mdbInput, mdbBtn, mdbModal, 
         mdbModalHeader, 
+        mdbIcon ,
         mdbModalTitle, 
         mdbModalBody, 
         mdbModalFooter,
@@ -85,7 +114,10 @@ export default {
             confirmation_modal:false,
             isDeleteBtnActive:true,
             deleteBtnMsg:'delete',
-            genre:'文学'
+            genre:'文学',
+            uploadedImage: '',
+            img_name: 'ファイルを選択',
+            inputImg:null, // アップロードした画像の情報
           
         }
     },
@@ -96,7 +128,22 @@ export default {
         async postWork(){  
                 this.isFormBtnActive = false;
                 this.formBtnMsg = 'Sending...';
-                const response = await axios.post('/api/works', {'content': this.content, 'title': this.title, 'genre':this.genre});
+
+                const formData = new FormData()
+                if(this.inputImg){
+                    formData.append('img_path', this.inputImg[0])
+                }
+                
+                formData.append('content', this.content)
+                formData.append('title', this.title)
+                formData.append('genre', this.genre)
+
+                console.log(formData)
+                const response = await axios.post('/api/works', formData, {
+                    headers: {
+                    'Content-Type': 'multipart/form-data'
+                    }
+                });
              
                     // 戻る
                     this.$router.back()     
@@ -105,8 +152,21 @@ export default {
         async editWork(){  
                 this.isFormBtnActive = false;
                 this.formBtnMsg = 'Sending...';
-                const response = await axios.put(`/api/works/${this.$route.params.work_id}`, {'content': this.content, 'title': this.title, 'genre':this.genre});
-             
+                const formData = new FormData()
+                if(this.inputImg === "default"){
+                    formData.append('img_path', "default")
+                }else if(this.inputImg){
+                    formData.append('img_path', this.inputImg[0])
+                }
+   
+                formData.append('content', this.content)
+                formData.append('title', this.title)
+                formData.append('genre', this.genre)
+                const response = await axios.post(`/api/works/${this.$route.params.work_id}`, formData, {
+                    headers: {
+                    'X-HTTP-Method-Override': 'PUT'
+                    }
+                })
                 // 戻る
                 this.$router.back()     
        
@@ -136,8 +196,40 @@ export default {
                     console.log(response);
                     this.title = response.data.title;
                     this.content = response.data.content;
+                    this.uploadedImage = response.data.url;
+                    // 初期状態のばあい "default"を代入しておく。
+                    this.inputImg = "default";
                 };
                 
+        },
+        // 画像を削除する関数
+        removeUploadedImg(){
+            this.uploadedImage="";
+            this.inputImg="";
+            this.img_name="ファイルを選択"
+            document.getElementById("home-inputfile").value = '';
+
+        },
+        // ファイルが添付された時に発動する関数
+        onFileChange(e) {
+            console.log('imgUpload')
+            let files = e.target.files || e.dataTransfer.files;
+            this.img_name = files[0].name;
+            if(files[0]){
+                    this.inputImg = files
+                    this.createImage(files[0]);
+            }
+            console.log(this.inputImg)
+        },
+        // アップロードした画像を表示
+        createImage(file) {
+            console.log('imgCreated')
+            let reader = new FileReader();
+            reader.onload = (e) => {
+            this.uploadedImage = e.target.result;
+
+            };
+            reader.readAsDataURL(file);
         },
 
 
@@ -153,11 +245,34 @@ export default {
             immediate: true
         }
     },
+    computed:{
+        img_condition(){
+            if(!this.inputImg){
+                return false;
+            }
+            else if(!this.inputImg[0]){
+                return false;
+            }else if(this.inputImg == "default"){
+                return false
+            }else if(this.inputImg[0].type != 'image/jpeg' && this.inputImg[0].type != 'image/gif' && this.inputImg[0].type != 'image/png' && this.inputImg[0].type != 'application/pdf'){
+                return true
+            // 大きすぎる画像が添付されている場合
+            }else if(this.inputImg[0].size > 3000000){
+                return true
+            }else{
+                return false
+            }
+        }
+    }
     
 
 }
-</script>
+</script scoped>
 
 <style>
+    .remove-carousel{
+    bottom:2rem;
+    right:2rem
+    }
 
 </style>
