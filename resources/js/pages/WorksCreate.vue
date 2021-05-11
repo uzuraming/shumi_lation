@@ -2,76 +2,79 @@
 
   <div class="">
     <mdb-card class="card-body" style="">
-
+        <!-- 入力フォーム -->
         <mdb-card-title v-if="pageName != 'editWork'" class="text-center">新規作成</mdb-card-title>
         <mdb-card-title v-if="pageName == 'editWork'" class="text-center">{{title}}の編集</mdb-card-title>
         <div class="flex-row">
-        <form @submit.prevent="pageName=='editWork'? editWork() : postWork()" class="mt-5">
-        <mdb-input label="title" v-model="title" type="text"/>
-        <select v-model="genre" class="browser-default custom-select mb-2">
-            <option value="文学" selected>文学</option>
-            <option value="エッセイ">エッセイ</option>
-            <option value="ライトノベル">ライトノベル</option>
-            <option value="ファンタジー">ファンタジー</option>
-            <option value="恋愛">恋愛</option>
-            <option value="SF">SF</option>
-            <option value="other">その他</option>
-        </select>
+            <form @submit.prevent="pageName=='editWork'? editWork() : postWork()" class="mt-5">
+                <mdb-input label="タイトル" v-model="title" type="text"/>
+                <select v-model="genre" class="browser-default custom-select mb-2">
+                    <option value="文学" selected>文学</option>
+                    <option value="エッセイ">エッセイ</option>
+                    <option value="ライトノベル">ライトノベル</option>
+                    <option value="ファンタジー">ファンタジー</option>
+                    <option value="恋愛">恋愛</option>
+                    <option value="SF">SF</option>
+                    <option value="other">その他</option>
+                </select>
 
-        <div class="p-2 border border-light">
+                <div class="p-2 border border-light">
 
-            <div class="input-group">
-              <div class="custom-file">
-                <input type="file" accept="image/*" @change="onFileChange" class="custom-file-input" id="home-inputfile" data-browse="参照" aria-describedby="inputGroupFileAddon01">
-                <label class="custom-file-label" for="inputGroupFile01">
+                    <div class="input-group">
+                    <div class="custom-file">
+                        <input type="file" accept="image/*" @change="onFileChange" class="custom-file-input" id="home-inputfile" data-browse="参照" aria-describedby="inputGroupFileAddon01">
+                        <label class="custom-file-label" for="inputGroupFile01">
+                            
+                            {{img_name}}
+                        </label>
+                    </div>
+                    </div>
+
+                    <!-- ここに添付した画像が表示される -->
+                    <div class="position-relative" v-if="uploadedImage">
+                    <img :src="uploadedImage" style="width:100%;"  />
+                    <mdb-btn  class="z-depth-2 position-absolute remove-carousel" @click="removeUploadedImg()" color="danger">削除</mdb-btn>
                     
-                    {{img_name}}
-                </label>
-              </div>
-            </div>
-
-            <!-- ここに添付した画像が表示される -->
-            <div class="position-relative" v-if="uploadedImage">
-              <img :src="uploadedImage" style="width:100%;"  />
-              <mdb-btn  class="z-depth-2 position-absolute remove-carousel" @click="removeUploadedImg()" color="danger">削除</mdb-btn>
-              
-            </div>
+                    </div>
 
 
-            
+                    
 
-          </div>
+                </div>
 
 
 
-        <vue-editor v-model="content" />
-        <div class="text-center mt-4">
-            <button class="btn btn-dark shadow-none rounded-0" :disabled="content.length<=0 || title.length<=0 || !isFormBtnActive || img_condition"  type="submit">{{ formBtnMsg }}</button>
-        </div>
-    </form>
+                <vue-editor v-model="content" />
+                <div class="text-center mt-4">
+                    <button class="btn btn-dark shadow-none rounded-0" :disabled="content.length<=0 || title.length<=0 || !isFormBtnActive || img_condition"  type="submit">{{ formBtnMsg }}</button>
+                    <button v-if="pageName == 'editWork'" class="btn btn-danger shadow-none rounded-0" @click="confirmation_modal = true" type="button">削除</button>
+                </div>
+            </form>
         </div>
     </mdb-card>
-    <h2 v-if="pageName != 'editWork'" class="text-center">新規作成</h2>
+    <!-- <h2 v-if="pageName != 'editWork'" class="text-center">新規作成</h2>
     <h2 v-if="pageName == 'editWork'" class="text-center">{{title}}の編集</h2>
-    
-    <form @submit.prevent="pageName=='editWork'? editWork() : postWork()" class="mt-5">
+     -->
+    <!-- <form @submit.prevent="pageName=='editWork'? editWork() : postWork()" class="mt-5">
         <mdb-input label="title" v-model="title" type="text"/>
         <vue-editor v-model="content" />
         <div class="text-center mt-4">
             <button class="btn btn-dark shadow-none rounded-0" :disabled="content.length<=0 || title.length<=0 || !isFormBtnActive"  type="submit">{{ formBtnMsg }}</button>
         </div>
-    </form>
-    <button v-if="pageName == 'editWork'" class="btn btn-danger shadow-none rounded-0" @click="confirmation_modal = true">delete</button>
-    <mdb-modal :show="confirmation_modal">
-        <mdb-modal-header :close="false" >
-            <mdb-modal-title>Confirmation</mdb-modal-title>
+    </form> -->
+
+
+    <!-- 削除するときの確認 -->
+    <mdb-modal :show="confirmation_modal" @close="confirmation_modal=false">
+        <mdb-modal-header  >
+            <mdb-modal-title>確認</mdb-modal-title>
         </mdb-modal-header>
         <mdb-modal-body>
             本当に削除しますか？
         </mdb-modal-body>
 
         <mdb-modal-footer>
-            <mdb-btn :disabled="!isDeleteBtnActive" class="shadow-none" color="mdb-color" @click.native="confirmation_modal = false">Cancel</mdb-btn>
+            <mdb-btn :disabled="!isDeleteBtnActive" class="shadow-none" color="mdb-color" @click.native="confirmation_modal = false">キャンセル</mdb-btn>
             <mdb-btn :disabled="!isDeleteBtnActive" class="shadow-none" color="danger " @click.native="deleteWork()">{{deleteBtnMsg}}</mdb-btn>
         </mdb-modal-footer>
     </mdb-modal>
@@ -110,10 +113,10 @@ export default {
             content: "",
             title:"",
             isFormBtnActive:true,
-            formBtnMsg:'SEND',
+            formBtnMsg:'送信',
             confirmation_modal:false,
             isDeleteBtnActive:true,
-            deleteBtnMsg:'delete',
+            deleteBtnMsg:'削除',
             genre:'文学',
             uploadedImage: '',
             img_name: 'ファイルを選択',
@@ -125,9 +128,10 @@ export default {
         pageName:String,
     },
     methods:{
+        // 作品を投稿
         async postWork(){  
                 this.isFormBtnActive = false;
-                this.formBtnMsg = 'Sending...';
+                this.formBtnMsg = '送信中...';
 
                 const formData = new FormData()
                 if(this.inputImg){
@@ -149,9 +153,10 @@ export default {
                     this.$router.back()     
        
         },
+        // 作品を編集
         async editWork(){  
                 this.isFormBtnActive = false;
-                this.formBtnMsg = 'Sending...';
+                this.formBtnMsg = '送信中...';
                 const formData = new FormData()
                 if(this.inputImg === "default"){
                     formData.append('img_path', "default")
@@ -171,9 +176,10 @@ export default {
                 this.$router.back()     
        
         },
+        // 作品を削除
         async deleteWork(){  
                 this.isDeleteBtnActive = false;
-                this.deleteBtnMsg = 'deleting...';
+                this.deleteBtnMsg = '削除中...';
                 const response = await axios.delete(`/api/works/${this.$route.params.work_id}`);
                 if (response.status !== OK) {
                     this.$store.commit('error/setCode', response.status)
@@ -184,6 +190,7 @@ export default {
                 this.$router.push('/works')     
        
         },
+        // 作品を取得（編集時のみ）
         async fetchWork(){
             const response = await axios.get(`/api/works/${this.$route.params.work_id}`);
             if (response.status !== OK) {
@@ -267,7 +274,7 @@ export default {
     
 
 }
-</script scoped>
+</script>
 
 <style>
     .remove-carousel{

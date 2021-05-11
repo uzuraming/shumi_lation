@@ -1,19 +1,21 @@
 <template>
     <div>
-        <!-- Default form login -->
+        
+        <!-- ログインフォーム -->
  
         <form @submit.prevent="login" class="mt-5">
-            <p class="h3 text-center mb-4 login-title">Sign in</p>
-            <mdb-input label="Your email" v-model="loginForm.email" type="email" id="defaultFormLoginEmailEx" />
-            <mdb-input label="Password" v-model="loginForm.password" type="password" id="defaultFormLoginPasswordEx"/>
+            <p class="h3 text-center mb-4 ">ログイン</p>
+            <mdb-input label="メールアドレス" v-model="loginForm.email" type="email" id="defaultFormLoginEmailEx" />
+            <mdb-input label="パスワード" v-model="loginForm.password" type="password" id="defaultFormLoginPasswordEx"/>
             <div class="text-center mt-4">
-                <button class="btn btn-dark shadow-none rounded-0" type="submit">Login</button>
+                <button class="btn btn-dark shadow-none rounded-0" type="submit">ログイン</button>
             </div>
         </form>
-        <!-- Default form login -->
+        
 
-        <mdb-modal :show="loginErrors !=null" @close="loginErrors == null">
-            <mdb-modal-header :close="false" >
+        <!-- Vログインエラーが出たときに表示されるモーダル -->
+        <mdb-modal :show="loginErrors !=null" @close="$store.dispatch('auth/clearErrorMessage')">
+            <mdb-modal-header  >
                 <mdb-modal-title>警告</mdb-modal-title>
             </mdb-modal-header>
             <mdb-modal-body>
@@ -27,7 +29,7 @@
                 </div>
             </mdb-modal-body>
             <mdb-modal-footer>
-                <mdb-btn color="secondary" @click.native="clearError()">Close</mdb-btn>
+                <mdb-btn color="secondary" @click.native="clearError()">閉じる</mdb-btn>
             </mdb-modal-footer>
         </mdb-modal>
     </div>
@@ -62,7 +64,7 @@ export default {
 
             if (this.apiStatus) {
                 // トップページに移動する
-                this.$router.push('/')
+                this.$router.push('/timelines')
             }
         },
         clearError () {
@@ -84,7 +86,7 @@ export default {
 }
 </script>
 
-<style scoped>
+<style>
     .login-title{
         font-family: 'Julius Sans One', sans-serif;
     }

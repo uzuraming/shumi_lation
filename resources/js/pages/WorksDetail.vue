@@ -1,6 +1,15 @@
 <template>
   <div>
-    <mdb-card class="card-body shadow-sm" style="">
+      <!-- ロード中 -->
+      <div class="d-flex justify-content-center align-center m-5"  v-if="isLoad">
+            <div class="spinner-grow spinner" role="status">
+                <span class="sr-only">Loading...</span>
+            </div>
+
+        </div>
+    
+    <!-- 作品情報 -->
+    <mdb-card class="card-body shadow-sm" style="" v-if="!isLoad">
         <mdb-card-text>
             <div class="text-center mt-2">
                 <div class="h2">{{ work.title }}</div>
@@ -38,7 +47,8 @@ export default {
                 content:[],
                 user:[],
 
-            }
+            },
+            isLoad:true
 
         }
     },
@@ -52,6 +62,7 @@ export default {
 
     },
     methods:{
+        // 作品を取得
         async fetchWorksDetail(){
                 const response = await axios.get(`/api/works/${this.work_id}`)
         
@@ -69,7 +80,8 @@ export default {
     watch: {
             $route: {
             async handler () {
-                await this.fetchWorksDetail()
+                await this.fetchWorksDetail();
+                this.isLoad=false;
             },
             immediate: true
         }
@@ -86,6 +98,30 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
+    .btn-circle-flat {
+        display: inline-block;
+        text-decoration: none;
+        background: #2E2E2E;
+        color: #FFF;
+        width: 70px;
+        height: 70px;
+        line-height: 120px;
+        border-radius: 50%;
+        text-align: center;
+        overflow: hidden;
+        transition: .4s;
+        position: fixed;
+        bottom: 100px; 
+        right: 20px;
+        display: -webkit-flex;
+        display: flex;
+        -webkit-align-items: center; /* 縦方向中央揃え（Safari用） */
+        align-items: center; /* 縦方向中央揃え */
+        -webkit-justify-content: center; /* 横方向中央揃え（Safari用） */
+        justify-content: center; /* 横方向中央揃え */
+       
+
+    }   
 
 </style>

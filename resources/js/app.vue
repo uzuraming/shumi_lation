@@ -6,7 +6,7 @@
          <Navbar/>
      </header>
      <EmailVerifiedMessage/>
-     <main class="mt-3">
+     <main class="mt-3 mb-5 ">
       <div class="container">
         <RouterView />
       </div>
@@ -14,14 +14,14 @@
     </main>
 
 
-    <!-- <footer>
+    <footer>
          <Footer/>
-     </footer> -->
+     </footer>
   </div>
 </template>
 
 <script>
-    import { INTERNAL_SERVER_ERROR } from './util'
+    import { INTERNAL_SERVER_ERROR, NOT_FOUND } from './util'
 
     import Navbar from './components/Navbar.vue'
     import Footer from './components/Footer.vue'
@@ -34,7 +34,7 @@
             Navbar,
             Footer,
             Tabs,
-            EmailVerifiedMessage
+            EmailVerifiedMessage,
         },
         computed: {
             errorCode () {
@@ -45,7 +45,9 @@
             errorCode: {
                 handler (val) {
                     if (val === INTERNAL_SERVER_ERROR) {
-                    this.$router.push('/500')
+                        this.$router.push('/500')
+                    }else if (val === NOT_FOUND) {
+                        this.$router.push('/not-found')
                     }
                 },
                 immediate: true
@@ -58,14 +60,15 @@
     }
 </script>
 <style>
-
+    
     @import url('https://fonts.googleapis.com/css2?family=Julius+Sans+One&display=swap');
     @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@200&display=swap');
 
-    @import url('https://fonts.googleapis.com/css2?family=Oswald:wght@600&display=swap');
-    .wrapper{
-        font-family: 'Noto Serif JP', serif;
-    }
+   
+    @import url('https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@300&display=swap');
+.wrapper{
+  font-family: 'M PLUS Rounded 1c', sans-serif;
+}
     .ql-align-center{
         text-align: center;
     }

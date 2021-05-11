@@ -16,13 +16,12 @@ class WorksController extends Controller
      {  
         
         if($request->genre == 'all'){
-            $works = Work::with(['user'])->withCount('bookmarking_user')->orderBy($request->is_rank, 'desc')->paginate(5);
+            $works = Work::with(['user'])->withCount('bookmarking_user')->orderBy($request->is_rank, 'desc')->paginate(6);
 
         }else{
-            $works = Work::with(['user'])->withCount('bookmarking_user')->where('genre', $request->input('genre'))->orderBy($request->is_rank, 'desc')->paginate(5);
+            $works = Work::with(['user'])->withCount('bookmarking_user')->where('genre', $request->input('genre'))->orderBy($request->is_rank, 'desc')->paginate(6);
 
         }
-        
          // Welcomeビューでそれらを表示
         return $works;
     }
@@ -30,7 +29,7 @@ class WorksController extends Controller
     public function search_word(Request $request)
      {  
         
-        $works = Work::with(['user'])->where('title', 'like', '%'.$request->input('search_word').'%')->orderBy('created_at', 'desc')->paginate(5);
+        $works = Work::with(['user'])->where('title', 'like', '%'.$request->input('search_word').'%')->orderBy('created_at', 'desc')->paginate(6);
 
         return $works;
     }
@@ -180,10 +179,9 @@ class WorksController extends Controller
             'content' => 'required|max:10000'
         ]);
 
-        
         \Log::Debug(strval($request->img_path));   
         $tmp_str = strval($request->img_path); // 受け取った値を文字列に変換
-        if($a == "default"){
+        if($tmp_str  == "default"){
             // 画像データが”default”の文字列だった場合、画像関連の処理はしない
             $fileName  = null;
         }elseif ($request->img_path) {
@@ -234,7 +232,10 @@ class WorksController extends Controller
         $its_my_work = $work->isMyWork(); // 自分の作品かどうか判別
 
         if($its_my_work){
+            // ストレージ上の過去のファイルを削除
+            $s3_delete = Storage::disk('s3')->delete($work->img_path);
             $work->delete();
+
         }
 
         

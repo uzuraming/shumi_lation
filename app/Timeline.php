@@ -16,6 +16,7 @@ class Timeline extends Model
         'favorited_by_user', 'favorite_count'
     ];
 
+    // いいねをしたかどうか
     public function getFavoritedByUserAttribute()
     {
         if (\Auth::guest()) {
@@ -25,6 +26,7 @@ class Timeline extends Model
         
     }
 
+    // いいねの数
     public function getFavoriteCountAttribute()
     {
         return $this->favoriting_user->count();

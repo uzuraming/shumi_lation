@@ -1,24 +1,36 @@
 <template>
-  <div ref="a">
-      <div class="mb-5">  
-        <div v-for="(message, index) in messages" :key="index">
-            <div :class="{'d-flex justify-content-end' : message.id == your_id}">
-                <div :class="{'balloon1_right' : message.id == your_id, 'balloon1_left' : message.id != your_id}" >
-                    <p>{{ message.pivot.message }}</p>
-                    <small>{{message.pivot.created_at}}</small>
-                    </div>
+    
+    <div>
+        <!-- ロード中 -->
+        <div class="d-flex justify-content-center align-center m-5"  v-if="isLoad">
+            <div class="spinner-grow spinner" role="status">
+                <span class="sr-only">Loading...</span>
             </div>
         </div>
+
+        
+        <div class="" ref="a" v-if="!isLoad">
+            <!-- チャット -->
+            <div class="mb-5 pb-5">  
+                <div v-for="(message, index) in messages" :key="index">
+                    <!-- メッセージの送信が自分のIDと一致した場合吹き出しが右に -->
+                    <div :class="{'d-flex justify-content-end' : message.id == your_id}">
+                        <div :class="{'balloon1_right' : message.id == your_id, 'balloon1_left' : message.id != your_id}" >
+                            <p>{{ message.pivot.message }}</p>
+                            <small>{{message.pivot.created_at}}</small>
+                            </div>
+                    </div>
+                </div>
+            </div>
+            
+
+            <!-- チャット送信フォーム -->
+            <form class="form-inline mb-5 row fixed-bottom white d-flex justify-content-center shadow">
+                <input class="form-control m-1 col-8" type="text" v-model="new_message">
+                <button :disabled="new_message.length<=0" @click="postChat" class="btn shadow-none btn-outline-success mx-1 col-2 px-1" type="button">送信</button>
+            </form>
+        </div>
     </div>
-      
-
-    <form class="form-inline row fixed-bottom white d-flex justify-content-center shadow">
-        <input class="form-control m-1 col-8" type="text" v-model="new_message">
-        <button :disabled="new_message.length<=0" @click="postChat" class="btn shadow-none btn-outline-success mx-1 col-2 px-1" type="button">send</button>
-    </form>
-
-
-  </div>
 </template>
 
 <script>
@@ -31,6 +43,7 @@ export default {
             messages:[],
             your_id:null,
             new_message:"",
+            chat_user:[],
             pagination:{
                 page:1
             },
@@ -38,6 +51,7 @@ export default {
             moreButtonStat:{
                 isActive:true,
             },
+            isLoad:true,
 
         }
     },
@@ -48,6 +62,7 @@ export default {
         chat_room_id:String,
     },
     methods:{
+        // チャットを取得
         async fetchChat(){
             
             const response = await axios.get(`/api/chats/${this.chat_room_id}`);
@@ -59,14 +74,12 @@ export default {
             console.log(response)
             this.messages = response.data.messages;
             this.your_id = response.data.your_id
-            console.log(this.messages)
-
-
-
-           
-
-            
+            this.chat_user =  response.data.chat_user
+            console.log(this.chat_user)
+            this.$store.dispatch('chat_user/changeChatUser', this.chat_user.name)
+  
         },
+        // チャットを送信
         async postChat(){
             const response = await axios.post(`/api/chats/${this.chat_room_id}`, { 'message': this.new_message });
             this.new_message = "";
@@ -80,6 +93,7 @@ export default {
         $route: {
         async handler () {
             await this.fetchChat();
+            this.isLoad = false;
         },
         immediate: true
         }
@@ -95,16 +109,17 @@ export default {
 
     },
     mounted() {
-        // Get csrf token from cookie
+        // クッキーの文字列からトークンを抽出
         const name = 'XSRF-TOKEN'
         const cookies = '; ' + document.cookie
         const parts = cookies.split('; ' + name + '=')
         let value = parts.length == 2 ? parts.pop().split(';').shift() : null
         value = decodeURIComponent(value)
 
-        // Set csrf token header for echo pusher config
+        // pusherにトークンを添付
         Echo.connector.pusher.config.auth.headers['X-XSRF-TOKEN'] = value
 
+        // Laravelのブロードキャストのプライベートチャンネルの発火をリッスンしたらメッセージを再読込する
         Echo.private(`chat.${this.chat_room_id}`)
         .listen('MessageCreated', (e) => {
             this.fetchChat(); // 全メッセージを再読込

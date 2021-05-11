@@ -1,10 +1,13 @@
 <?php
 
 namespace App;
+use Storage; // 追加
 
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+
+use App\Notifications\EmailVerificationJa; // <-- あとで作ります
 
 
 //追記
@@ -17,6 +20,7 @@ class User extends Authenticatable implements MustVerifyEmail
      *
      * @var array
      */
+    // created等で必要な項目
     protected $fillable = [
         'name', 'email', 'password', 'profile', 'interest', 'wanted'
     ];
@@ -38,6 +42,25 @@ class User extends Authenticatable implements MustVerifyEmail
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    /** JSONに含めるアクセサ */
+    protected $appends = [
+        'url'
+    ];
+
+ 
+
+
+    // 画像にURLをつける
+    public function getUrlAttribute()
+    {
+        if($this->img_path){
+            return Storage::cloud()->url($this->img_path);
+        }else{
+            return null;
+        }
+        
+    }
 
 
     // ユーザーに属する作品
@@ -85,9 +108,10 @@ class User extends Authenticatable implements MustVerifyEmail
     }
 
 
+    // フォロー中ユーザの中に $userIdのものが存在するか
     public function is_following($userId)
     {
-        // フォロー中ユーザの中に $userIdのものが存在するか
+        
         return $this->followings()->where('follow_id', $userId)->exists();
     }
 
@@ -189,6 +213,10 @@ class User extends Authenticatable implements MustVerifyEmail
             return false;
         }
     }
+
+    // --------------------------------------------
+    // 以下チャットに関する関数
+    // --------------------------------------------
 
 
     // チャットリクエストを送ってきている人
@@ -326,8 +354,6 @@ class User extends Authenticatable implements MustVerifyEmail
         }
         
     }
-
-
 
     
      // --------------------------------------------

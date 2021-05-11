@@ -5,7 +5,7 @@
       メールアドレスを確認してください！
     </div>
     <div>
-        <button @click="resend" class="btn btn-success">再送する</button>
+        <button @click="resend" class="btn btn-success shadow-none">再送する</button>
     </div>
 
 </div>
@@ -15,6 +15,7 @@
 <script>
 export default {
     methods:{
+        // 認証メールをもう一度送る
         async resend(){
             const response = await axios.post('/api/email/resend');
 

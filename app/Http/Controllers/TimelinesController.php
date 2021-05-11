@@ -40,8 +40,6 @@ class TimelinesController extends Controller
             'content' => $content
         ]);
 
-
-
     }
 
     // timelineを削除

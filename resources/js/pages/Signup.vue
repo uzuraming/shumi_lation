@@ -2,22 +2,22 @@
   <div>
     <!-- Default form login -->
     <form @submit.prevent="signup">
-      <p class="h4 text-center mb-4">Sign up</p>
-      <label for="signup-name" class="grey-text">Your Name</label>
-      <input v-model="registerForm.name" type="text" id="signup-name" class="form-control" />
-      <label for="signup-email" class="grey-text">Your email</label>
-      <input v-model="registerForm.email" type="email" id="signup-email" class="form-control" />
-      <label for="signup-pass" class="grey-text">Your password</label>
-      <input v-model="registerForm.password" type="password" id="signup-pass" class="form-control"/>
-      <label for="signup-confirmation" class="grey-text">Confirmation</label>
-      <input v-model="registerForm.password_confirmation" type="password" id="signup-confirmation" class="form-control"/>
+      <h2 class="h4 text-center mb-4 mt-5">ユーザー登録</h2>
+ 
+      <mdb-input label="ユーザー名" v-model="registerForm.name" type="text" id="signup-name" class="" />
+
+      <mdb-input label="メールアドレス" v-model="registerForm.email" type="email" id="signup-email" class="" />
+
+      <mdb-input label="パスワード" v-model="registerForm.password" type="password" id="signup-pass" class=""/>
+  
+      <mdb-input label="パスワード再入力" v-model="registerForm.password_confirmation" type="password" id="signup-confirmation" class=""/>
       <div class="text-center mt-4">
-        <button class="btn btn-indigo" type="submit">Signup</button>
+        <button class="btn btn-indigo shadow-none" type="submit">登録</button>
       </div>
     </form>
     <!-- Default form login -->
-    <mdb-modal :show="registerErrors !=null" @close="registerErrors == null">
-        <mdb-modal-header :close="false" >
+    <mdb-modal :show="registerErrors !=null" @close="$store.dispatch('auth/clearErrorMessage')">
+        <mdb-modal-header  >
             <mdb-modal-title>警告</mdb-modal-title>
         </mdb-modal-header>
         <mdb-modal-body>
@@ -42,7 +42,7 @@
 </template>
 
 <script>
-import { mdbModal, mdbModalHeader, mdbModalTitle, mdbModalBody, mdbModalFooter, mdbBtn } from 'mdbvue';
+import { mdbModal, mdbModalHeader, mdbModalTitle, mdbModalBody, mdbModalFooter, mdbBtn, mdbInput } from 'mdbvue';
 export default {
     data(){
         return{
@@ -60,9 +60,11 @@ export default {
       mdbModalTitle,
       mdbModalBody,
       mdbModalFooter,
-      mdbBtn
+      mdbBtn,
+      mdbInput,
     },
     methods:{
+      // ユーザー登録
         async signup(){
             // authストアのresigterアクションを呼び出す
             await this.$store.dispatch('auth/register', this.registerForm)
@@ -71,6 +73,7 @@ export default {
               this.$router.push({ name:'waitVerify' })
           }
         },
+        // エラーを消す
         clearError () {
         this.$store.commit('auth/setRegisterErrorMessages', null)
       }

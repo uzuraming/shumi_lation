@@ -1,8 +1,9 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use Storage;
 use Illuminate\Http\Request;
+
 
 // Userモデルを追加
 use App\User;
@@ -139,14 +140,45 @@ class UsersController extends Controller
         if(Auth::check()){
             // 自分のユーザーか識別する。違えば、リダイレクトする
             if(Auth::user()->id == $id){
+
+                $tmp_str = strval($request->img_path); // 受け取った値を文字列に変換
+                if($tmp_str  == "default"){
+                    // 画像データが”default”の文字列だった場合、画像関連の処理はしない
+                    $fileName  = null;
+                }elseif ($request->img_path) {
+                    $fileName = time() . $request->img_path->getClientOriginalName();
+                    Storage::cloud()
+                    ->putFileAs('', $request->img_path, $fileName, 'public');
+        
+                }else{
+                    // 画像がない場合は何もしない
+                    $fileName  = null;
+                }
                 // ユーザーを取得
                 $user = User::findOrFail($id);
                 // ユーザー情報を上書き
-                $user->name = $request->name;
-                $user->profile = $request->profile;
-                $user->interest = $request->interest;
-                $user->wanted = $request->wanted;
-                $user->save();
+
+                if($request->img_path==="default"){
+                    // 作品を作成
+                    $user->name = $request->name;
+                    $user->profile = $request->profile;
+                    $user->interest = $request->interest;
+                    $user->wanted = $request->wanted;
+                    $user->save();
+                }else{
+                    // ストレージ上の過去のファイルを削除
+                    $s3_delete = Storage::disk('s3')->delete($user->img_path);
+                    // 作品を作成
+                    $user->name = $request->name;
+                    $user->profile = $request->profile;
+                    $user->interest = $request->interest;
+                    $user->wanted = $request->wanted;
+                    $user->img_path = $fileName;
+                    $user->save();
+   
+    
+                }
+           
 
             }else{
                 // そうじゃなければ戻る

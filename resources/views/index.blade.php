@@ -15,7 +15,7 @@
   
   
 </head>
-<body class="rgba-brown-slight">
+<body class="grey lighten-4">
   <div id="app"></div>
 </body>
 </html>

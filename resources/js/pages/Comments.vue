@@ -1,9 +1,20 @@
 <template>
     <div>
-        <div v-if="comments.length <=　0">
-            コメントはありません。
+        <!-- ロード中 -->
+        <div class="d-flex justify-content-center align-center m-5"  v-if="isLoad">
+            <div class="spinner-grow spinner" role="status">
+                <span class="sr-only">Loading...</span>
+            </div>
+
         </div>
-        <mdb-list-group v-if="comments.length >0" flush>
+
+
+        <!-- コメントがない場合 -->
+        <div v-if="comments.length <=　0 && !isLoad" >
+            <Nothing :text="'コメントはありません'" />
+        </div>
+        <!-- コメントリスト -->
+        <mdb-list-group v-if="comments.length >0  && !isLoad" flush>
             <mdb-list-group-item v-for="(comment, index) in comments" :key="index">
                 <div>
                     <div class="d-flex w-100 justify-content-between">
@@ -14,41 +25,46 @@
                     <p v-html="comment.comment" class="mb-2">
                     </p>
                     <small>{{comment.created_at}}
+                        <!-- コメントかコメントされている作品が自分のものであれば削除ボタンを表示する -->
                         <span @click="tmp_for_delete_id = comment.id, confirmation_modal = true" class="mr-2" v-if="its_mine || comment.is_your_comment"><mdb-icon color="red" icon="trash-alt" /></span>
                     </small>
                     
                 </div>
             </mdb-list-group-item>
         </mdb-list-group>
-        <div class="d-flex justify-content-center" >
+        <!-- ページネーション -->
+        <div class="d-flex justify-content-center" v-if="comments.length >0  && !isLoad">
             <Pagination :component="`works/${$route.params.work_id}/comments`" :current-page="currentPage" :last-page="lastPage" />
         </div>
         
 
-        <mdb-modal :show="commentsModal" @close="commentsForm = ''">
-            <mdb-modal-header :close="false" >
-                <mdb-modal-title>New Post</mdb-modal-title>
+        <!-- コメント新規作成モーダル -->
+        <mdb-modal :show="commentsModal" @close="commentsModal = false">
+            <mdb-modal-header >
+                <mdb-modal-title>コメントの新規作成</mdb-modal-title>
             </mdb-modal-header>
             <mdb-modal-body>
                 <mdb-textarea rows="3" v-model="commentsForm" />
             </mdb-modal-body>
             <mdb-modal-footer>
                 
-                <mdb-btn class="shadow-none" :disabled="formBtn" color="danger" @click.native="clearCommentsModal()">Close</mdb-btn>
+                <mdb-btn class="shadow-none" :disabled="formBtn" color="danger" @click.native="clearCommentsModal()">閉じる</mdb-btn>
                 <mdb-btn class="shadow-none" :disabled="commentsForm.length>255 || commentsForm.length<=0 || formBtn" color="mdb-color" @click.native="postComments()">{{formMsg}}</mdb-btn>
             </mdb-modal-footer>
         </mdb-modal>
 
-        <mdb-modal :show="confirmation_modal">
-            <mdb-modal-header :close="false" >
-                <mdb-modal-title>Confirmation</mdb-modal-title>
+        
+        <!-- 削除確認モーダル -->
+        <mdb-modal :show="confirmation_modal" @close="confirmation_modal=false">
+            <mdb-modal-header>
+                <mdb-modal-title>確認</mdb-modal-title>
             </mdb-modal-header>
             <mdb-modal-body>
                 本当に削除しますか？
             </mdb-modal-body>
 
             <mdb-modal-footer>
-                <mdb-btn :disabled="!isDeleteBtnActive" class="shadow-none" color="mdb-color" @click.native="confirmation_modal = false, tmp_for_delete_id = null">Cancel</mdb-btn>
+                <mdb-btn :disabled="!isDeleteBtnActive" class="shadow-none" color="mdb-color" @click.native="confirmation_modal = false, tmp_for_delete_id = null">キャンセル</mdb-btn>
                 <mdb-btn :disabled="!isDeleteBtnActive" class="shadow-none" color="danger " @click.native="deleteComment(tmp_for_delete_id)">{{deleteBtnMsg}}</mdb-btn>
             </mdb-modal-footer>
         </mdb-modal>
@@ -62,6 +78,7 @@
 </template>
 <script>
     import Pagination from '../components/Pagination.vue' // ★ 追加
+    import Nothing from '../components/Nothing.vue' // ★ 追加
     import { mdbBtn, 
         mdbListGroup, 
         mdbListGroupItem, 
@@ -89,7 +106,8 @@
             mdbModalBody, 
             mdbModalFooter,
             mdbIcon,
-            Pagination 
+            Pagination,
+            Nothing
         },
         data(){
             return{
@@ -104,9 +122,10 @@
                 tmp_for_delete_id:null,
                 confirmation_modal:false,
                 isDeleteBtnActive:true,
-                deleteBtnMsg:'delete',
+                deleteBtnMsg:'削除',
                 formBtn:false,
-                formMsg:'send',
+                formMsg:'送信',
+                isLoad:true
              
             }
         },
@@ -120,6 +139,7 @@
         },
 
         methods:{
+            // コメント取得
             async fetchComments(){
                 
                 const response = await axios.get(`/api/works/${this.$route.params.work_id}/comments?page=${this.page}`)
@@ -128,18 +148,17 @@
                     this.$store.commit('error/setCode', response.status)
                     return false
                 }
-                console.log(response.data)
+
                 this.comments = response.data.comments.data;
                 this.its_mine = response.data.its_mine;
-                
-                
 
                 this.currentPage = response.data.comments.current_page
                 this.lastPage = response.data.comments.last_page
             },
+            // コメント削除
             async deleteComment(id){  
                 this.isDeleteBtnActive = false;
-                this.deleteBtnMsg = 'deleting...';
+                this.deleteBtnMsg = '削除中...';
                 const response = await axios.delete(`/api/works/${this.$route.params.work_id}/comments/${id}`);
                 if (response.status !== OK) {
                     this.$store.commit('error/setCode', response.status)
@@ -158,9 +177,10 @@
                 this.commentsModal = false;
                 this.commentsForm = "";
             },
+            // コメント送信
             async postComments(){ 
                 this.formBtn = true;
-                this.formMsg = "sending...";
+                this.formMsg = "送信中...";
 
                 const response = await axios.post(`/api/works/${this.$route.params.work_id}/comments`, {'comment': this.commentsForm});
            
@@ -176,14 +196,17 @@
             $route: {
             async handler () {
                 await this.fetchComments();
+                this.isLoad=false;
             },
             immediate: true
             }
         },
         computed: {
+            // ログインしているか
             isLogin () {
                 return this.$store.getters['auth/check'];
             },
+            // ユーザーの名前
             username () {
                 return this.$store.getters['auth/username'];
             }
@@ -192,7 +215,7 @@
 
 </script>
 
-<style>
+<style scoped>
     
 
     .mousepointer-hand {
@@ -203,16 +226,16 @@
         text-decoration: none;
         background: #2E2E2E;
         color: #FFF;
-        width: 120px;
-        height: 120px;
+        width: 70px;
+        height: 70px;
         line-height: 120px;
         border-radius: 50%;
         text-align: center;
         overflow: hidden;
         transition: .4s;
         position: fixed;
-        bottom: 15px; 
-        right: 10px;
+        bottom: 100px; 
+        right: 20px;
         display: -webkit-flex;
         display: flex;
         -webkit-align-items: center; /* 縦方向中央揃え（Safari用） */

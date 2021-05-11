@@ -12,11 +12,12 @@ class Comment extends Model
         'user_id',
         'comment',
     ];
-    /** JSONに含めるアクセサ */
+    // JSONに含めるアクセサ 
     protected $appends = [
         'is_your_comment'
     ];
 
+    // そのコメントがログイン中のユーザーがしたものなのかを判断する関数
     public function getIsYourCommentAttribute()
     {
         if (\Auth::guest()) {

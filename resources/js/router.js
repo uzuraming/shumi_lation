@@ -24,6 +24,7 @@ import Chat from './pages/Chat.vue'
 import ChatDetail from './pages/ChatDetail.vue'
 
 import WaitVerify from './pages/WaitVerify.vue'
+import NotFound from './pages/errors/NotFound.vue'
 
 // VueRouterプラグインを使用する
 // これによって<RouterView />コンポーネントなどを使うことができる
@@ -36,6 +37,12 @@ const routes = [
         component: SystemError
     },
     {
+      path: '*',
+      component: NotFound,
+      name:'notfound'
+    },
+    
+    {
         path: '/timelines',
         component: Favorite,
         props: route => {
@@ -46,6 +53,13 @@ const routes = [
     {
       path: '/favorites',
       component: Favorite,
+      beforeEnter (to, from, next) {
+        if (!store.getters['auth/check'] || !store.getters['auth/is_verified']) {
+          next('/')
+        } else {
+          next()
+        }
+      },
       props: route => {
         const page = route.query.page
         return { page: /^[1-9][0-9]*$/.test(page) ? page * 1 : 1, pageName:'favorites' }
@@ -59,32 +73,47 @@ const routes = [
         return { page: /^[1-9][0-9]*$/.test(page) ? page * 1 : 1, pageName:'requests' }
       },
       beforeEnter (to, from, next) {
-        if (!store.getters['auth/check']) {
+        if (!store.getters['auth/check'] || !store.getters['auth/is_verified']) {
           next('/')
         } else {
           next()
         }
-      }
+      },
     },
     {
         path: '/works',
         component: Work,
         props: route => {
             const page = route.query.page
-            return { page: /^[1-9][0-9]*$/.test(page) ? page * 1 : 1 }
+            return { page: /^[1-9][0-9]*$/.test(page) ? page * 1 : 1,  pageName:'works' }
         }
+    },
+    {
+        path: '/bookmarks',
+        component: Work,
+        props: route => {
+            const page = route.query.page
+            return { page: /^[1-9][0-9]*$/.test(page) ? page * 1 : 1, pageName:'bookmarks' }
+        },
+        beforeEnter (to, from, next) {
+          if (!store.getters['auth/check'] || !store.getters['auth/is_verified']) {
+            next('/')
+          } else {
+            next()
+          }
+        },
     },
     {
       name:'workCreate',
       path: '/works/create',
       component: WorkCreate,
       beforeEnter (to, from, next) {
-        if (!store.getters['auth/check']) {
+        if (!store.getters['auth/check'] || !store.getters['auth/is_verified']) {
           next('/')
         } else {
           next()
         }
-      }
+      },
     },
     {
         name:'workDetail',
@@ -100,7 +129,14 @@ const routes = [
         component: WorkCreate,
         props: {
           pageName:'editWork'
-        }
+        },
+        beforeEnter (to, from, next) {
+          if (!store.getters['auth/check'] || !store.getters['auth/is_verified']) {
+            next('/')
+          } else {
+            next()
+          }
+        },
     },
     {
       name:'comments',
@@ -122,12 +158,28 @@ const routes = [
         name:'editUser',
         path: '/users/:user_id/edit',
         component: EditUser,
-        props: true
+        props: true,
+        beforeEnter (to, from, next) {
+          if (!store.getters['auth/check'] || !store.getters['auth/is_verified']) {
+            next('/')
+          } else {
+            next()
+          }
+        },
     },
+    
     
   {
     path: '/',
-    component: Home
+    component: Home,
+    name:'home',
+    beforeEnter (to, from, next) {
+      if (store.getters['auth/check'] || store.getters['auth/is_verified']) {
+        next('/timelines')
+      } else {
+        next()
+      }
+    },
   },
   {
     path: '/login',
@@ -158,17 +210,38 @@ const routes = [
         const page = route.query.page
         return { page: /^[1-9][0-9]*$/.test(page) ? page * 1 : 1}
     },
+    beforeEnter (to, from, next) {
+      if (!store.getters['auth/check'] || !store.getters['auth/is_verified']) {
+        next('/')
+      } else {
+        next()
+      }
+    },
   },
   {
     path: '/chats/:chat_room_id',
     name:'chatDetail',
     component: ChatDetail,
     props: true,
+    beforeEnter (to, from, next) {
+      if (!store.getters['auth/check'] || !store.getters['auth/is_verified']) {
+        next('/')
+      } else {
+        next()
+      }
+    },
   },
   {
     path: '/wait_verify',
     name:'waitVerify',
     component: WaitVerify,
+    beforeEnter (to, from, next) {
+      if (!store.getters['auth/check']) {
+        next('/')
+      } else {
+        next()
+      }
+    },
   },
 ]
 

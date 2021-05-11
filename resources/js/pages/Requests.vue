@@ -2,9 +2,11 @@
 
 
   <div>
+      <!-- リクエストがない場合 -->
       <div class="h4" v-if="requests.length <= 0">
           チャットリクエストはありません。
       </div>
+      <!-- チャットリクエスト一覧 -->
       <mdb-list-group flush v-if="requests.length > 0">
             <mdb-list-group-item v-for="(request, index) in requests" :key="index">
                 <div>
@@ -26,6 +28,7 @@
             </mdb-list-group-item>
         </mdb-list-group>
 
+        <!-- ページネーション -->
         <div class="d-flex justify-content-center" >
             <Pagination :component="'requests'" :current-page="currentPage" :last-page="lastPage" />
         </div>
@@ -72,6 +75,7 @@ export default {
             mdbIcon,
             Pagination 
     },
+    // リクエスト取得
     methods:{
         async fetchRequests(){
             const response = await axios.get(`/api/requests`);
@@ -86,6 +90,7 @@ export default {
             this.lastPage = response.data.last_page
      
         },
+        // リクエスト拒否
         async refuseRequests(id,index){
             this.is_active = true;
             const response = await axios.delete(`/api/requests/${id}`);
@@ -98,6 +103,7 @@ export default {
             this.is_active = false;
            
         },
+        // リクエスト許可
         async acceptRequests(id,index){
             this.is_active = true;
             const response = await axios.put(`/api/requests/${id}`);
@@ -110,6 +116,7 @@ export default {
             this.is_active = false;
             
         },
+        // リクエストをやめる
         removeRequest(index){
             delete this.requests[index];
         }

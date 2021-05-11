@@ -10,22 +10,36 @@ const state = {
 const getters = {
   check: state => !! state.user,
   username: state => state.user ? state.user.name : '',
-  is_verified: state => state.user ? !!state.user.email_verified_at : false
+  is_verified: state => state.user ? !!state.user.email_verified_at : false,
+  user_img: state => state.user ? state.user.url:null,
+  user_id: state => state.user ? state.user.id:null,
 }
 
 const mutations = {
+  // ユーザーを設定
   setUser (state, user) {
     state.user = user
   },
+  // APIの状態を取得する
   setApiStatus (state, status) {
     state.apiStatus = status
   },
+  // ログインメッセージを取得
   setLoginErrorMessages (state, messages) {
     state.loginErrorMessages = messages
   },
+  // ユーザー登録時のメッセージを取得
   setRegisterErrorMessages (state, messages) {
     state.registerErrorMessages = messages
-  }
+  },
+  // ログインメッセージを削除
+  clearLoginErrorMessages(state){
+    state.loginErrorMessages = null
+  },
+  // ユーザー登録時のメッセージを削除
+  clearRegisterErrorMessages(state){
+    state.registerErrorMessages = null
+  },
 }
 
 const actions = {
@@ -96,6 +110,13 @@ const actions = {
 
     context.commit('setApiStatus', false)
     context.commit('error/setCode', response.status, { root: true })
+  },
+
+  // エラーメッセージクリア
+  clearErrorMessage(context){
+    context.commit('clearLoginErrorMessages', null)
+    context.commit('clearRegisterErrorMessages', null)
+
   }
 }
 

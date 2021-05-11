@@ -89,6 +89,12 @@ Route::group(['middleware' => ['auth','verified']], function () {
     Route::post('/users/{id}/send_request', 'ChatRequestController@store');
     Route::delete('/users/{id}/send_request', 'ChatRequestController@remove_request');
 
+
+    Route::get('/requests_count', function(){
+        return Auth::user()->chat_requester()->where('approval', false)->count();
+    });
+
+
     Route::get('/requests', 'ChatRequestController@index');
     Route::delete('/requests/{id}', 'ChatRequestController@refuse_request');
     Route::put('/requests/{id}', 'ChatRequestController@accept_request');
