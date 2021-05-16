@@ -39,23 +39,23 @@ jobs:
  
       - run: ./vendor/bin/phpunit
 
-#   deploy:
-#     machine:
-#       image: circleci/classic:edge
-#     steps:
-#       - add_ssh_keys:
-#           fingerprints:
-#             - "a5:04:0c:df:92:d8:ac:e1:08:27:1b:18:97:d6:90:8f"
-#       - run: ssh ${USER_NAME}@${HOST_NAME} 'cd /usr/share/nginx/shumi_lation && sudo git pull origin master'
+  deploy:
+    machine:
+      image: circleci/classic:edge
+    steps:
+      - add_ssh_keys:
+          fingerprints:
+            - "a5:04:0c:df:92:d8:ac:e1:08:27:1b:18:97:d6:90:8f"
+      - run: ssh ${USER_NAME}@${HOST_NAME} 'cd /usr/share/nginx/shumi_lation && sudo git pull origin master'
  
-# workflows:
-#   version: 2
-#   build_and_deploy:
-#     jobs:
-#       - build
-#       - deploy:
-#           requires:
-#             - build
-#           filters:
-#             branches:
-#               only: master
+workflows:
+  version: 2
+  build_and_deploy:
+    jobs:
+      - build
+      - deploy:
+          requires:
+            - build
+          filters:
+            branches:
+              only: master
