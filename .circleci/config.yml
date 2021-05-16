@@ -45,7 +45,7 @@ jobs:
     steps:
       - add_ssh_keys:
           fingerprints:
-            - "d3:f6:36:26:35:09:3f:7c:13:7e:3c:e0:9d:5e:84:0e"
+            - "1c:2b:d3:e5:cf:44:96:ae:bf:6b:09:d9:5f:cf:6b:de"
       - run: ssh ${USER_NAME}@${HOST_NAME} 'cd /usr/share/nginx/shumi_lation && sudo git pull origin master'
  
 workflows:
