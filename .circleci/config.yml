@@ -44,8 +44,6 @@ jobs:
       image: circleci/classic:edge
     steps:
       - add_ssh_keys:
-          fingerprints:
-            - "1c:2b:d3:e5:cf:44:96:ae:bf:6b:09:d9:5f:cf:6b:de"
       - run: ssh ${USER_NAME}@${HOST_NAME} 'cd /usr/share/nginx/shumi_lation && sudo git pull origin master'
  
 workflows:
