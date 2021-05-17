@@ -6,24 +6,24 @@ import Home from './pages/home.vue'
 import Login from './pages/Login.vue'
 import Signup from './pages/Signup.vue'
 import Timeline from './pages/Timelines.vue'
-import Request from './pages/Requests.vue'
+// import Request from './pages/Requests.vue'
 import Favorite from './pages/Favorites.vue'
 import Work from './pages/Works.vue'
 import Comment from './pages/Comments.vue'
 import UserDetail from './pages/users/UserDetail.vue'
-import EditUser from './pages/users/EditUser.vue'
+// import EditUser from './pages/users/EditUser.vue'
 
 import WorkDetail from './pages/WorksDetail.vue'
-import WorkCreate from './pages/WorksCreate.vue'
+// import WorkCreate from './pages/WorksCreate.vue'
 
 import store from './store'
 
 import SystemError from './pages/errors/System.vue'
 
-import Chat from './pages/Chat.vue'
+// import Chat from './pages/Chat.vue'
 // import ChatDetail from './pages/ChatDetail.vue'
 
-import WaitVerify from './pages/WaitVerify.vue'
+// import WaitVerify from './pages/WaitVerify.vue'
 import NotFound from './pages/errors/NotFound.vue'
 
 // VueRouterプラグインを使用する
@@ -41,7 +41,6 @@ const routes = [
       component: NotFound,
       name:'notfound'
     },
-    
     {
         path: '/timelines',
         component: Favorite,
@@ -67,7 +66,7 @@ const routes = [
     },
     {
       path: '/requests',
-      component: Request,
+      component: () => import( './pages/Request.vue'),
       props: route => {
         const page = route.query.page
         return { page: /^[1-9][0-9]*$/.test(page) ? page * 1 : 1, pageName:'requests' }
@@ -106,7 +105,7 @@ const routes = [
     {
       name:'workCreate',
       path: '/works/create',
-      component: WorkCreate,
+      component: () => import( './pages/WorksCreate.vue'),
       beforeEnter (to, from, next) {
         if (!store.getters['auth/check'] || !store.getters['auth/is_verified']) {
           next('/')
@@ -117,16 +116,14 @@ const routes = [
     },
     {
         name:'workDetail',
-
         path: '/works/:work_id',
         component: WorkDetail,
         props: true
     },
     {
         name:'editWork',
-
         path: '/works/:work_id/edit',
-        component: WorkCreate,
+        component: () => import( './pages/WorksCreate.vue'),
         props: {
           pageName:'editWork'
         },
@@ -157,7 +154,7 @@ const routes = [
     {
         name:'editUser',
         path: '/users/:user_id/edit',
-        component: EditUser,
+        component: () => import( './pages/users/EditUser.vue'),
         props: true,
         beforeEnter (to, from, next) {
           if (!store.getters['auth/check'] || !store.getters['auth/is_verified']) {
@@ -205,7 +202,7 @@ const routes = [
   },
   {
     path: '/chats',
-    component: Chat,
+    component: () => import( './pages/Chat.vue'),
     props: route => {
         const page = route.query.page
         return { page: /^[1-9][0-9]*$/.test(page) ? page * 1 : 1}
@@ -221,7 +218,7 @@ const routes = [
   {
     path: '/chats/:chat_room_id',
     name:'chatDetail',
-    component: () => import( 'resources/js/pages/ChatDetail.vue'),
+    component: () => import( './pages/ChatDetail.vue'),
     props: true,
     beforeEnter (to, from, next) {
       if (!store.getters['auth/check'] || !store.getters['auth/is_verified']) {
@@ -233,6 +230,7 @@ const routes = [
   },
   {
     path: '/wait_verify',
+    component: () => import( './pages/WaitVerify.vue'),
     name:'waitVerify',
     component: WaitVerify,
     beforeEnter (to, from, next) {

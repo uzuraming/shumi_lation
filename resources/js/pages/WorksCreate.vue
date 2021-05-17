@@ -10,7 +10,7 @@
                 <!-- <mdb-input label="タイトル" v-model="title" type="text"/> -->
                 <div class="form-group">
                     <label for="work-title" >タイトル</label>
-                    <input type="password" v-model="title"  id="work-title" class="form-control">
+                    <input type="text" v-model="title"  id="work-title" class="form-control">
                 </div>
                 <select v-model="genre" class="browser-default custom-select mb-2">
                     <option value="文学" selected>文学</option>
