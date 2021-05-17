@@ -36,12 +36,12 @@ Route::get('/user',
 )->name('user');
 
 
-Route::get('/timelines', 'TimelinesController@index');
+Route::get('/timelines', 'TimelinesController@index')->name('timelines.index');
 
 
-Route::get('/works', 'WorksController@index');
-Route::get('/works/search', 'WorksController@search_word');
-Route::get('/works/{id}', 'WorksController@show');
+Route::get('/works', 'WorksController@index')->name('works.index');
+Route::get('/works/search', 'WorksController@search_word')->name('works.search');
+Route::get('/works/{id}', 'WorksController@show')->name('works.show');
 
 
 Route::get('/works/{id}/comments', 'WorksController@comments');
@@ -105,7 +105,8 @@ Route::group(['middleware' => ['auth','verified']], function () {
     Route::delete('/works/{id}', 'WorksController@destroy');
 
     // タイムラインの各機能
-    Route::post('/timelines', 'TimelinesController@store');
+    Route::post('/timelines', 'TimelinesController@store')->name('timelines.store');
+
 
 
 });
