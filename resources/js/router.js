@@ -232,7 +232,6 @@ const routes = [
     path: '/wait_verify',
     component: () => import( './pages/WaitVerify.vue'),
     name:'waitVerify',
-    component: WaitVerify,
     beforeEnter (to, from, next) {
       if (!store.getters['auth/check']) {
         next('/')
