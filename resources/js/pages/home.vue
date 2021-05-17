@@ -31,41 +31,11 @@
 
 </template>
 <script>
-  import { 
-    mdbContainer,
-      mdbRow,
-      mdbCol,
-      mdbNavbar,
-      mdbNavItem,
-      mdbNavbarNav,
-      mdbNavbarToggler,
-      ViewWrapper,
-      mdbMask,
-      mdbBtn,
-      mdbCard,
-      mdbCardBody,
-      mdbInput,
-      mdbIcon,
-      mdbNavbarBrand
-   } from 'mdbvue';
+
   export default {
     components: {
       
-      mdbContainer,
-      mdbRow,
-      mdbCol,
-      mdbNavbar,
-      mdbNavItem,
-      mdbNavbarNav,
-      mdbNavbarToggler,
-      ViewWrapper,
-      mdbMask,
-      mdbBtn,
-      mdbCard,
-      mdbCardBody,
-      mdbInput,
-      mdbIcon,
-      mdbNavbarBrand
+  
     }
   }
 </script>

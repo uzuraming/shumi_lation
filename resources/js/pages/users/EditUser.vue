@@ -27,7 +27,13 @@
 
             <div class="col-sm-6">
                 <!-- ユーザー名入力フォーム -->
-                <mdb-input label="名前" v-model="user.name" type="text"/>
+                <!-- <mdb-input label="名前" v-model="user.name" type="text"/> -->
+
+                <div class="form-group">
+                    <label for="user-edit-name" >名前</label>
+                    <input type="email" v-model="user.name"  id="user-edit-name" class="form-control">
+                </div>
+
                 <!-- プロフィール入力フォーム -->
                 <mdb-textarea class="mt-5" label="プロフィール" rows="5" v-model="user.profile" />
 
@@ -69,7 +75,6 @@
 <script>
 import { OK } from '../../util'
 import { mdbBtn, 
-        mdbInput, 
         mdbModal, 
         mdbModalHeader, 
         mdbTextarea,
@@ -94,7 +99,7 @@ export default {
         }
     },
     components: { 
-        mdbInput, 
+
         mdbBtn, 
         mdbModal, 
         mdbTextarea,

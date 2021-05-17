@@ -7,7 +7,11 @@
         <mdb-card-title v-if="pageName == 'editWork'" class="text-center">{{title}}の編集</mdb-card-title>
         <div class="flex-row">
             <form @submit.prevent="pageName=='editWork'? editWork() : postWork()" class="mt-5">
-                <mdb-input label="タイトル" v-model="title" type="text"/>
+                <!-- <mdb-input label="タイトル" v-model="title" type="text"/> -->
+                <div class="form-group">
+                    <label for="work-title" >タイトル</label>
+                    <input type="password" v-model="title"  id="work-title" class="form-control">
+                </div>
                 <select v-model="genre" class="browser-default custom-select mb-2">
                     <option value="文学" selected>文学</option>
                     <option value="エッセイ">エッセイ</option>
