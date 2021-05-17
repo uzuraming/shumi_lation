@@ -66,7 +66,7 @@ const routes = [
     },
     {
       path: '/requests',
-      component: () => import( './pages/Request.vue'),
+      component: () => import( './pages/Requests.vue'),
       props: route => {
         const page = route.query.page
         return { page: /^[1-9][0-9]*$/.test(page) ? page * 1 : 1, pageName:'requests' }

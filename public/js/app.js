@@ -50577,7 +50577,7 @@ var routes = [{
 }, {
   path: '/requests',
   component: function component() {
-    return Promise.resolve().then(function webpackMissingModule() { var e = new Error("Cannot find module './pages/Request.vue'"); e.code = 'MODULE_NOT_FOUND'; throw e; });
+    return __webpack_require__.e(/*! import() */ 5).then(__webpack_require__.bind(null, /*! ./pages/Requests.vue */ "./resources/js/pages/Requests.vue"));
   },
   props: function props(route) {
     var page = route.query.page;
