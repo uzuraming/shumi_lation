@@ -50515,10 +50515,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _store__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./store */ "./resources/js/store/index.js");
 /* harmony import */ var _pages_errors_System_vue__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ./pages/errors/System.vue */ "./resources/js/pages/errors/System.vue");
 /* harmony import */ var _pages_errors_NotFound_vue__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ./pages/errors/NotFound.vue */ "./resources/js/pages/errors/NotFound.vue");
-var _ref;
-
-function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-
 
  // ページコンポーネントをインポートする
 
@@ -50751,19 +50747,20 @@ var routes = [{
       next();
     }
   }
-}, (_ref = {
+}, {
   path: '/wait_verify',
   component: function component() {
     return __webpack_require__.e(/*! import() */ 4).then(__webpack_require__.bind(null, /*! ./pages/WaitVerify.vue */ "./resources/js/pages/WaitVerify.vue"));
   },
-  name: 'waitVerify'
-}, _defineProperty(_ref, "component", WaitVerify), _defineProperty(_ref, "beforeEnter", function beforeEnter(to, from, next) {
-  if (!_store__WEBPACK_IMPORTED_MODULE_11__["default"].getters['auth/check']) {
-    next('/');
-  } else {
-    next();
+  name: 'waitVerify',
+  beforeEnter: function beforeEnter(to, from, next) {
+    if (!_store__WEBPACK_IMPORTED_MODULE_11__["default"].getters['auth/check']) {
+      next('/');
+    } else {
+      next();
+    }
   }
-}), _ref)]; // VueRouterインスタンスを作成する
+}]; // VueRouterインスタンスを作成する
 
 var router = new vue_router__WEBPACK_IMPORTED_MODULE_1__["default"]({
   mode: 'history',
