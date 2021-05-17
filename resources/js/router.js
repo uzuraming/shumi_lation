@@ -21,7 +21,7 @@ import store from './store'
 import SystemError from './pages/errors/System.vue'
 
 import Chat from './pages/Chat.vue'
-import ChatDetail from './pages/ChatDetail.vue'
+// import ChatDetail from './pages/ChatDetail.vue'
 
 import WaitVerify from './pages/WaitVerify.vue'
 import NotFound from './pages/errors/NotFound.vue'
@@ -221,7 +221,7 @@ const routes = [
   {
     path: '/chats/:chat_room_id',
     name:'chatDetail',
-    component: ChatDetail,
+    component: () => import( 'resources/js/pages/ChatDetail.vue'),
     props: true,
     beforeEnter (to, from, next) {
       if (!store.getters['auth/check'] || !store.getters['auth/is_verified']) {
