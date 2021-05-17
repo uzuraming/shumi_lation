@@ -5,8 +5,20 @@
  
         <form @submit.prevent="login" class="mt-5">
             <p class="h3 text-center mb-4 ">ログイン</p>
-            <mdb-input label="メールアドレス" v-model="loginForm.email" type="email" id="defaultFormLoginEmailEx" />
-            <mdb-input label="パスワード" v-model="loginForm.password" type="password" id="defaultFormLoginPasswordEx"/>
+
+            <div class="form-group">
+                <label for="login-email" >メールアドレス</label>
+                <input type="email" v-model="loginForm.email"  id="login-email" class="form-control">
+            </div>
+
+            <div class="form-group">
+                <label for="login-password">パスワード</label>
+                <input type="password" v-model="loginForm.password" id="login-password" class="form-control">
+            </div>
+
+
+            <!-- <mdb-input label="メールアドレス" v-model="loginForm.email" type="email" id="defaultFormLoginEmailEx" />
+            <mdb-input label="パスワード" v-model="loginForm.password" type="password" id="defaultFormLoginPasswordEx"/> -->
             <div class="text-center mt-4">
                 <button class="btn btn-dark shadow-none rounded-0" type="submit">ログイン</button>
             </div>
@@ -38,7 +50,7 @@
 </template>
 
 <script>
-import { mdbModal, mdbModalHeader, mdbModalTitle, mdbModalBody, mdbModalFooter, mdbBtn, mdbInput, } from 'mdbvue';
+import { mdbModal, mdbModalHeader, mdbModalTitle, mdbModalBody, mdbModalFooter, mdbBtn,  } from 'mdbvue';
 export default {
     components: {
       mdbModal,
@@ -47,7 +59,7 @@ export default {
       mdbModalBody,
       mdbModalFooter,
       mdbBtn, 
-      mdbInput,
+      
     },
     data(){
         return{

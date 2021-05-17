@@ -1,8 +1,9 @@
 <template>
   <div>
 
-      <mdb-card class="card-body shadow-none" style="width: 22rem; margin-top: 1rem;">
-        <mdb-card-title class="text-center">
+      <mdb-card class="card-body shadow-none" style="margin-top: 1rem;">
+          <mdb-card-body>
+              <mdb-card-title class="text-center">
           404
       </mdb-card-title>
         <mdb-card-text class="text-center">
@@ -11,6 +12,9 @@
                 ホームに戻る
             </button>
         </mdb-card-text>
+              
+          </mdb-card-body>
+        
         
     </mdb-card>
       
@@ -19,13 +23,14 @@
 </template>
 
 <script>
-import { mdbCard, mdbCardTitle, mdbCardText, mdbBtn } from 'mdbvue';
+import { mdbCard, mdbCardTitle, mdbCardText, mdbBtn, mdbCardBody, } from 'mdbvue';
 
 export default {
     components: {
       mdbCard,
       mdbCardTitle,
       mdbCardText,
+      mdbCardBody,
     }
 
 }

@@ -16352,6 +16352,18 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   components: {
@@ -16360,8 +16372,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     mdbModalTitle: mdbvue__WEBPACK_IMPORTED_MODULE_1__["mdbModalTitle"],
     mdbModalBody: mdbvue__WEBPACK_IMPORTED_MODULE_1__["mdbModalBody"],
     mdbModalFooter: mdbvue__WEBPACK_IMPORTED_MODULE_1__["mdbModalFooter"],
-    mdbBtn: mdbvue__WEBPACK_IMPORTED_MODULE_1__["mdbBtn"],
-    mdbInput: mdbvue__WEBPACK_IMPORTED_MODULE_1__["mdbInput"]
+    mdbBtn: mdbvue__WEBPACK_IMPORTED_MODULE_1__["mdbBtn"]
   },
   data: function data() {
     return {
@@ -16720,6 +16731,22 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
@@ -16738,8 +16765,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     mdbModalTitle: mdbvue__WEBPACK_IMPORTED_MODULE_1__["mdbModalTitle"],
     mdbModalBody: mdbvue__WEBPACK_IMPORTED_MODULE_1__["mdbModalBody"],
     mdbModalFooter: mdbvue__WEBPACK_IMPORTED_MODULE_1__["mdbModalFooter"],
-    mdbBtn: mdbvue__WEBPACK_IMPORTED_MODULE_1__["mdbBtn"],
-    mdbInput: mdbvue__WEBPACK_IMPORTED_MODULE_1__["mdbInput"]
+    mdbBtn: mdbvue__WEBPACK_IMPORTED_MODULE_1__["mdbBtn"]
   },
   methods: {
     // ユーザー登録
@@ -17806,6 +17832,10 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
+//
+//
+//
 
 
 
@@ -18294,12 +18324,17 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   components: {
     mdbCard: mdbvue__WEBPACK_IMPORTED_MODULE_0__["mdbCard"],
     mdbCardTitle: mdbvue__WEBPACK_IMPORTED_MODULE_0__["mdbCardTitle"],
-    mdbCardText: mdbvue__WEBPACK_IMPORTED_MODULE_0__["mdbCardText"]
+    mdbCardText: mdbvue__WEBPACK_IMPORTED_MODULE_0__["mdbCardText"],
+    mdbCardBody: mdbvue__WEBPACK_IMPORTED_MODULE_0__["mdbCardBody"]
   }
 });
 
@@ -18314,8 +18349,6 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var mdbvue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! mdbvue */ "./node_modules/mdbvue/lib/index.js");
-/* harmony import */ var mdbvue__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(mdbvue__WEBPACK_IMPORTED_MODULE_0__);
 //
 //
 //
@@ -18348,25 +18381,8 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-
 /* harmony default export */ __webpack_exports__["default"] = ({
-  components: {
-    mdbContainer: mdbvue__WEBPACK_IMPORTED_MODULE_0__["mdbContainer"],
-    mdbRow: mdbvue__WEBPACK_IMPORTED_MODULE_0__["mdbRow"],
-    mdbCol: mdbvue__WEBPACK_IMPORTED_MODULE_0__["mdbCol"],
-    mdbNavbar: mdbvue__WEBPACK_IMPORTED_MODULE_0__["mdbNavbar"],
-    mdbNavItem: mdbvue__WEBPACK_IMPORTED_MODULE_0__["mdbNavItem"],
-    mdbNavbarNav: mdbvue__WEBPACK_IMPORTED_MODULE_0__["mdbNavbarNav"],
-    mdbNavbarToggler: mdbvue__WEBPACK_IMPORTED_MODULE_0__["mdbNavbarToggler"],
-    ViewWrapper: mdbvue__WEBPACK_IMPORTED_MODULE_0__["ViewWrapper"],
-    mdbMask: mdbvue__WEBPACK_IMPORTED_MODULE_0__["mdbMask"],
-    mdbBtn: mdbvue__WEBPACK_IMPORTED_MODULE_0__["mdbBtn"],
-    mdbCard: mdbvue__WEBPACK_IMPORTED_MODULE_0__["mdbCard"],
-    mdbCardBody: mdbvue__WEBPACK_IMPORTED_MODULE_0__["mdbCardBody"],
-    mdbInput: mdbvue__WEBPACK_IMPORTED_MODULE_0__["mdbInput"],
-    mdbIcon: mdbvue__WEBPACK_IMPORTED_MODULE_0__["mdbIcon"],
-    mdbNavbarBrand: mdbvue__WEBPACK_IMPORTED_MODULE_0__["mdbNavbarBrand"]
-  }
+  components: {}
 });
 
 /***/ }),
@@ -18459,6 +18475,12 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
+//
+//
+//
+//
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -18479,7 +18501,6 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     };
   },
   components: {
-    mdbInput: mdbvue__WEBPACK_IMPORTED_MODULE_2__["mdbInput"],
     mdbBtn: mdbvue__WEBPACK_IMPORTED_MODULE_2__["mdbBtn"],
     mdbModal: mdbvue__WEBPACK_IMPORTED_MODULE_2__["mdbModal"],
     mdbTextarea: mdbvue__WEBPACK_IMPORTED_MODULE_2__["mdbTextarea"],
@@ -32243,39 +32264,64 @@ var render = function() {
             _vm._v("ログイン")
           ]),
           _vm._v(" "),
-          _c("mdb-input", {
-            attrs: {
-              label: "メールアドレス",
-              type: "email",
-              id: "defaultFormLoginEmailEx"
-            },
-            model: {
-              value: _vm.loginForm.email,
-              callback: function($$v) {
-                _vm.$set(_vm.loginForm, "email", $$v)
-              },
-              expression: "loginForm.email"
-            }
-          }),
+          _c("div", { staticClass: "form-group" }, [
+            _c("label", { attrs: { for: "login-email" } }, [
+              _vm._v("メールアドレス")
+            ]),
+            _vm._v(" "),
+            _c("input", {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.loginForm.email,
+                  expression: "loginForm.email"
+                }
+              ],
+              staticClass: "form-control",
+              attrs: { type: "email", id: "login-email" },
+              domProps: { value: _vm.loginForm.email },
+              on: {
+                input: function($event) {
+                  if ($event.target.composing) {
+                    return
+                  }
+                  _vm.$set(_vm.loginForm, "email", $event.target.value)
+                }
+              }
+            })
+          ]),
           _vm._v(" "),
-          _c("mdb-input", {
-            attrs: {
-              label: "パスワード",
-              type: "password",
-              id: "defaultFormLoginPasswordEx"
-            },
-            model: {
-              value: _vm.loginForm.password,
-              callback: function($$v) {
-                _vm.$set(_vm.loginForm, "password", $$v)
-              },
-              expression: "loginForm.password"
-            }
-          }),
+          _c("div", { staticClass: "form-group" }, [
+            _c("label", { attrs: { for: "login-password" } }, [
+              _vm._v("パスワード")
+            ]),
+            _vm._v(" "),
+            _c("input", {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.loginForm.password,
+                  expression: "loginForm.password"
+                }
+              ],
+              staticClass: "form-control",
+              attrs: { type: "password", id: "login-password" },
+              domProps: { value: _vm.loginForm.password },
+              on: {
+                input: function($event) {
+                  if ($event.target.composing) {
+                    return
+                  }
+                  _vm.$set(_vm.loginForm, "password", $event.target.value)
+                }
+              }
+            })
+          ]),
           _vm._v(" "),
           _vm._m(0)
-        ],
-        1
+        ]
       ),
       _vm._v(" "),
       _c(
@@ -32535,61 +32581,122 @@ var render = function() {
             _vm._v("ユーザー登録")
           ]),
           _vm._v(" "),
-          _c("mdb-input", {
-            attrs: { label: "ユーザー名", type: "text", id: "signup-name" },
-            model: {
-              value: _vm.registerForm.name,
-              callback: function($$v) {
-                _vm.$set(_vm.registerForm, "name", $$v)
-              },
-              expression: "registerForm.name"
-            }
-          }),
+          _c("div", { staticClass: "form-group" }, [
+            _c("label", { attrs: { for: "signup-name" } }, [_vm._v("名前")]),
+            _vm._v(" "),
+            _c("input", {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.registerForm.name,
+                  expression: "registerForm.name"
+                }
+              ],
+              staticClass: "form-control",
+              attrs: { type: "text", id: "signup-name" },
+              domProps: { value: _vm.registerForm.name },
+              on: {
+                input: function($event) {
+                  if ($event.target.composing) {
+                    return
+                  }
+                  _vm.$set(_vm.registerForm, "name", $event.target.value)
+                }
+              }
+            })
+          ]),
           _vm._v(" "),
-          _c("mdb-input", {
-            attrs: {
-              label: "メールアドレス",
-              type: "email",
-              id: "signup-email"
-            },
-            model: {
-              value: _vm.registerForm.email,
-              callback: function($$v) {
-                _vm.$set(_vm.registerForm, "email", $$v)
-              },
-              expression: "registerForm.email"
-            }
-          }),
+          _c("div", { staticClass: "form-group" }, [
+            _c("label", { attrs: { for: "signup-email" } }, [
+              _vm._v("メールアドレス")
+            ]),
+            _vm._v(" "),
+            _c("input", {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.registerForm.email,
+                  expression: "registerForm.email"
+                }
+              ],
+              staticClass: "form-control",
+              attrs: { type: "email", id: "signup-email" },
+              domProps: { value: _vm.registerForm.email },
+              on: {
+                input: function($event) {
+                  if ($event.target.composing) {
+                    return
+                  }
+                  _vm.$set(_vm.registerForm, "email", $event.target.value)
+                }
+              }
+            })
+          ]),
           _vm._v(" "),
-          _c("mdb-input", {
-            attrs: { label: "パスワード", type: "password", id: "signup-pass" },
-            model: {
-              value: _vm.registerForm.password,
-              callback: function($$v) {
-                _vm.$set(_vm.registerForm, "password", $$v)
-              },
-              expression: "registerForm.password"
-            }
-          }),
+          _c("div", { staticClass: "form-group" }, [
+            _c("label", { attrs: { for: "signyp-password" } }, [
+              _vm._v("パスワード")
+            ]),
+            _vm._v(" "),
+            _c("input", {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.registerForm.password,
+                  expression: "registerForm.password"
+                }
+              ],
+              staticClass: "form-control",
+              attrs: { type: "password", id: "signyp-password" },
+              domProps: { value: _vm.registerForm.password },
+              on: {
+                input: function($event) {
+                  if ($event.target.composing) {
+                    return
+                  }
+                  _vm.$set(_vm.registerForm, "password", $event.target.value)
+                }
+              }
+            })
+          ]),
           _vm._v(" "),
-          _c("mdb-input", {
-            attrs: {
-              label: "パスワード再入力",
-              type: "password",
-              id: "signup-confirmation"
-            },
-            model: {
-              value: _vm.registerForm.password_confirmation,
-              callback: function($$v) {
-                _vm.$set(_vm.registerForm, "password_confirmation", $$v)
-              },
-              expression: "registerForm.password_confirmation"
-            }
-          }),
+          _c("div", { staticClass: "form-group" }, [
+            _c("label", { attrs: { for: "signup-password-confirmation" } }, [
+              _vm._v("パスワード再入力")
+            ]),
+            _vm._v(" "),
+            _c("input", {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.registerForm.password_confirmation,
+                  expression: "registerForm.password_confirmation"
+                }
+              ],
+              staticClass: "form-control",
+              attrs: { type: "password", id: "signup-password-confirmation" },
+              domProps: { value: _vm.registerForm.password_confirmation },
+              on: {
+                input: function($event) {
+                  if ($event.target.composing) {
+                    return
+                  }
+                  _vm.$set(
+                    _vm.registerForm,
+                    "password_confirmation",
+                    $event.target.value
+                  )
+                }
+              }
+            })
+          ]),
           _vm._v(" "),
           _vm._m(0)
-        ],
-        1
+        ]
       ),
       _vm._v(" "),
       _c(
@@ -33564,16 +33671,33 @@ var render = function() {
                 }
               },
               [
-                _c("mdb-input", {
-                  attrs: { label: "タイトル", type: "text" },
-                  model: {
-                    value: _vm.title,
-                    callback: function($$v) {
-                      _vm.title = $$v
-                    },
-                    expression: "title"
-                  }
-                }),
+                _c("div", { staticClass: "form-group" }, [
+                  _c("label", { attrs: { for: "work-title" } }, [
+                    _vm._v("タイトル")
+                  ]),
+                  _vm._v(" "),
+                  _c("input", {
+                    directives: [
+                      {
+                        name: "model",
+                        rawName: "v-model",
+                        value: _vm.title,
+                        expression: "title"
+                      }
+                    ],
+                    staticClass: "form-control",
+                    attrs: { type: "password", id: "work-title" },
+                    domProps: { value: _vm.title },
+                    on: {
+                      input: function($event) {
+                        if ($event.target.composing) {
+                          return
+                        }
+                        _vm.title = $event.target.value
+                      }
+                    }
+                  })
+                ]),
                 _vm._v(" "),
                 _c(
                   "select",
@@ -33971,29 +34095,35 @@ var render = function() {
         "mdb-card",
         {
           staticClass: "card-body shadow-none",
-          staticStyle: { width: "22rem", "margin-top": "1rem" }
+          staticStyle: { "margin-top": "1rem" }
         },
         [
-          _c("mdb-card-title", { staticClass: "text-center" }, [
-            _vm._v("\n        404\n    ")
-          ]),
-          _vm._v(" "),
-          _c("mdb-card-text", { staticClass: "text-center" }, [
-            _c("p", [_vm._v("ページが存在しません。")]),
-            _vm._v(" "),
-            _c(
-              "button",
-              {
-                staticClass: "btn btn-primary shadow-none",
-                on: {
-                  click: function($event) {
-                    return _vm.$router.push({ path: "/" })
-                  }
-                }
-              },
-              [_vm._v("\n              ホームに戻る\n          ")]
-            )
-          ])
+          _c(
+            "mdb-card-body",
+            [
+              _c("mdb-card-title", { staticClass: "text-center" }, [
+                _vm._v("\n        404\n    ")
+              ]),
+              _vm._v(" "),
+              _c("mdb-card-text", { staticClass: "text-center" }, [
+                _c("p", [_vm._v("ページが存在しません。")]),
+                _vm._v(" "),
+                _c(
+                  "button",
+                  {
+                    staticClass: "btn btn-primary shadow-none",
+                    on: {
+                      click: function($event) {
+                        return _vm.$router.push({ path: "/" })
+                      }
+                    }
+                  },
+                  [_vm._v("\n              ホームに戻る\n          ")]
+                )
+              ])
+            ],
+            1
+          )
         ],
         1
       )
@@ -34211,16 +34341,33 @@ var render = function() {
               "div",
               { staticClass: "col-sm-6" },
               [
-                _c("mdb-input", {
-                  attrs: { label: "名前", type: "text" },
-                  model: {
-                    value: _vm.user.name,
-                    callback: function($$v) {
-                      _vm.$set(_vm.user, "name", $$v)
-                    },
-                    expression: "user.name"
-                  }
-                }),
+                _c("div", { staticClass: "form-group" }, [
+                  _c("label", { attrs: { for: "user-edit-name" } }, [
+                    _vm._v("名前")
+                  ]),
+                  _vm._v(" "),
+                  _c("input", {
+                    directives: [
+                      {
+                        name: "model",
+                        rawName: "v-model",
+                        value: _vm.user.name,
+                        expression: "user.name"
+                      }
+                    ],
+                    staticClass: "form-control",
+                    attrs: { type: "email", id: "user-edit-name" },
+                    domProps: { value: _vm.user.name },
+                    on: {
+                      input: function($event) {
+                        if ($event.target.composing) {
+                          return
+                        }
+                        _vm.$set(_vm.user, "name", $event.target.value)
+                      }
+                    }
+                  })
+                ]),
                 _vm._v(" "),
                 _c("mdb-textarea", {
                   staticClass: "mt-5",

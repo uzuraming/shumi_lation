@@ -3,14 +3,30 @@
     <!-- Default form login -->
     <form @submit.prevent="signup">
       <h2 class="h4 text-center mb-4 mt-5">ユーザー登録</h2>
+      <div class="form-group">
+                <label for="signup-name" >名前</label>
+                <input type="text" v-model="registerForm.name"  id="signup-name" class="form-control">
+            </div>
+      <div class="form-group">
+          <label for="signup-email" >メールアドレス</label>
+          <input type="email" v-model="registerForm.email"  id="signup-email" class="form-control">
+      </div>
+      <div class="form-group">
+          <label for="signyp-password" >パスワード</label>
+          <input type="password" v-model="registerForm.password"  id="signyp-password" class="form-control">
+      </div>
+      <div class="form-group">
+          <label for="signup-password-confirmation" >パスワード再入力</label>
+          <input type="password" v-model="registerForm.password_confirmation"  id="signup-password-confirmation" class="form-control">
+      </div>
  
-      <mdb-input label="ユーザー名" v-model="registerForm.name" type="text" id="signup-name" class="" />
+      <!-- <mdb-input label="ユーザー名" v-model="registerForm.name" type="text" id="signup-name" class="" />
 
       <mdb-input label="メールアドレス" v-model="registerForm.email" type="email" id="signup-email" class="" />
 
       <mdb-input label="パスワード" v-model="registerForm.password" type="password" id="signup-pass" class=""/>
   
-      <mdb-input label="パスワード再入力" v-model="registerForm.password_confirmation" type="password" id="signup-confirmation" class=""/>
+      <mdb-input label="パスワード再入力" v-model="registerForm.password_confirmation" type="password" id="signup-confirmation" class=""/> -->
       <div class="text-center mt-4">
         <button class="btn btn-indigo shadow-none" type="submit">登録</button>
       </div>
@@ -42,7 +58,7 @@
 </template>
 
 <script>
-import { mdbModal, mdbModalHeader, mdbModalTitle, mdbModalBody, mdbModalFooter, mdbBtn, mdbInput } from 'mdbvue';
+import { mdbModal, mdbModalHeader, mdbModalTitle, mdbModalBody, mdbModalFooter, mdbBtn } from 'mdbvue';
 export default {
     data(){
         return{
@@ -61,7 +77,7 @@ export default {
       mdbModalBody,
       mdbModalFooter,
       mdbBtn,
-      mdbInput,
+
     },
     methods:{
       // ユーザー登録
