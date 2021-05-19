@@ -50089,8 +50089,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _pages_WorksDetail_vue__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./pages/WorksDetail.vue */ "./resources/js/pages/WorksDetail.vue");
 /* harmony import */ var _store__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./store */ "./resources/js/store/index.js");
 /* harmony import */ var _pages_errors_NotFound_vue__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ./pages/errors/NotFound.vue */ "./resources/js/pages/errors/NotFound.vue");
-function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-
 
  // ページコンポーネントをインポートする
 
@@ -50116,12 +50114,12 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
 vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vue_router__WEBPACK_IMPORTED_MODULE_1__["default"]); // パスとコンポーネントのマッピング
 
-var routes = [_defineProperty({
+var routes = [{
   path: '/500',
-  component: SystemError
-}, "component", function component() {
-  return __webpack_require__.e(/*! import() */ 7).then(__webpack_require__.bind(null, /*! ./pages/errors/System.vue */ "./resources/js/pages/errors/System.vue"));
-}), {
+  component: function component() {
+    return __webpack_require__.e(/*! import() */ 7).then(__webpack_require__.bind(null, /*! ./pages/errors/System.vue */ "./resources/js/pages/errors/System.vue"));
+  }
+}, {
   path: '*',
   component: function component() {
     return Promise.resolve(/*! import() */).then(__webpack_require__.bind(null, /*! ./pages/errors/NotFound.vue */ "./resources/js/pages/errors/NotFound.vue"));
