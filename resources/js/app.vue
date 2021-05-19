@@ -61,11 +61,11 @@
 </script>
 <style>
     
-    @import url('https://fonts.googleapis.com/css2?family=Julius+Sans+One&display=swap');
+    /* @import url('https://fonts.googleapis.com/css2?family=Julius+Sans+One&display=swap');
     @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@200&display=swap');
 
    
-    @import url('https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@300&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@300&display=swap'); */
 .wrapper{
   font-family: 'M PLUS Rounded 1c', sans-serif;
 }

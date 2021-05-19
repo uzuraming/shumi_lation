@@ -20012,12 +20012,10 @@ exports.push([module.i, ".mdb-color.lighten-5{background-color:#d0d6e2 !importan
 
 exports = module.exports = __webpack_require__(/*! ../../node_modules/css-loader/lib/css-base.js */ "./node_modules/css-loader/lib/css-base.js")(false);
 // imports
-exports.push([module.i, "@import url(https://fonts.googleapis.com/css2?family=Julius+Sans+One&display=swap);", ""]);
-exports.push([module.i, "@import url(https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@200&display=swap);", ""]);
-exports.push([module.i, "@import url(https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@300&display=swap);", ""]);
+
 
 // module
-exports.push([module.i, "\n.wrapper{\n  font-family: 'M PLUS Rounded 1c', sans-serif;\n}\n.ql-align-center{\n        text-align: center;\n}\n.ql-align-right{\n        text-align: right;\n}\n.ql-align-justify{\n        text-align: justify;\n}\n\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n    \n    /* @import url('https://fonts.googleapis.com/css2?family=Julius+Sans+One&display=swap');\n    @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@200&display=swap');\n\n   \n    @import url('https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@300&display=swap'); */\n.wrapper{\n  font-family: 'M PLUS Rounded 1c', sans-serif;\n}\n.ql-align-center{\n        text-align: center;\n}\n.ql-align-right{\n        text-align: right;\n}\n.ql-align-justify{\n        text-align: justify;\n}\n\n", ""]);
 
 // exports
 
