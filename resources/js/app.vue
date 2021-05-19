@@ -24,6 +24,7 @@
     import { INTERNAL_SERVER_ERROR, NOT_FOUND } from './util'
 
     import Navbar from './components/Navbar.vue'
+  
 
     
 
@@ -31,7 +32,7 @@
         components: {
             Navbar,
             Footer: () => import( './components/Footer.vue'),
-            Footer: () => import( './components/EmailVerifiedMessage.vue'),
+            EmailVerifiedMessage: () => import( './components/EmailVerifiedMessage.vue'),
         },
         computed: {
             errorCode () {

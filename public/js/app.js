@@ -14757,8 +14757,6 @@ module.exports = {
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _util__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./util */ "./resources/js/util.js");
 /* harmony import */ var _components_Navbar_vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./components/Navbar.vue */ "./resources/js/components/Navbar.vue");
-function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-
 //
 //
 //
@@ -14784,14 +14782,15 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-  components: _defineProperty({
+  components: {
     Navbar: _components_Navbar_vue__WEBPACK_IMPORTED_MODULE_1__["default"],
     Footer: function Footer() {
       return __webpack_require__.e(/*! import() */ 6).then(__webpack_require__.bind(null, /*! ./components/Footer.vue */ "./resources/js/components/Footer.vue"));
+    },
+    EmailVerifiedMessage: function EmailVerifiedMessage() {
+      return __webpack_require__.e(/*! import() */ 8).then(__webpack_require__.bind(null, /*! ./components/EmailVerifiedMessage.vue */ "./resources/js/components/EmailVerifiedMessage.vue"));
     }
-  }, "Footer", function Footer() {
-    return __webpack_require__.e(/*! import() */ 8).then(__webpack_require__.bind(null, /*! ./components/EmailVerifiedMessage.vue */ "./resources/js/components/EmailVerifiedMessage.vue"));
-  }),
+  },
   computed: {
     errorCode: function errorCode() {
       return this.$store.state.error.code;
@@ -19824,7 +19823,7 @@ exports = module.exports = __webpack_require__(/*! ../../node_modules/css-loader
 
 
 // module
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n    \n    /* @import url('https://fonts.googleapis.com/css2?family=Julius+Sans+One&display=swap');\n    @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@200&display=swap');\n\n   \n    @import url('https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@300&display=swap'); */\n.wrapper{\n  font-family: 'M PLUS Rounded 1c', sans-serif;\n}\n.ql-align-center{\n        text-align: center;\n}\n.ql-align-right{\n        text-align: right;\n}\n.ql-align-justify{\n        text-align: justify;\n}\n\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n    \n    /* @import url('https://fonts.googleapis.com/css2?family=Julius+Sans+One&display=swap');\n    @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@200&display=swap');\n\n   \n    @import url('https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@300&display=swap'); */\n.wrapper{\n  font-family: 'M PLUS Rounded 1c', sans-serif;\n}\n.ql-align-center{\n        text-align: center;\n}\n.ql-align-right{\n        text-align: right;\n}\n.ql-align-justify{\n        text-align: justify;\n}\n\n", ""]);
 
 // exports
 
