@@ -34,7 +34,6 @@ Vue.use(VueRouter)
 const routes = [
     {
         path: '/500',
-        component: SystemError,
         component: () => import( './pages/errors/System.vue'),
 
     },
