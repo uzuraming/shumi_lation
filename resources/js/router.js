@@ -18,7 +18,7 @@ import WorkDetail from './pages/WorksDetail.vue'
 
 import store from './store'
 
-import SystemError from './pages/errors/System.vue'
+// import SystemError from './pages/errors/System.vue'
 
 // import Chat from './pages/Chat.vue'
 // import ChatDetail from './pages/ChatDetail.vue'
@@ -34,11 +34,13 @@ Vue.use(VueRouter)
 const routes = [
     {
         path: '/500',
-        component: SystemError
+        component: SystemError,
+        component: () => import( './pages/errors/System.vue'),
+
     },
     {
       path: '*',
-      component: NotFound,
+      component: () => import( './pages/errors/NotFound.vue'),
       name:'notfound'
     },
     {
