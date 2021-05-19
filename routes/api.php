@@ -60,7 +60,7 @@ Route::resource('/users', 'UsersController',  ['only' => ['show']]);
 
 Route::group(['middleware' => ['auth','verified']], function () {
 
-    Route::get('/chats', 'ChatController@index');
+    Route::get('/chats', 'ChatController@index')->name('chats.index');;
     Route::get('/chats/{id}', 'ChatController@show');
     Route::post('/chats/{id}', 'ChatController@send_message');
 
@@ -86,8 +86,8 @@ Route::group(['middleware' => ['auth','verified']], function () {
 
     Route::put('/users/{id}/', 'UsersController@update');
 
-    Route::post('/users/{id}/send_request', 'ChatRequestController@store');
-    Route::delete('/users/{id}/send_request', 'ChatRequestController@remove_request');
+    Route::post('/users/{id}/send_request', 'ChatRequestController@store')->name('users.send_request');;
+    Route::delete('/users/{id}/send_request', 'ChatRequestController@remove_request')->name('users.destory_request');;
 
 
     Route::get('/requests_count', function(){
@@ -100,9 +100,9 @@ Route::group(['middleware' => ['auth','verified']], function () {
     Route::put('/requests/{id}', 'ChatRequestController@accept_request');
 
 
-    Route::put('/works/{id}', 'WorksController@update');
-    Route::post('/works', 'WorksController@store');
-    Route::delete('/works/{id}', 'WorksController@destroy');
+    Route::put('/works/{id}', 'WorksController@update')->name('works.update');
+    Route::post('/works', 'WorksController@store')->name('works.store');
+    Route::delete('/works/{id}', 'WorksController@destroy')->name('works.destroy');
 
     // タイムラインの各機能
     Route::post('/timelines', 'TimelinesController@store')->name('timelines.store');

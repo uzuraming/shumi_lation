@@ -179,7 +179,7 @@ class WorksController extends Controller
             'content' => 'required|max:10000'
         ]);
 
-        \Log::Debug(strval($request->img_path));   
+
         $tmp_str = strval($request->img_path); // 受け取った値を文字列に変換
         if($tmp_str  == "default"){
             // 画像データが”default”の文字列だった場合、画像関連の処理はしない

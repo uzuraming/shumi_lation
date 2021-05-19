@@ -21,6 +21,8 @@ class Work extends Model
         'bookmarked_by_user', 'bookmark_count', 'url'
     ];
 
+
+    // 作品をブックマークしたか
     public function getBookmarkedByUserAttribute()
     {
         if (\Auth::guest()) {
@@ -30,6 +32,7 @@ class Work extends Model
         
     }
 
+    // ブックマークの数を返す関数
     public function getBookmarkCountAttribute()
     {
         return $this->bookmarking_user->count();
@@ -39,6 +42,7 @@ class Work extends Model
     // 画像にURLをつける
     public function getUrlAttribute()
     {
+        // 画像があれば、AWSS3のURLを返す
         if($this->img_path){
             return Storage::cloud()->url($this->img_path);
         }else{
