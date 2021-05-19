@@ -24,16 +24,14 @@
     import { INTERNAL_SERVER_ERROR, NOT_FOUND } from './util'
 
     import Navbar from './components/Navbar.vue'
-    import Tabs from './components/Tabs.vue'
-    import EmailVerifiedMessage from './components/EmailVerifiedMessage.vue'
+
     
 
     export default {
         components: {
             Navbar,
             Footer: () => import( './components/Footer.vue'),
-            Tabs,
-            EmailVerifiedMessage,
+            Footer: () => import( './components/EmailVerifiedMessage.vue'),
         },
         computed: {
             errorCode () {
