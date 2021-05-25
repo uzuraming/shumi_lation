@@ -31,8 +31,9 @@
 
                 <div class="form-group">
                     <label for="user-edit-name" >名前</label>
-                    <input type="email" v-model="user.name"  id="user-edit-name" class="form-control">
+                    <input type="text" v-model="user.name"  id="user-edit-name" class="form-control">
                 </div>
+
 
                 <!-- プロフィール入力フォーム -->
                 <mdb-textarea class="mt-5" label="プロフィール" rows="5" v-model="user.profile" />
@@ -241,6 +242,10 @@ export default {
 </script>
 
 <style scoped>
+.remove-carousel{
+    bottom:2rem;
+    right:2rem
+    }
        
 
    

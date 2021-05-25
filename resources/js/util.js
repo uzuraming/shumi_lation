@@ -12,7 +12,7 @@ export function getCookieValue (searchKey) {
         return val = value
       }
     })
-    console.log(val)
+
   
     return val
 }
