@@ -20,8 +20,8 @@ import store from './store'
 
 // import SystemError from './pages/errors/System.vue'
 
-// import Chat from './pages/Chat.vue'
-// import ChatDetail from './pages/ChatDetail.vue'
+import Chat from './pages/Chat.vue'
+import ChatDetail from './pages/ChatDetail.vue'
 
 // import WaitVerify from './pages/WaitVerify.vue'
 import NotFound from './pages/errors/NotFound.vue'
@@ -203,7 +203,7 @@ const routes = [
   },
   {
     path: '/chats',
-    component: () => import( './pages/Chat.vue'),
+    component:Chat,
     props: route => {
         const page = route.query.page
         return { page: /^[1-9][0-9]*$/.test(page) ? page * 1 : 1}
@@ -219,7 +219,7 @@ const routes = [
   {
     path: '/chats/:chat_room_id',
     name:'chatDetail',
-    component: () => import( './pages/ChatDetail.vue'),
+    component:ChatDetail,
     props: true,
     beforeEnter (to, from, next) {
       if (!store.getters['auth/check'] || !store.getters['auth/is_verified']) {
