@@ -11,14 +11,14 @@ ER図
 
 ### フロントエンド：
 <p>言語：Javascript</p>
-<p>フレームワーク：Vue.jsによる**完全SPA化**</p>
+<p>フレームワーク：Vue.jsによる<b>完全SPA化</b></p>
 <p>CSSフレームワーク：Material Desgin for BootStrap</p>
 <p>リッチテキストエディタ：VueEditer2</p>
 
 ### バックエンド：
 言語：PHP
 フレームワーク：Laravel
-テスト：PHPUnit
+<p>テスト：PHPUnit</p>
 
 インフラ：
 AWS EC2, S3, Route53, VPC など
