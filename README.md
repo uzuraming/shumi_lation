@@ -17,6 +17,8 @@ LaravelとVue.jsを使い、これまでの技術の総復習のために制作�
 →routes/api.php
 ### Test
 →/tests/Feature/
+### CircleCI
+→.circleci/
 
 ## 使用した技術
 
