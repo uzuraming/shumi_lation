@@ -21,7 +21,7 @@ class CreateBookmarkTable extends Migration
 
             // 外部キー制約
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
-            $table->foreign('bookmark_id')->references('id')->on('timelines')->onDelete('cascade');
+            $table->foreign('bookmark_id')->references('id')->on('works')->onDelete('cascade');
         });
     }
 
@@ -32,6 +32,6 @@ class CreateBookmarkTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('bookmark');
+        Schema::dropIfExists('bookmarks');
     }
 }
