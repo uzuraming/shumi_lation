@@ -93,7 +93,7 @@ export default {
             user:{
                 name:"",
                 profile:"",
-                inputImg:null, // アップロードした画像の情報
+                inputImg:'default', // アップロードした画像の情報
             },
             uploadedImage: '',
             img_name: 'ファイルを選択',
