@@ -1,78 +1,86 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400"></a></p>
+# 文章で繋がれるSNSアプリ
 
-<p align="center">
-<a href="https://travis-ci.org/laravel/framework"><img src="https://travis-ci.org/laravel/framework.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://poser.pugx.org/laravel/framework/d/total.svg" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://poser.pugx.org/laravel/framework/v/stable.svg" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://poser.pugx.org/laravel/framework/license.svg" alt="License"></a>
-</p>
+LaravelとVue.jsを使い、これまでの技術の総復習のために制作いたしました。
 
-## About Laravel
+文章を共有するサービスははてなダイアリーやnoteなどが有名ですが、「**文章を書いた人と直接話してみたい**」という思いがいつもあり、そんなサービスを作ってみたいと言う思いで制作しました。
+極力色の少ない**モノトーンのデザイン**、**文章を書くことを邪魔しないデザイン**を心がけました。
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## アプリの構造
+### Model
+→Appディレクトリ直下
+### Controller
+→App/http/controller
+### フロントエンド
+→/resources/js/
+### Route
+→routes/api.php
+### Test
+→/tests/Feature/
+### CircleCI
+→.circleci/
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+## 使用した技術
 
-## Learning Laravel
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+### フロントエンド：
+<p>言語：Javascript</p>
+<p>フレームワーク：Vue.jsによる<b>完全SPA化</b></p>
+<p>CSSフレームワーク：Material Desgin for BootStrap</p>
+<p>リッチテキストエディタ：VueEditer2</p>
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains over 1500 video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+### バックエンド：
+言語：PHP
+フレームワーク：Laravel
+<p>テスト：PHPUnit</p>
 
-## Laravel Sponsors
+インフラ：
+AWS EC2, S3, Route53, VPC など
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](https://patreon.com/taylorotwell).
+開発環境：
+**Docker**、Docker-compose
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Cubet Techno Labs](https://cubettech.com)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[British Software Development](https://www.britishsoftware.co)**
-- **[Webdock, Fast VPS Hosting](https://www.webdock.io/en)**
-- **[DevSquad](https://devsquad.com)**
-- [UserInsights](https://userinsights.com)
-- [Fragrantica](https://www.fragrantica.com)
-- [SOFTonSOFA](https://softonsofa.com/)
-- [User10](https://user10.com)
-- [Soumettre.fr](https://soumettre.fr/)
-- [CodeBrisk](https://codebrisk.com)
-- [1Forge](https://1forge.com)
-- [TECPRESSO](https://tecpresso.co.jp/)
-- [Runtime Converter](http://runtimeconverter.com/)
-- [WebL'Agence](https://weblagence.com/)
-- [Invoice Ninja](https://www.invoiceninja.com)
-- [iMi digital](https://www.imi-digital.de/)
-- [Earthlink](https://www.earthlink.ro/)
-- [Steadfast Collective](https://steadfastcollective.com/)
-- [We Are The Robots Inc.](https://watr.mx/)
-- [Understand.io](https://www.understand.io/)
-- [Abdel Elrafa](https://abdelelrafa.com)
-- [Hyper Host](https://hyper.host)
-- [Appoly](https://www.appoly.co.uk)
-- [OP.GG](https://op.gg)
+CI/CD：
+**CircleCI**による自動テスト、デプロイ
 
-## Contributing
+その他：
+外部サービスPusher, Laravel Echo, LaravelのBroadcast機能を使用して**リアルタイムチャット機能**を実装しました。
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
 
-## Code of Conduct
+## 機能：
+### ユーザー機能：
+登録、ログイン、メール認証機能、プロフィール編集
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+### タイムライン機能：
+タイムラインの投稿、いいね
 
-## Security Vulnerabilities
+### 作品：
+作品の執筆、編集、削除、コメント、ブックマーク、ジャンルやブックマークの数で並び替え
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+### チャット機能：
+メッセージ付きでチャットリクエストを行い、承認されれば自動的にチャットルームが作成されます。チャットはリアルタイムチャットを実装しています。
 
-## License
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+## 工夫した点、拘った点、成長した点：
+まず、**LaravelとVue.jsの連携**や、メール認証、ブロードキャスト機能など一般的な入門教材には載っていない機能を充実させたので、**公式のドキュメントを読み込む力**や、検索スキル、エラーの向き合い方など、多くの知識を得ることができたと思います。
+
+今まで作成した中で最も大きい規模のアプリだったので、1からアプリを設計する力が身につきました。
+
+これまではHerokuを用いてデプロイをしてきましたが、**実践的な力を身につけるためAWSで自力でインフラを構築**し、その後は修正などに集中するため**CircleCIの自動デプロイ**まで実装しました。
+デプロイ先を間違えてアプリが全く動かなくなったり、思いの外AWSの金額が高額で驚いたりと、単純なプログラミングだけでは経験できない貴重な経験をさせていただきました。
+
+## 反省点：
+**アプリ全体の規模を大きくしすぎた**ため、実装に時間がかかったこと：
+当方生物系の学生であるため、研究などの両立に苦戦して半年間という時間がかかってしまいました。やはりアプリは**小規模から始めることが大切である**なと実感しました。
+
+### Vue.jsコンポーネントの使用：
+前回のアプリよりはコンポーネントの再利用などを心がけましたが、もし次にVueを使用する機会があれば、一番はじめにどこをコンポーネント化するのかを考えてから作るほうが混乱しづらいなと思いました。
+
+
+## 今後の予定：
+- 本来ならば**SSL化**までやりたかったのですが、AWSのELB の費用の都合上、一旦保留としています。
+- 自動テストをより充実させる。
+- リアルタイムチャットのページネーション機能
+- 初期読み込みの高速化
+
+など
