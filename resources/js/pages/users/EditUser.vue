@@ -141,12 +141,12 @@ export default {
 
             // フォームオブジェクトを作成
             const formData = new FormData()
-            if(this.inputImg === "default"){
+            if(this.user.inputImg === "default"){
                 // 画像データが初期状態だったら"default"
                 formData.append('img_path', "default")
-            }else if(this.inputImg){
+            }else if(this.user.inputImg){
                 // 画像データがあったら
-                formData.append('img_path', this.inputImg[0])
+                formData.append('img_path', this.user.inputImg[0])
             };
 
             // 名前情報とプロフィールを入れる
@@ -187,7 +187,7 @@ export default {
             let files = e.target.files || e.dataTransfer.files;
             this.img_name = files[0].name;
             if(files[0]){
-                    this.inputImg = files
+                    this.user.inputImg = files
                     this.createImage(files[0]);
             }
             
