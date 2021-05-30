@@ -120,6 +120,7 @@ export default {
                     this.$store.commit('error/setCode', response.status)
                     return false
             };
+            this.user.inputImg = "default";
             
             // データ上のits_meで自分かどうかを判断し、そうでなかったらブラウザバックさせる
             if(response.data.its_me){
@@ -127,10 +128,11 @@ export default {
                 this.user.name =response.data.user.name;
                 this.user.profile =response.data.user.profile;
                 this.uploadedImage =response.data.user.url;
-                console.log(this.user)
+   
             }else{
                 this.$router.back() ;
             }
+
     
         },
         // ユーザー情報をアップデート
@@ -183,7 +185,7 @@ export default {
         },
         // ファイルが添付された時に発動する関数
         onFileChange(e) {
-            console.log('imgUpload')
+  
             let files = e.target.files || e.dataTransfer.files;
             this.img_name = files[0].name;
             if(files[0]){
@@ -194,7 +196,7 @@ export default {
         },
         // アップロードした画像を表示
         createImage(file) {
-            console.log('imgCreated')
+     
             let reader = new FileReader();
             reader.onload = (e) => {
             this.uploadedImage = e.target.result;

@@ -107,7 +107,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       user: {
         name: "",
         profile: "",
-        inputImg: null // アップロードした画像の情報
+        inputImg: 'default' // アップロードした画像の情報
 
       },
       uploadedImage: '',
@@ -153,18 +153,18 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                 return _context.abrupt("return", false);
 
               case 6:
-                ; // データ上のits_meで自分かどうかを判断し、そうでなかったらブラウザバックさせる
+                ;
+                _this.user.inputImg = "default"; // データ上のits_meで自分かどうかを判断し、そうでなかったらブラウザバックさせる
 
                 if (response.data.its_me) {
                   _this.user.name = response.data.user.name;
                   _this.user.profile = response.data.user.profile;
                   _this.uploadedImage = response.data.user.url;
-                  console.log(_this.user);
                 } else {
                   _this.$router.back();
                 }
 
-              case 8:
+              case 9:
               case "end":
                 return _context.stop();
             }
@@ -188,12 +188,12 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
                 formData = new FormData();
 
-                if (_this2.inputImg === "default") {
+                if (_this2.user.inputImg === "default") {
                   // 画像データが初期状態だったら"default"
                   formData.append('img_path', "default");
-                } else if (_this2.inputImg) {
+                } else if (_this2.user.inputImg) {
                   // 画像データがあったら
-                  formData.append('img_path', _this2.inputImg[0]);
+                  formData.append('img_path', _this2.user.inputImg[0]);
                 }
 
                 ; // 名前情報とプロフィールを入れる
@@ -270,12 +270,11 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     },
     // ファイルが添付された時に発動する関数
     onFileChange: function onFileChange(e) {
-      console.log('imgUpload');
       var files = e.target.files || e.dataTransfer.files;
       this.img_name = files[0].name;
 
       if (files[0]) {
-        this.inputImg = files;
+        this.user.inputImg = files;
         this.createImage(files[0]);
       }
     },
@@ -283,7 +282,6 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     createImage: function createImage(file) {
       var _this4 = this;
 
-      console.log('imgCreated');
       var reader = new FileReader();
 
       reader.onload = function (e) {

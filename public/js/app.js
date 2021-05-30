@@ -51278,7 +51278,7 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vue_router__WEBPACK_IMPORTED_MODU
 var routes = [{
   path: '/500',
   component: function component() {
-    return __webpack_require__.e(/*! import() */ 5).then(__webpack_require__.bind(null, /*! ./pages/errors/System.vue */ "./resources/js/pages/errors/System.vue"));
+    return __webpack_require__.e(/*! import() */ 4).then(__webpack_require__.bind(null, /*! ./pages/errors/System.vue */ "./resources/js/pages/errors/System.vue"));
   }
 }, {
   path: '*',
@@ -51316,7 +51316,7 @@ var routes = [{
 }, {
   path: '/requests',
   component: function component() {
-    return __webpack_require__.e(/*! import() */ 3).then(__webpack_require__.bind(null, /*! ./pages/Requests.vue */ "./resources/js/pages/Requests.vue"));
+    return __webpack_require__.e(/*! import() */ 2).then(__webpack_require__.bind(null, /*! ./pages/Requests.vue */ "./resources/js/pages/Requests.vue"));
   },
   props: function props(route) {
     var page = route.query.page;
@@ -51485,7 +51485,7 @@ var routes = [{
 }, {
   path: '/wait_verify',
   component: function component() {
-    return __webpack_require__.e(/*! import() */ 4).then(__webpack_require__.bind(null, /*! ./pages/WaitVerify.vue */ "./resources/js/pages/WaitVerify.vue"));
+    return __webpack_require__.e(/*! import() */ 3).then(__webpack_require__.bind(null, /*! ./pages/WaitVerify.vue */ "./resources/js/pages/WaitVerify.vue"));
   },
   name: 'waitVerify',
   beforeEnter: function beforeEnter(to, from, next) {
